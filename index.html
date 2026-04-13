@@ -8,6 +8,7 @@
 body {
     margin: 0;
     font-family: system-ui, Arial;
+    font-size: 20px; /* global scale */
     background: radial-gradient(circle at top, #1a1a1a, #0d0d0d);
     color: #fff;
     display: flex;
@@ -16,145 +17,169 @@ body {
     padding: 50px 20px;
 }
 
-h1 { margin-bottom: 6px; }
-p { opacity: 0.7; margin-bottom: 25px; }
+h1 { 
+    margin-bottom: 6px; 
+    font-size: 34px;
+}
 
-.autocomplete-box {
-    position: relative;
-    width: 360px;
+p { 
+    opacity: 0.7; 
+    margin-bottom: 25px;
+    font-size: 18px;
+}
+
+.autocomplete-box { 
+    position: relative; 
+    width: 380px; /* slightly bigger */
 }
 
 input {
     width: 100%;
-    padding: 12px;
-    border-radius: 10px;
+    padding: 14px;
+    border-radius: 12px;
     border: 1px solid #333;
     background: #151515;
     color: white;
     outline: none;
+    font-size: 18px;
 }
 
 button {
-    margin-top: 12px;
-    padding: 10px 18px;
-    border-radius: 10px;
+    margin-top: 14px;
+    padding: 12px 22px;
+    border-radius: 12px;
     border: none;
     background: #2a2a2a;
     color: white;
     cursor: pointer;
+    font-size: 18px;
+    transition: 0.15s;
+}
+
+button:hover {
+    background: #3a3a3a;
 }
 
 .suggestions {
     position: absolute;
-    top: 44px;
+    top: 50px;
     width: 100%;
     background: #1a1a1a;
     border: 1px solid #333;
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
     z-index: 10;
 }
 
 .suggestions div {
-    padding: 10px;
+    padding: 12px;
     cursor: pointer;
+    font-size: 17px;
 }
 
 .suggestions div.active,
-.suggestions div:hover {
-    background: #2c2c2c;
+.suggestions div:hover { 
+    background: #2c2c2c; 
 }
 
 .shared-box {
-    margin-top: 25px;
+    margin-top: 30px;
     width: 100%;
-    max-width: 700px;
+    max-width: 750px;
     background: #111;
     border: 1px solid #222;
-    border-radius: 12px;
-    padding: 14px;
+    border-radius: 14px;
+    padding: 16px;
 }
 
 .shared-title {
     font-weight: 700;
-    margin-bottom: 10px;
-    color: #00ff88;
-}
-
-.strength-title {
-    color: #ff4d4d;
+    margin-bottom: 12px;
+    font-size: 24px;
 }
 
 .shared-item {
-    font-size: 14px;
-    padding: 4px 0;
+    margin: 6px 0;
+    font-size: 20px;
 }
 
 .result {
-    margin-top: 20px;
+    margin-top: 25px;
     width: 100%;
-    max-width: 700px;
+    max-width: 750px;
 }
 
 .row {
     display: grid;
-    grid-template-columns: 160px 1fr;
-    gap: 15px;
-    padding: 12px 14px;
-    margin-bottom: 10px;
+    grid-template-columns: 180px 1fr;
+    gap: 16px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
     background: #151515;
     border: 1px solid #222;
-    border-radius: 12px;
+    border-radius: 14px;
 }
 
-.name {
+.name { 
     font-weight: 700;
+    font-size: 24px;
 }
 
-.list {
-    font-size: 14px;
-    line-height: 1.6;
+.list { 
+    font-size: 20px; 
+    line-height: 1.7; 
 }
+
+/* class colors */
+.thrower { color: #FFA500; }
+.tank { color: #FF0000; }
+.assassin { color: #00cc66; } /* slightly brighter green */
+.antitank { color: #aaaaaa; }
+.support { color: #bb66ff; }
+.sniper { color: #ffff66; }
+.control { color: #4da6ff; }
 </style>
 </head>
 
 <body>
 
-<h1>Brawler Counters</h1>
-<p>Search 101 brawlers (comma separated)</p>
+<div id="topUI">
 
-<div class="autocomplete-box">
-    <input id="input"
-           placeholder="Brawler Name"
-           oninput="showSuggestions()"
-           onkeydown="handleKeyDown(event)">
-    <div id="suggestions" class="suggestions"></div>
+	<h1>Brawler Counters</h1>
+	<p>Search brawlers (comma separated)</p>
+
+	<div class="autocomplete-box">
+	<input id="input" placeholder="Brawler Name"
+	oninput="showSuggestions()"
+	onkeydown="handleKeyDown(event)">
+	<div id="suggestions" class="suggestions"></div>
+	</div>
+
+	<button onclick="findCounters()">Search</button>
+
 </div>
 
-<button onclick="findCounters()">Search</button>
-
 <div id="shared" class="shared-box" style="display:none;"></div>
-<div id="strength" class="shared-box" style="display:none;"></div>
-<div class="result" id="result"></div>
+<div id="result" class="result"></div>
 
 <script>
 
 const data = {
-"8 bit": { main:["penny"], alt:["belle","dynamike","squeak","mandy","piper"] },
-"alli": { main:["bull","buzz"], alt:["draco","rt","doug","ash"] },
-"amber": { main:["belle"], alt:["mortis","leon","poco","byron","bonnie","crow","piper","pam"] },
+"8-bit": { main:["penny"], alt:["belle","dynamike","squeak","mandy","piper"] },
+"alli": { main:["bull","buzz"], alt:["draco","r-t","doug","ash"] },
+"amber": { main:["byron"], alt:["belle","mortis","leon","poco","sprout","bonnie","piper","pam"] },
 "angelo": { main:["eve"], alt:["kit","piper","nani","max","jae yong"] },
 "ash": { main:["frank"], alt:["emz","gale","janet","bull"] },
 "barley": { main:["tick"], alt:["mortis","brock","edgar","kenji","kaze","mico"] },
 "bea": { main:["charlie"], alt:["tick","sprout","grom","mr p","byron","mandy"] },
 "belle": { main:["piper"], alt:["meg","leon","mandy","byron","kit","lily"] },
 "berry": { main:["kaze","crow"], alt:["barley","stu","kenji","kit","mortis"] },
-"bibi": { main:["mortis","jacky"], alt:["stu","surge","griff","cordelius","el primo","tara","bull","hank"] },
-"bo": { main:["buzz"], alt:["max","carl","colette"] },
-"bonnie": { main:["charlie"], alt:["colette","bea","pam","piper","rt","gus","tara"] },
-"brock": { main:["piper","rt"], alt:["max","darryl","mortis","mandy","nani","kaze"] },
+"bibi": { main:["mortis","jacky"], alt:["stu","surge","griff","cordelius","el primo","tara","bull"] },
+"bo": { main:["max"], alt:["piper","colt","stu","mico","mr p"] },
+"bonnie": { main:["charlie"], alt:["colette","bea","pam","piper","r-t","gus","tara"] },
+"brock": { main:["piper","r-t"], alt:["max","darryl","mortis","mandy","nani","kaze"] },
 "bull": { main:["charlie","griff"], alt:["shelly","emz","gale","cordelius","mina","otis","nita"] },
-"buster": { main:["bull"], alt:["mina","rt","ash","darryl"] },
+"buster": { main:["bull"], alt:["mina","r-t","ash","darryl"] },
 "buzz": { main:["charlie","griff"], alt:["stu","max","sandy","mina","cordelius","bull","surge","bibi","frank","ash"] },
 "byron": { main:["piper"], alt:["crow","bea","ash"] },
 "carl": { main:["buzz","jacky"], alt:["surge","colette","stu","mina","bull","cordelius","bibi"] },
@@ -166,7 +191,7 @@ const data = {
 "colt": { main:["buster"], alt:["darryl","mortis","spike","piper","bonnie","belle","gus","byron"] },
 "cordelius": { main:["charlie"], alt:["mina","frank","sandy","buster","surge","gale","nita"] },
 "crow": { main:["piper","charlie"], alt:["janet","spike","lola","bea","pearl","hank"] },
-"darryl": { main:["lou"], alt:["surge","bea","ruffs","mina","cordelius","shelly","griff","rt"] },
+"darryl": { main:["lou"], alt:["surge","bea","ruffs","mina","cordelius","shelly","griff","r-t"] },
 "doug": { main:["crow"], alt:["cordelius","lumi","bea","griff","frank","lily"] },
 "draco": { main:["lumi","amber","pam"], alt:["lou","mina","cordelius","frank","ash","kit"] },
 "dynamike": { main:["mortis","bibi"], alt:["stu","kenji","mico","kit","kaze","hank"] },
@@ -174,11 +199,11 @@ const data = {
 "el primo": { main:["stu"], alt:["surge","colette","gale","cordelius","mina","griff","shelly","charlie"] },
 "emz": { main:["mortis","stu"], alt:["crow","janet","bonnie","amber"] },
 "eve": { main:["alli"], alt:["carl","janet","poco"] },
-"fang": { main:["charlie","otis"], alt:["gale","gene","eve","rt","chester","tara","draco"] },
+"fang": { main:["charlie","otis"], alt:["gale","gene","eve","r-t","chester","tara","draco"] },
 "finx": { main:["emz"], alt:["meeple","kenji","rosa","bull","shade","bibi","mortis","larry"] },
 "frank": { main:["colette"], alt:["surge","el primo","charlie","chester","lou","sandy"] },
 "gale": { main:["mico","buzz"], alt:["spike","piper","belle","amber","janet","larry","juju","cordelius"] },
-"gene": { main:["8 bit"], alt:["mr p","eve","penny","charlie","tara","belle"] },
+"gene": { main:["8-bit"], alt:["mr p","eve","penny","charlie","tara","belle"] },
 "gigi": { main:["shelly"], alt:["fang","otis","cordelius","edgar"] },
 "glowbert": { main:["crow"], alt:["kenji","belle","jessie"] },
 "gray": { main:["gene","tick"], alt:["mortis","leon","crow","fang","max"] },
@@ -192,18 +217,18 @@ const data = {
 "jessie": { main:[], alt:["piper","barley","larry","squeak"] },
 "juju": { main:["barley","kaze","shade"], alt:["frank","brock","cordelius","kit","tick"] },
 "kenji": { main:["pam"], alt:["bull","frank","draco","cordelius","mina","lou","meeple","jae yong","hank"] },
-"kaze": { main:["barley","tick"], alt:["mortis","fang","darryl","kenji","mico"] },
-"kit": { main:["cordelius","rt"], alt:["frank","hank","ollie","lily","draco"] },
+"kaze": { main:["crow"], alt:["bull","r-t","otis","griff","stu"] },
+"kit": { main:["cordelius","r-t"], alt:["frank","hank","ollie","lily","draco"] },
 "larry": { main:["mico","edgar"], alt:["mortis","kenji","willow"] },
 "leon": { main:["crow","pearl"], alt:["gene","pam","jae yong","mina","janet","charlie"] },
-"lily": { main:["buzz"], alt:["cordelius","bull","draco","rt","pearl","8 bit","doug"] },
+"lily": { main:["buzz"], alt:["cordelius","bull","draco","r-t","pearl","8-bit","doug"] },
 "lola": { main:["belle"], alt:["bo","penny","amber","carl","lumi"] },
 "lou": { main:["hank"], alt:["janet","carl","max","poco","gus","byron","bea","kenji"] },
 "lumi": { main:["amber","draco"], alt:["piper","mandy","belle","gene","lola"] },
 "maisie": { main:["stu"], alt:["charlie","mina","larry","juju"] },
 "max": { main:["crow"], alt:["lola","poco","gus","jae yong"] },
 "meg": { main:["draco"], alt:["spike","bea","lola","buster"] },
-"melody": { main:["amber"], alt:["buzz","draco","crow","belle"] },
+"melodie": { main:["amber"], alt:["buzz","draco","crow","belle"] },
 "meeple": { main:["max"], alt:["kenji","mortis","mico","frank","bull","mr p","penny"] },
 "mico": { main:["gale","buzz"], alt:["mortis","fang","darryl","kenji","kit","kaze","edgar"] },
 "mina": { main:["bull","frank"], alt:["cordelius","surge","griff","buster","ash","jacky"] },
@@ -215,19 +240,19 @@ const data = {
 "nita": { main:["barley"], alt:["carl","griff","amber","cordelius","sandy"] },
 "ollie": { main:["poco"], alt:["maisie","surge","griff","lou","colette"] },
 "otis": { main:["juju","larry"], alt:["piper","byron","tick","amber","janet","stu"] },
-"pam": { main:["crow"], alt:["squeak","spike","lou","8 bit","charlie","draco","amber","stu"] },
+"pam": { main:["crow"], alt:["squeak","spike","lou","8-bit","charlie","draco","amber","stu"] },
 "pearl": { main:["chester","leon"], alt:["amber","crow","spike","lola","meg"] },
 "penny": { main:["belle"], alt:["grom","amber","squeak","juju","larry","kenji"] },
 "pierce": { main:["ruffs"], alt:["mortis","charlie","tara","spike"] },
 "piper": { main:["nani"], alt:["max","leon","tick","gene","kit","kaze"] },
 "poco": { main:["sam","crow"], alt:["griff","mortis","emz","kit","kaze","kenji","lou","edgar"] },
-"rt": { main:["piper","brock"], alt:["max","leon","mortis","darryl","crow"] },
+"r-t": { main:["piper","brock"], alt:["max","leon","mortis","darryl","crow"] },
 "rico": { main:["brock","ruffs"], alt:["sprout","grom","buzz","stu","dynamike","larry"] },
 "rosa": { main:["shelly"], alt:["gale","frank","el primo","bull","amber"] },
 "ruffs": { main:["buzz"], alt:["sprout","carl","belle"] },
 "sam": { main:["gale","griff"], alt:["surge","cordelius","charlie","nita","janet","draco","stu"] },
 "sandy": { main:["crow","nita"], alt:["gene","poco","cordelius"] },
-"shade": { main:["jacky","doug"], alt:["lou","frank","bull","hank","trunk","brock"] },
+"shade": { main:["frank","jacky","doug"], alt:["lou","bull","hank","trunk","brock"] },
 "shelly": { main:["chester","cordelius"], alt:["stu","crow","emz","tara","nita","amber"] },
 "sirius": { main:["buzz","penny"], alt:["mortis","pierce"] },
 "spike": { main:["moe"], alt:["sprout","tick","grom","carl","piper","larry","juju"] },
@@ -242,88 +267,92 @@ const data = {
 "ziggy": { main:["stu"], alt:["mortis","gray","bibi","tick","hank"] }
 };
 
-const allNames = Object.keys(data);
+/* ===== COMPLETE CLASS MAP ===== */
+const brawlerClass = {
+  /* THROWER */
+  "barley":"thrower","dynamike":"thrower","larry":"thrower","tick":"thrower","sprout":"thrower","grom":"thrower","ziggy":"thrower","sirius":"thrower","juju":"thrower","willow":"thrower","berry":"thrower",
+
+  /* TANK */
+  "trunk":"tank","draco":"tank","frank":"tank","fang":"tank","buster":"tank","el primo":"tank","hank":"tank","jacky":"tank","rosa":"tank","ash":"tank",
+
+  /* SP/A */
+  "bull":"assassin","bibi":"assassin","ollie":"assassin","kenji":"assassin","mortis":"assassin","shade":"assassin","mina":"assassin","buzz":"assassin","alli":"assassin","carl":"assassin","edgar":"assassin","kaze":"assassin","lily":"assassin","mico":"assassin","sam":"assassin","chuck":"assassin","gigi":"assassin","melodie":"assassin","darryl":"assassin",
+
+  /* ANTI-TANK */
+  "chester":"antitank","nita":"antitank","moe":"antitank","rico":"antitank","tara":"antitank","emz":"antitank","lou":"antitank","finx":"antitank","ruffs":"antitank","sandy":"antitank","otis":"antitank","lumi":"antitank","shelly":"antitank","surge":"antitank","charlie":"antitank","gale":"antitank","spike":"antitank","cordelius":"antitank","maisie":"antitank","colt":"antitank","griff":"antitank","crow":"antitank","8-bit":"antitank","clancy":"antitank","colette":"antitank","meg":"antitank",
+
+  /* SUPPORT */
+  "kit":"support","max":"support","gray":"support","poco":"support","jae yong":"support","doug":"support","glowy":"support","glowbert":"support",
+
+  /* SNIPER */
+  "mandy":"sniper","r-t":"sniper","gus":"sniper","piper":"sniper","brock":"sniper","byron":"sniper","angelo":"sniper","pierce":"sniper","nani":"sniper","belle":"sniper","bea":"sniper",
+
+  /* CONTROL */
+  "amber":"control","meeple":"control","leon":"control","pam":"control","bo":"control","pearl":"control","gene":"control","stu":"control","janet":"control","penny":"control","jessie":"control","squeak":"control","eve":"control","lola":"control","najia":"control","bonnie":"control","mr p":"control"
+};
+
+const classOrder = [
+	  "antitank",
+	  "sniper",
+	  "assassin",
+	  "thrower",
+	  "tank",
+	  "control",
+	  "support",	  
+	];
+
 let selectedIndex = -1;
 
-/* ===== AUTOCOMPLETE ===== */
+/* =========================
+   HELPERS
+========================= */
+function normalize(s) {
+    return (s || "")
+        .toLowerCase()
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+function capitalize(w) {
+    return w.charAt(0).toUpperCase() + w.slice(1);
+}
+
+function getClassColor(name) {
+    return brawlerClass[normalize(name)] || "";
+}
+
+function colorize(name) {
+    const cls = getClassColor(name);
+    return `<span class="${cls}">${capitalize(name)}</span>`;
+}
+
+/* =========================
+   AUTOCOMPLETE
+========================= */
 function showSuggestions() {
     const input = document.getElementById("input");
     const box = document.getElementById("suggestions");
 
-    const parts = input.value.toLowerCase().split(",");
-    const current = parts[parts.length - 1].trim();
+    const current = normalize(input.value.split(",").pop());
 
     box.innerHTML = "";
     selectedIndex = -1;
 
     if (!current) return;
 
-    const matches = allNames
-        .filter(n => n.toLowerCase().includes(current))
+    const matches = Object.keys(data)
+        .filter(n => n.startsWith(current))
+        .sort()
         .slice(0, 6);
 
     matches.forEach(name => {
         const div = document.createElement("div");
-        div.textContent = capitalize(name);
+        div.innerHTML = colorize(name);
         div.onclick = () => selectSuggestion(name);
         box.appendChild(div);
     });
 }
 
-/* ===== KEYBOARD ===== */
-function handleKeyDown(e) {
-    const box = document.getElementById("suggestions");
-    const items = box.querySelectorAll("div");
-    const open = items.length > 0;
-
-    if (e.key === "ArrowDown") {
-        if (!open) return;
-        selectedIndex = (selectedIndex + 1) % items.length;
-        updateActive(items);
-        e.preventDefault();
-        return;
-    }
-
-    if (e.key === "ArrowUp") {
-        if (!open) return;
-        selectedIndex = (selectedIndex - 1 + items.length) % items.length;
-        updateActive(items);
-        e.preventDefault();
-        return;
-    }
-
-    if (e.key === "Enter") {
-        const input = document.getElementById("input");
-
-        if (open) {
-            let chosen = (selectedIndex >= 0)
-                ? items[selectedIndex].textContent.toLowerCase()
-                : items[0].textContent.toLowerCase();
-
-            let parts = input.value.split(",");
-            parts[parts.length - 1] = " " + chosen;
-
-            input.value = parts.join(",").replace(/^ /, "") + ", ";
-
-            box.innerHTML = "";
-            selectedIndex = -1;
-
-            e.preventDefault();
-            return;
-        }
-
-        findCounters();
-        e.preventDefault();
-    }
-}
-
-function updateActive(items) {
-    items.forEach((el, i) => {
-        el.classList.toggle("active", i === selectedIndex);
-    });
-}
-
-/* ===== SELECT ===== */
 function selectSuggestion(name) {
     const input = document.getElementById("input");
 
@@ -333,117 +362,170 @@ function selectSuggestion(name) {
     input.value = parts.join(",").replace(/^ /, "") + ", ";
 
     document.getElementById("suggestions").innerHTML = "";
+    selectedIndex = -1;
 }
 
-/* ===== MAIN LOGIC ===== */
+/* =========================
+   KEY HANDLING
+========================= */
+function handleKeyDown(e) {
+    const box = document.getElementById("suggestions");
+    const items = box.querySelectorAll("div");
+
+    if (!items.length && e.key === "Enter") {
+        findCounters();
+        return;
+    }
+
+    if (e.key === "ArrowDown") {
+        selectedIndex = (selectedIndex + 1) % items.length;
+        updateActive(items);
+        e.preventDefault();
+    }
+
+    if (e.key === "ArrowUp") {
+        selectedIndex = (selectedIndex - 1 + items.length) % items.length;
+        updateActive(items);
+        e.preventDefault();
+    }
+
+    if (e.key === "Enter") {
+        e.preventDefault();
+
+        const chosen =
+            selectedIndex >= 0
+                ? items[selectedIndex].textContent.toLowerCase()
+                : items[0].textContent.toLowerCase();
+
+        selectSuggestion(chosen);
+    }
+}
+
+function updateActive(items) {
+    items.forEach((el, i) => {
+        el.classList.toggle("active", i === selectedIndex);
+    });
+}
+
+/* =========================
+   CORE LOGIC (FIXED)
+========================= */
+function sortByClassThenAlpha(arr) {
+    return [...arr].sort((a, b) => {
+        const classA = getClassColor(a);
+        const classB = getClassColor(b);
+
+        const indexA = classOrder.indexOf(classA);
+        const indexB = classOrder.indexOf(classB);
+
+        // 1. Class order
+        if (indexA !== indexB) {
+            return indexA - indexB;
+        }
+
+        // 2. Alphabetical
+        return a.localeCompare(b);
+    });
+}
+
 function findCounters() {
-    const input = document.getElementById("input").value.toLowerCase();
+	document.getElementById("topUI").style.display = "none";
+    const inputRaw = document.getElementById("input").value;
     const resultDiv = document.getElementById("result");
     const counterBox = document.getElementById("shared");
-    const strengthBox = document.getElementById("strength");
 
     resultDiv.innerHTML = "";
     counterBox.innerHTML = "";
-    strengthBox.innerHTML = "";
     counterBox.style.display = "none";
-    strengthBox.style.display = "none";
 
-    const brawlers = input
+    const brawlers = inputRaw
         .split(",")
-        .map(b => b.trim())
+        .map(b => normalize(b))
         .filter(Boolean);
 
+    const selectedSet = new Set(brawlers);
+
     let allCounters = [];
-    let allStrengths = [];
 
-    /* COUNTERS */
-    brawlers.forEach(b => {
+    for (const b of brawlers) {
         if (data[b]) {
-            allCounters.push([...data[b].main, ...data[b].alt]);
+            allCounters.push(
+                ...(data[b].main || []),
+                ...(data[b].alt || [])
+            );
         }
-    });
-
-    /* STRENGTHS (reverse lookup) */
-    Object.keys(data).forEach(enemy => {
-        const counters = [...data[enemy].main, ...data[enemy].alt];
-
-        brawlers.forEach(b => {
-            if (counters.includes(b)) {
-                allStrengths.push(enemy);
-            }
-        });
-    });
-
-    /* COUNT */
-    function getFreq(arr) {
-        let freq = {};
-        arr.forEach(c => {
-            freq[c] = (freq[c] || 0) + 1;
-        });
-        return freq;
     }
 
-    const counterFreq = getFreq(allCounters.flat());
-    const strengthFreq = getFreq(allStrengths);
+    const freq = {};
+    allCounters.forEach(c => {
+        const key = normalize(c);
+        freq[key] = (freq[key] || 0) + 1;
+    });
+	
+    const counterList = Object.keys(freq).sort((a, b) => {
+		const classA = getClassColor(a);
+		const classB = getClassColor(b);
 
-    /* DISPLAY COUNTERS */
-    let counterList = Object.keys(counterFreq)
-        .filter(k => counterFreq[k] >= 2)
-        .sort((a, b) => counterFreq[b] - counterFreq[a]);
+		const indexA = classOrder.indexOf(classA);
+		const indexB = classOrder.indexOf(classB);
+
+		// 1. Sort by class (color group)
+		if (indexA !== indexB) {
+			return indexA - indexB;
+		}
+
+		// 2. Then alphabetical
+		return a.localeCompare(b);
+	});
+		
+	const filteredCounters = counterList.filter(c => freq[c] >= 2);
 
     if (counterList.length) {
         counterBox.style.display = "block";
+
         counterBox.innerHTML = `
             <div class="shared-title">Counters</div>
-            ${counterList.map(c => `<div class="shared-item">${c} (x${counterFreq[c]})</div>`).join("")}
+            ${filteredCounters.map(c => {
+
+				const isCrossed = selectedSet.has(c);
+
+				return `<div class="shared-item">
+					${isCrossed ? `<s>${colorize(c)}</s>` : colorize(c)}
+					(x${freq[c]})
+				</div>`;
+			}).join("")}
         `;
     }
 
-    /* DISPLAY STRENGTH */
-    let strengthList = Object.keys(strengthFreq)
-        .filter(k => strengthFreq[k] >= 2)
-        .sort((a, b) => strengthFreq[b] - strengthFreq[a]);
-
-    if (strengthList.length) {
-        strengthBox.style.display = "block";
-        strengthBox.innerHTML = `
-            <div class="shared-title strength-title">Strengths</div>
-            ${strengthList.map(c => `<div class="shared-item">${c} (x${strengthFreq[c]})</div>`).join("")}
-        `;
-    }
-
-    /* RESULTS */
     brawlers.forEach(b => {
         if (!data[b]) {
             resultDiv.innerHTML += `
-                <div class="row">
-                    <div class="name">${capitalize(b)}</div>
-                    <div class="list">Not found</div>
-                </div>
-            `;
+            <div class="row">
+                <div class="name">${capitalize(b)}</div>
+                <div class="list">Not found</div>
+            </div>`;
             return;
         }
 
-        const main = data[b].main.join(", ");
-        const alt = data[b].alt.join(", ");
+        const mainSorted = sortByClassThenAlpha(data[b].main || []);
+		const altSorted = sortByClassThenAlpha(data[b].alt || []);
+
+		const main = mainSorted.map(colorize).join(", ");
+		const alt = altSorted.map(colorize).join(", ");
 
         resultDiv.innerHTML += `
-            <div class="row">
-                <div class="name">${capitalize(b)}</div>
-                <div class="list">
-                    ${main || "None"} / ${alt || "None"}
-                </div>
-            </div>
-        `;
+        <div class="row">
+            <div class="name">${colorize(b)}</div>
+            <div class="list">${main || "None"} / ${alt || "None"}</div>
+        </div>`;
     });
 }
 
-/* ===== HELPERS ===== */
-function capitalize(w) {
-    return w.charAt(0).toUpperCase() + w.slice(1);
-}
+/* =========================
+   INIT
+========================= */
+window.addEventListener("load", () => {
+    document.getElementById("input").focus();
+});
 
 </script>
-
-</body>
-</html>
