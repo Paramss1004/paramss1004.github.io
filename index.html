@@ -5,32 +5,56 @@
 <title>Brawl Stars Draft</title>
 
 <style>
+:root {
+    --ui-width: 750px;
+}
+
+/* =========================
+   GLOBAL LAYOUT
+========================= */
 body {
     margin: 0;
     font-family: system-ui, Arial;
-    font-size: 20px; /* global scale */
+    font-size: 20px;
     background: radial-gradient(circle at top, #1a1a1a, #0d0d0d);
     color: #fff;
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 50px 20px;
+
+    padding: 30px 20px;
+    gap: 18px;
 }
 
-h1 { 
-    margin-bottom: 6px; 
+/* =========================
+   HEADER
+========================= */
+#topUI {
+    width: var(--ui-width);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+h1 {
+    margin-bottom: 6px;
     font-size: 34px;
 }
 
-p { 
-    opacity: 0.7; 
-    margin-bottom: 25px;
+p {
+    opacity: 0.7;
+    margin-bottom: 10px;
     font-size: 18px;
+    width: 100%;
 }
 
-.autocomplete-box { 
-    position: relative; 
-    width: 380px; /* slightly bigger */
+/* =========================
+   INPUT + AUTOCOMPLETE
+========================= */
+.autocomplete-box {
+    position: relative;
+    width: 100%;
 }
 
 input {
@@ -44,20 +68,9 @@ input {
     font-size: 18px;
 }
 
-button {
-    margin-top: 14px;
-    padding: 12px 22px;
-    border-radius: 12px;
-    border: none;
-    background: #2a2a2a;
-    color: white;
-    cursor: pointer;
-    font-size: 18px;
-    transition: 0.15s;
-}
-
-button:hover {
-    background: #3a3a3a;
+input:focus {
+    border-color: #4da6ff;
+    box-shadow: 0 0 0 2px rgba(77,166,255,0.2);
 }
 
 .suggestions {
@@ -72,68 +85,103 @@ button:hover {
 }
 
 .suggestions div {
-    padding: 12px;
+    padding: 10px 12px;
     cursor: pointer;
-    font-size: 17px;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .suggestions div.active,
-.suggestions div:hover { 
-    background: #2c2c2c; 
+.suggestions div:hover {
+    background: #2c2c2c;
 }
 
+/* =========================
+   CORE CONTAINERS
+========================= */
 .shared-box {
-    margin-top: 30px;
-    width: 100%;
-    max-width: 750px;
-    background: #111;
-    border: 1px solid #222;
+    width: var(--ui-width);
+    background: #121212;
+    border: 1px solid #2a2a2a;
     border-radius: 14px;
-    padding: 16px;
-}
+    padding: 14px 16px;
 
-.shared-title {
-    font-weight: 700;
-    margin-bottom: 12px;
-    font-size: 24px;
-}
-
-.shared-item {
-    margin: 6px 0;
-    font-size: 20px;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.03);
 }
 
 .result {
-    margin-top: 25px;
-    width: 100%;
-    max-width: 750px;
+    width: var(--ui-width);
 }
 
+/* =========================
+   SHARED / CLASS SUGGESTIONS
+========================= */
+.shared-title {
+    font-weight: 700;
+    margin-bottom: 10px;
+    font-size: 20px;
+    letter-spacing: 0.3px;
+}
+
+.shared-item {
+    margin: 4px 0;
+    font-size: 18px;
+
+    display: flex;
+    justify-content: space-between;
+
+    padding: 6px 8px;
+    border-radius: 8px;
+
+    background: rgba(255,255,255,0.02);
+}
+
+.shared-item span.score {
+    opacity: 0.7;
+    font-size: 16px;
+}
+
+/* =========================
+   BRAWLER ROWS
+========================= */
 .row {
     display: grid;
     grid-template-columns: 180px 1fr;
-    gap: 16px;
-    padding: 14px 16px;
-    margin-bottom: 12px;
+    gap: 14px;
+
+    padding: 12px 14px;
+    margin-bottom: 10px;
+
     background: #151515;
-    border: 1px solid #222;
-    border-radius: 14px;
+    border: 1px solid #242424;
+    border-radius: 12px;
+
+    align-items: start;
 }
 
-.name { 
+.name {
     font-weight: 700;
-    font-size: 24px;
+    font-size: 22px;
+    color: #ffffff;
+
+    display: flex;
+    gap: 6px;
+    align-items: baseline;
 }
 
-.list { 
-    font-size: 20px; 
-    line-height: 1.7; 
+.list {
+    font-size: 18px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.9);
 }
 
-/* class colors */
+/* =========================
+   CLASS COLORS
+========================= */
 .thrower { color: #FFA500; }
 .tank { color: #FF0000; }
-.assassin { color: #00cc66; } /* slightly brighter green */
+.assassin { color: #00cc66; }
 .antitank { color: #aaaaaa; }
 .support { color: #bb66ff; }
 .sniper { color: #ffff66; }
@@ -146,7 +194,7 @@ button:hover {
 <div id="topUI">
 
 	<h1>Brawler Counters</h1>
-	<p>Search brawlers (comma separated)</p>
+	<p>Search 101 brawlers (comma separated)</p>
 
 	<div class="autocomplete-box">
 	<input id="input" placeholder="Brawler Name"
@@ -154,9 +202,6 @@ button:hover {
 	onkeydown="handleKeyDown(event)">
 	<div id="suggestions" class="suggestions"></div>
 	</div>
-
-	<button onclick="findCounters()">Search</button>
-
 </div>
 
 <div id="shared" class="shared-box" style="display:none;"></div>
@@ -171,22 +216,22 @@ const data = {
 "angelo": { main:["eve"], alt:["kit","piper","nani","max","jae yong"] },
 "ash": { main:["frank"], alt:["emz","gale","janet","bull"] },
 "barley": { main:["tick"], alt:["mortis","brock","edgar","kenji","kaze","mico"] },
-"bea": { main:["charlie"], alt:["tick","sprout","grom","mr p","byron","mandy"] },
+"bea": { main:["charlie"], alt:["tick","sprout","grom","mr.p","byron","mandy"] },
 "belle": { main:["piper"], alt:["meg","leon","mandy","byron","kit","lily"] },
 "berry": { main:["kaze","crow"], alt:["barley","stu","kenji","kit","mortis"] },
 "bibi": { main:["mortis","jacky"], alt:["stu","surge","griff","cordelius","el primo","tara","bull"] },
-"bo": { main:["max"], alt:["piper","colt","stu","mico","mr p"] },
+"bo": { main:["max"], alt:["piper","colt","stu","mico","mr.p"] },
 "bonnie": { main:["charlie"], alt:["colette","bea","pam","piper","r-t","gus","tara"] },
 "brock": { main:["piper","r-t"], alt:["max","darryl","mortis","mandy","nani","kaze"] },
 "bull": { main:["charlie","griff"], alt:["shelly","emz","gale","cordelius","mina","otis","nita"] },
-"buster": { main:["bull"], alt:["mina","r-t","ash","darryl"] },
+"buster": { main:["bull"], alt:["mina","r-t","ash","darryl","belle"] },
 "buzz": { main:["charlie","griff"], alt:["stu","max","sandy","mina","cordelius","bull","surge","bibi","frank","ash"] },
 "byron": { main:["piper"], alt:["crow","bea","ash"] },
 "carl": { main:["buzz","jacky"], alt:["surge","colette","stu","mina","bull","cordelius","bibi"] },
 "charlie": { main:["amber","sandy"], alt:["janet","juju"] },
 "chester": { main:["pearl"], alt:["amber","charlie","lumi","mina","stu"] },
 "chuck": { main:["charlie","crow"], alt:["cordelius","mina","bull","kaze"] },
-"clancy": { main:["mr p"], alt:["charlie","tara","bea","piper","byron"] },
+"clancy": { main:["mr.p"], alt:["charlie","tara","bea","piper","byron"] },
 "colette": { main:["tick"], alt:["griff","bea","poco","charlie","belle","gus","lumi"] },
 "colt": { main:["buster"], alt:["darryl","mortis","spike","piper","bonnie","belle","gus","byron"] },
 "cordelius": { main:["charlie"], alt:["mina","frank","sandy","buster","surge","gale","nita"] },
@@ -203,13 +248,13 @@ const data = {
 "finx": { main:["emz"], alt:["meeple","kenji","rosa","bull","shade","bibi","mortis","larry"] },
 "frank": { main:["colette"], alt:["surge","el primo","charlie","chester","lou","sandy"] },
 "gale": { main:["mico","buzz"], alt:["spike","piper","belle","amber","janet","larry","juju","cordelius"] },
-"gene": { main:["8-bit"], alt:["mr p","eve","penny","charlie","tara","belle"] },
+"gene": { main:["8-bit"], alt:["mr.p","eve","penny","charlie","tara","belle"] },
 "gigi": { main:["shelly"], alt:["fang","otis","cordelius","edgar"] },
 "glowbert": { main:["crow"], alt:["kenji","belle","jessie"] },
 "gray": { main:["gene","tick"], alt:["mortis","leon","crow","fang","max"] },
 "griff": { main:[], alt:["crow","spike","bea","janet","stu","mina"] },
 "grom": { main:["lily","mico"], alt:["mortis","fang","darryl","kenji","kit","kaze"] },
-"gus": { main:["charlie","bo"], alt:["byron","mandy","piper","eve","darryl","janet"] },
+"gus": { main:["charlie","bo"], alt:["byron","mandy","piper","eve","darryl","janet","8-bit"] },
 "hank": { main:["willow","larry","frank"], alt:["dynamike","mina","bull","draco","bibi"] },
 "jacky": { main:["griff","emz","crow","otis"], alt:["shelly","surge","gale","frank","bull","el primo","draco"] },
 "jae yong": { main:["griff","bo","charlie","crow"], alt:["kenji"] },
@@ -229,12 +274,12 @@ const data = {
 "max": { main:["crow"], alt:["lola","poco","gus","jae yong"] },
 "meg": { main:["draco"], alt:["spike","bea","lola","buster"] },
 "melodie": { main:["amber"], alt:["buzz","draco","crow","belle"] },
-"meeple": { main:["max"], alt:["kenji","mortis","mico","frank","bull","mr p","penny"] },
+"meeple": { main:["max"], alt:["kenji","mortis","mico","frank","bull","mr.p","penny"] },
 "mico": { main:["gale","buzz"], alt:["mortis","fang","darryl","kenji","kit","kaze","edgar"] },
 "mina": { main:["bull","frank"], alt:["cordelius","surge","griff","buster","ash","jacky"] },
 "moe": { main:["spike"], alt:["sprout","tick","grom","barley","willow"] },
 "mortis": { main:["jacky"], alt:["stu","shelly","otis","bull","mina","griff","chester"] },
-"mr p": { main:["kit","sprout"], alt:["janet","amber","carl","darryl","edgar","kenji","kaze"] },
+"mr.p": { main:["kit","sprout"], alt:["janet","amber","carl","darryl","edgar","kenji","kaze"] },
 "najia": { main:["byron"], alt:["kenji","mortis","poco","bibi"] },
 "nani": { main:["gene"], alt:["leon","tick","max","sprout","darryl"] },
 "nita": { main:["barley"], alt:["carl","griff","amber","cordelius","sandy"] },
@@ -259,7 +304,7 @@ const data = {
 "sprout": { main:["mico","tick"], alt:["mortis","darryl","buzz","kaze","kenji","edgar"] },
 "squeak": { main:["darryl","kenji"], alt:["mortis","max","leon","buzz","kaze"] },
 "stu": { main:["charlie","amber"], alt:["crow","lola","poco","ruffs","tara","pam","sam"] },
-"surge": { main:["mr p"], alt:["ruffs","spike","eve","tara","charlie","larry","juju"] },
+"surge": { main:["mr.p"], alt:["ruffs","spike","eve","tara","charlie","larry","juju"] },
 "tara": { main:["willow"], alt:["emz","janet","poco","amber","sandy","juju","larry"] },
 "tick": { main:["mandy"], alt:["gene","fang","sam","kenji","kit","mortis","kaze","darryl"] },
 "trunk": { main:["lou"], alt:["spike","amber","maisie"] },
@@ -288,7 +333,7 @@ const brawlerClass = {
   "mandy":"sniper","r-t":"sniper","gus":"sniper","piper":"sniper","brock":"sniper","byron":"sniper","angelo":"sniper","pierce":"sniper","nani":"sniper","belle":"sniper","bea":"sniper",
 
   /* CONTROL */
-  "amber":"control","meeple":"control","leon":"control","pam":"control","bo":"control","pearl":"control","gene":"control","stu":"control","janet":"control","penny":"control","jessie":"control","squeak":"control","eve":"control","lola":"control","najia":"control","bonnie":"control","mr p":"control"
+  "amber":"control","meeple":"control","leon":"control","pam":"control","bo":"control","pearl":"control","gene":"control","stu":"control","janet":"control","penny":"control","jessie":"control","squeak":"control","eve":"control","lola":"control","najia":"control","bonnie":"control","mr.p":"control"
 };
 
 const classOrder = [
@@ -300,6 +345,47 @@ const classOrder = [
 	  "control",
 	  "support",	  
 	];
+	
+const classCounters = {
+  tank: {
+    assassin: 2,
+    sniper: 1,
+    support: 1
+  },
+
+  assassin: {
+    thrower: 2,
+    sniper: 2
+  },
+
+  antitank: {
+    tank: 2,
+    assassin: 2,
+    support: 1
+  },
+
+  thrower: {
+    antitank: 2,
+    sniper: 1,
+    tank: 1
+  },
+
+  sniper: {
+    antitank: 2,
+    control: 1,
+    thrower: 1
+  },
+
+  control: {
+    tank: 2,
+    assassin: 1
+  },
+
+  support: {
+    assassin: 2,
+    sniper: 1
+  }
+};
 
 let selectedIndex = -1;
 
