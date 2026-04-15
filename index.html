@@ -205,6 +205,7 @@ input:focus {
 </div>
 
 <div id="shared" class="shared-box" style="display:none;"></div>
+<div id="classScore" class="shared-box"></div>
 <div id="result" class="result"></div>
 
 <script>
@@ -347,69 +348,86 @@ const classOrder = [
 	];
 	
 const classCounters = {
-  tank: {
-    assassin: 2,
-    sniper: 1,
-    support: 1
-  },
-
-  assassin: {
-    thrower: 2,
-    sniper: 2
-  },
-
-  antitank: {
-    tank: 2,
-    assassin: 2,
-    support: 1
-  },
-
-  thrower: {
-    antitank: 2,
-    sniper: 1,
-    tank: 1
-  },
-
-  sniper: {
-    antitank: 2,
-    control: 1,
-    thrower: 1
-  },
-
-  control: {
-    tank: 2,
-    assassin: 1
-  },
-
-  support: {
-    assassin: 2,
-    sniper: 1
-  }
+  tank: { assassin: 2, sniper: 1, support: 1 },
+  assassin: { thrower: 2, sniper: 2 },
+  antitank: { tank: 2, assassin: 2, support: 1 },
+  thrower: { antitank: 2, sniper: 1, tank: 1 },
+  sniper: { antitank: 2, control: 1, thrower: 1 },
+  control: { tank: 2, assassin: 1 },
+  support: { assassin: 1, sniper: 1 }
 };
 
-let selectedIndex = -1;
+ let selectedIndex = -1;
 
 /* =========================
    HELPERS
 ========================= */
 function normalize(s) {
-    return (s || "")
-        .toLowerCase()
-        .replace(/\s+/g, " ")
-        .trim();
+    return (s || "").toLowerCase().replace(/\s+/g, " ").trim();
 }
 
 function capitalize(w) {
     return w.charAt(0).toUpperCase() + w.slice(1);
 }
 
-function getClassColor(name) {
-    return brawlerClass[normalize(name)] || "";
+function getClass(name) {
+    return brawlerClass[normalize(name)] || null;
 }
 
 function colorize(name) {
-    const cls = getClassColor(name);
+    const cls = getClass(name);
     return `<span class="${cls}">${capitalize(name)}</span>`;
+}
+
+/* =========================
+   SCORING (NO FREQUENCY)
+========================= */
+function getClassScore(attackerClass, defenderClass) {
+    if (!attackerClass || !defenderClass) return 0;
+    return (classCounters[attackerClass] || {})[defenderClass] || 0;
+}
+
+function computeScore(candidate, selectedList) {
+    const cClass = getClass(candidate);
+    let score = 0;
+
+    selectedList.forEach(sel => {
+        const sClass = getClass(sel);
+
+        const forward = getClassScore(cClass, sClass);
+        const reverse = getClassScore(sClass, cClass);
+
+        score += (forward - reverse);
+    });
+
+    return score;
+}
+
+/* =========================
+   CLASS SCORES (NORMALIZED)
+========================= */
+function computeClassScores(scoreMap) {
+    const classScores = {};
+    const classCounts = {};
+
+    Object.keys(scoreMap).forEach(name => {
+        const cls = getClass(name);
+        if (!cls) return;
+
+        if (!classScores[cls]) {
+            classScores[cls] = 0;
+            classCounts[cls] = 0;
+        }
+
+        classScores[cls] += scoreMap[name].score;
+        classCounts[cls] += 1;
+    });
+
+    Object.keys(classScores).forEach(cls => {
+        classScores[cls] = classScores[cls] / classCounts[cls];
+    });
+
+    return classScores;
 }
 
 /* =========================
@@ -494,31 +512,31 @@ function updateActive(items) {
 }
 
 /* =========================
-   CORE LOGIC (FIXED)
+   SORTING
 ========================= */
 function sortByClassThenAlpha(arr) {
     return [...arr].sort((a, b) => {
-        const classA = getClassColor(a);
-        const classB = getClassColor(b);
+        const classA = getClass(a);
+        const classB = getClass(b);
 
         const indexA = classOrder.indexOf(classA);
         const indexB = classOrder.indexOf(classB);
 
-        // 1. Class order
-        if (indexA !== indexB) {
-            return indexA - indexB;
-        }
-
-        // 2. Alphabetical
+        if (indexA !== indexB) return indexA - indexB;
         return a.localeCompare(b);
     });
 }
 
+/* =========================
+   MAIN LOGIC
+========================= */
 function findCounters() {
-	document.getElementById("topUI").style.display = "none";
+    document.getElementById("topUI").style.display = "none";
+
     const inputRaw = document.getElementById("input").value;
     const resultDiv = document.getElementById("result");
     const counterBox = document.getElementById("shared");
+    const classBox = document.getElementById("classScore");
 
     resultDiv.innerHTML = "";
     counterBox.innerHTML = "";
@@ -542,47 +560,96 @@ function findCounters() {
         }
     }
 
-    const freq = {};
+    /* =========================
+       SCORE MAP (NO FREQUENCY MULTIPLIER)
+    ========================= */
+    const scoreMap = {};
+
     allCounters.forEach(c => {
         const key = normalize(c);
-        freq[key] = (freq[key] || 0) + 1;
+
+        if (!scoreMap[key]) {
+            scoreMap[key] = { freq: 0, score: 0 };
+        }
+
+        scoreMap[key].freq++;
     });
-	
-    const counterList = Object.keys(freq).sort((a, b) => {
-		const classA = getClassColor(a);
-		const classB = getClassColor(b);
 
-		const indexA = classOrder.indexOf(classA);
-		const indexB = classOrder.indexOf(classB);
+    Object.keys(scoreMap).forEach(key => {
+        scoreMap[key].score = computeScore(
+            key,
+            brawlers
+        );
+    });
 
-		// 1. Sort by class (color group)
-		if (indexA !== indexB) {
-			return indexA - indexB;
-		}
+    /* =========================
+       CLASS SCORES (NORMALIZED)
+    ========================= */
+    const classScores = computeClassScores(scoreMap);
 
-		// 2. Then alphabetical
-		return a.localeCompare(b);
-	});
-		
-	const filteredCounters = counterList.filter(c => freq[c] >= 2);
+    const sortedClasses = Object.keys(classScores).sort((a, b) => {
+        return classScores[b] - classScores[a];
+    });
 
+    classBox.innerHTML = `
+        <div class="shared-title">Best Classes</div>
+        ${sortedClasses.map(cls => {
+            const val = classScores[cls];
+
+            return `<div class="shared-item">
+                <span class="${cls}">${capitalize(cls)}</span>
+                <span class="score">${val >= 0 ? "+" : ""}${val}</span>
+            </div>`;
+        }).join("")}
+    `;
+
+    /* =========================
+       SORT PICKS
+    ========================= */
+    const counterList = Object.keys(scoreMap).sort((a, b) => {
+        if (scoreMap[b].score !== scoreMap[a].score) {
+            return scoreMap[b].score - scoreMap[a].score;
+        }
+
+        if (scoreMap[b].freq !== scoreMap[a].freq) {
+            return scoreMap[b].freq - scoreMap[a].freq;
+        }
+
+        const classA = getClass(a);
+        const classB = getClass(b);
+
+        const indexA = classOrder.indexOf(classA);
+        const indexB = classOrder.indexOf(classB);
+
+        if (indexA !== indexB) return indexA - indexB;
+
+        return a.localeCompare(b);
+    });
+
+    const filteredCounters = counterList.filter(c => scoreMap[c].freq >= 2);
+
+    /* =========================
+       BEST PICKS BOX
+    ========================= */
     if (counterList.length) {
         counterBox.style.display = "block";
 
         counterBox.innerHTML = `
-            <div class="shared-title">Counters</div>
+            <div class="shared-title">Best Brawlers</div>
             ${filteredCounters.map(c => {
+                const isCrossed = selectedSet.has(c);
 
-				const isCrossed = selectedSet.has(c);
-
-				return `<div class="shared-item">
-					${isCrossed ? `<s>${colorize(c)}</s>` : colorize(c)}
-					(x${freq[c]})
-				</div>`;
-			}).join("")}
+                return `<div class="shared-item">
+                    ${isCrossed ? `<s>${colorize(c)}</s>` : colorize(c)}
+                    <span class="score">(score ${scoreMap[c].score} | x${scoreMap[c].freq})</span>
+                </div>`;
+            }).join("")}
         `;
     }
 
+    /* =========================
+       ORIGINAL DISPLAY
+    ========================= */
     brawlers.forEach(b => {
         if (!data[b]) {
             resultDiv.innerHTML += `
@@ -593,11 +660,8 @@ function findCounters() {
             return;
         }
 
-        const mainSorted = sortByClassThenAlpha(data[b].main || []);
-		const altSorted = sortByClassThenAlpha(data[b].alt || []);
-
-		const main = mainSorted.map(colorize).join(", ");
-		const alt = altSorted.map(colorize).join(", ");
+        const main = sortByClassThenAlpha(data[b].main || []).map(colorize).join(", ");
+        const alt = sortByClassThenAlpha(data[b].alt || []).map(colorize).join(", ");
 
         resultDiv.innerHTML += `
         <div class="row">
