@@ -6,25 +6,37 @@
 
 <style>
 :root {
-    --ui-width: 750px;
+    --ui-width: 900px;
+
+    /* COLORS */
+    --bg: #0f0f0f;
+    --panel: #161616;
+    --panel-hover: #1c1c1c;
+    --border: #555;
+    --soft-border: #333;
+
+    --text: #ffffff;
+    --text-dim: #bbb;
+
+    --accent: #4da6ff;
 }
 
 /* =========================
-   GLOBAL LAYOUT
+   BASE
 ========================= */
 body {
     margin: 0;
-    font-family: system-ui, Arial;
-    font-size: 20px;
-    background: radial-gradient(circle at top, #1a1a1a, #0d0d0d);
-    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 22px;
+    background: var(--bg);
+    color: var(--text);
 
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    padding: 30px 20px;
-    gap: 18px;
+    padding: 24px;
+    gap: 16px;
 }
 
 /* =========================
@@ -32,157 +44,179 @@ body {
 ========================= */
 #topUI {
     width: var(--ui-width);
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
+    transition: 0.25s ease;
+}
+
+#topUI.hidden {
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
 }
 
 h1 {
-    margin-bottom: 6px;
-    font-size: 34px;
+    margin: 0 0 10px 0;
+    font-size: 44px;
+    text-align: center;
+    color: var(--accent);
+    letter-spacing: 0.5px;
 }
 
 p {
-    opacity: 0.7;
-    margin-bottom: 10px;
-    font-size: 18px;
-    width: 100%;
+    margin: 0 0 12px 0;
+    font-size: 24px;
+    color: var(--text-dim);
+    text-align: center;
 }
 
 /* =========================
-   INPUT + AUTOCOMPLETE
+   INPUT
 ========================= */
 .autocomplete-box {
     position: relative;
-    width: 100%;
 }
 
 input {
     width: 100%;
-    padding: 14px;
-    border-radius: 12px;
-    border: 1px solid #333;
-    background: #151515;
-    color: white;
-    outline: none;
-    font-size: 18px;
+    padding: 16px 18px;
+    border: 1px solid var(--border);
+    background: #181818;
+    color: var(--text);
+    font-size: 22px;
+    border-radius: 8px;
+    transition: 0.15s ease;
 }
 
 input:focus {
-    border-color: #4da6ff;
-    box-shadow: 0 0 0 2px rgba(77,166,255,0.2);
+    outline: none;
+    border-color: #888;
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.08);
 }
 
+/* =========================
+   SUGGESTIONS
+========================= */
 .suggestions {
     position: absolute;
-    top: 50px;
     width: 100%;
-    background: #1a1a1a;
-    border: 1px solid #333;
-    border-radius: 12px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
     overflow: hidden;
     z-index: 10;
+    margin-top: 4px;
 }
 
 .suggestions div {
-    padding: 10px 12px;
+    padding: 12px;
     cursor: pointer;
-    font-size: 16px;
-    display: flex;
-    justify-content: space-between;
+    transition: 0.12s;
 }
 
-.suggestions div.active,
-.suggestions div:hover {
-    background: #2c2c2c;
+.suggestions div:hover,
+.suggestions div.active {
+    background: #2a2a2a;
 }
 
 /* =========================
-   CORE CONTAINERS
+   BOXES
 ========================= */
 .shared-box {
     width: var(--ui-width);
-    background: #121212;
-    border: 1px solid #2a2a2a;
-    border-radius: 14px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
     padding: 14px 16px;
-
-    box-shadow: 0 0 0 1px rgba(255,255,255,0.03);
 }
 
-.result {
-    width: var(--ui-width);
+#shared,
+#classScore {
+    display: none;
+}
+
+.shared-title {
+    font-size: 20px;
+    letter-spacing: 0.5px;
+    color: #ddd;
+    border-bottom: 1px solid var(--soft-border);
+    padding-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 /* =========================
-   SHARED / CLASS SUGGESTIONS
+   ITEMS
 ========================= */
-.shared-title {
-    font-weight: 700;
-    margin-bottom: 10px;
-    font-size: 20px;
-    letter-spacing: 0.3px;
-}
-
 .shared-item {
-    margin: 4px 0;
-    font-size: 18px;
-
     display: flex;
     justify-content: space-between;
-
-    padding: 6px 8px;
-    border-radius: 8px;
-
-    background: rgba(255,255,255,0.02);
+    padding: 6px 0;
+    align-items: center;
 }
 
-.shared-item span.score {
-    opacity: 0.7;
-    font-size: 16px;
+.score {
+    color: var(--text-dim);
+    font-family: monospace;
+    min-width: 90px;
+    text-align: right;
 }
 
 /* =========================
-   BRAWLER ROWS
+   ROWS
 ========================= */
 .row {
+    width: var(--ui-width);
     display: grid;
-    grid-template-columns: 180px 1fr;
-    gap: 14px;
+    grid-template-columns: 160px 1fr;
+    gap: 12px;
+    border: 1px solid var(--soft-border);
+    background: var(--panel);
+    border-radius: 8px;
+    padding: 10px 14px;
+    align-items: center;
+    transition: 0.12s;
+}
 
-    padding: 12px 14px;
-    margin-bottom: 10px;
-
-    background: #151515;
-    border: 1px solid #242424;
-    border-radius: 12px;
-
-    align-items: start;
+.row:hover {
+    background: var(--panel-hover);
 }
 
 .name {
-    font-weight: 700;
-    font-size: 22px;
-    color: #ffffff;
-
-    display: flex;
-    gap: 6px;
-    align-items: baseline;
+    font-weight: bold;
+    border-right: 1px solid var(--soft-border);
+    padding-right: 12px;
 }
 
 .list {
-    font-size: 18px;
-    line-height: 1.6;
-    color: rgba(255,255,255,0.9);
+    line-height: 1.7;
+    padding-left: 12px;
 }
 
 /* =========================
-   CLASS COLORS
+   STATES
+========================= */
+.best-class {
+    text-decoration: underline;
+    font-weight: 700;
+}
+
+.best-pick {
+    font-weight: 700;
+    background: rgba(255,255,255,0.06);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.crossed {
+    text-decoration: line-through;
+    opacity: 0.45;
+}
+
+/* =========================
+   CLASS COLORS (UNCHANGED)
 ========================= */
 .thrower { color: #FFA500; }
-.tank { color: #FF0000; }
+.tank { color: #FF4d4d; }
 .assassin { color: #00cc66; }
-.antitank { color: #aaaaaa; }
+.antitank { color: #bbbbbb; }
 .support { color: #bb66ff; }
 .sniper { color: #ffff66; }
 .control { color: #4da6ff; }
@@ -194,7 +228,7 @@ input:focus {
 <div id="topUI">
 
 	<h1>Brawler Counters</h1>
-	<p>Search 101 brawlers (comma separated)</p>
+	<p>Search 101 brawlers (comma separated, enter to search)</p>
 
 	<div class="autocomplete-box">
 	<input id="input" placeholder="Brawler Name"
@@ -205,7 +239,7 @@ input:focus {
 </div>
 
 <div id="shared" class="shared-box" style="display:none;"></div>
-<div id="classScore" class="shared-box"></div>
+<div id="classScore" class="shared-box" style="display:none;"></div>
 <div id="result" class="result"></div>
 
 <script>
@@ -328,7 +362,7 @@ const brawlerClass = {
   "chester":"antitank","nita":"antitank","moe":"antitank","rico":"antitank","tara":"antitank","emz":"antitank","lou":"antitank","finx":"antitank","ruffs":"antitank","sandy":"antitank","otis":"antitank","lumi":"antitank","shelly":"antitank","surge":"antitank","charlie":"antitank","gale":"antitank","spike":"antitank","cordelius":"antitank","maisie":"antitank","colt":"antitank","griff":"antitank","crow":"antitank","8-bit":"antitank","clancy":"antitank","colette":"antitank","meg":"antitank",
 
   /* SUPPORT */
-  "kit":"support","max":"support","gray":"support","poco":"support","jae yong":"support","doug":"support","glowy":"support","glowbert":"support",
+  "kit":"support","max":"support","gray":"support","poco":"support","jae yong":"support","doug":"support","glowbert":"support",
 
   /* SNIPER */
   "mandy":"sniper","r-t":"sniper","gus":"sniper","piper":"sniper","brock":"sniper","byron":"sniper","angelo":"sniper","pierce":"sniper","nani":"sniper","belle":"sniper","bea":"sniper",
@@ -351,13 +385,13 @@ const classCounters = {
   tank: { assassin: 2, sniper: 1, support: 1 },
   assassin: { thrower: 2, sniper: 2 },
   antitank: { tank: 2, assassin: 2, support: 1 },
-  thrower: { antitank: 2, sniper: 1, tank: 1 },
+  thrower: { antitank: 2, tank: 1 },
   sniper: { antitank: 2, control: 1, thrower: 1 },
   control: { tank: 2, assassin: 1 },
   support: { assassin: 1, sniper: 1 }
 };
 
- let selectedIndex = -1;
+let selectedIndex = -1;
 
 /* =========================
    HELPERS
@@ -380,7 +414,7 @@ function colorize(name) {
 }
 
 /* =========================
-   SCORING (NO FREQUENCY)
+   SCORING
 ========================= */
 function getClassScore(attackerClass, defenderClass) {
     if (!attackerClass || !defenderClass) return 0;
@@ -404,27 +438,33 @@ function computeScore(candidate, selectedList) {
 }
 
 /* =========================
-   CLASS SCORES (NORMALIZED)
+   CLASS SCORES (AVERAGED)
 ========================= */
 function computeClassScores(scoreMap) {
     const classScores = {};
     const classCounts = {};
 
+    // initialize ALL classes
+    classOrder.forEach(cls => {
+        classScores[cls] = 0;
+        classCounts[cls] = 0;
+    });
+
     Object.keys(scoreMap).forEach(name => {
         const cls = getClass(name);
         if (!cls) return;
 
-        if (!classScores[cls]) {
-            classScores[cls] = 0;
-            classCounts[cls] = 0;
-        }
-
         classScores[cls] += scoreMap[name].score;
-        classCounts[cls] += 1;
+        classCounts[cls]++;
     });
 
-    Object.keys(classScores).forEach(cls => {
-        classScores[cls] = classScores[cls] / classCounts[cls];
+    // average (avoid divide by 0)
+    classOrder.forEach(cls => {
+        if (classCounts[cls] > 0) {
+            classScores[cls] = Math.round(classScores[cls] / classCounts[cls]);
+        } else {
+            classScores[cls] = 0;
+        }
     });
 
     return classScores;
@@ -512,7 +552,7 @@ function updateActive(items) {
 }
 
 /* =========================
-   SORTING
+   SORT
 ========================= */
 function sortByClassThenAlpha(arr) {
     return [...arr].sort((a, b) => {
@@ -528,10 +568,23 @@ function sortByClassThenAlpha(arr) {
 }
 
 /* =========================
-   MAIN LOGIC
+   MAIN
 ========================= */
+function colorizeWithState(name, { bestPick, bestClass, crossed }) {
+    const cls = getClass(name);
+
+    let extra = "";
+
+    if (bestPick) extra += " best-pick";
+    if (bestClass) extra += " best-class";
+    if (crossed) extra += " crossed";
+
+    return `<span class="${cls}${extra}">${capitalize(name)}</span>`;
+}
+
 function findCounters() {
     document.getElementById("topUI").style.display = "none";
+	document.getElementById("classScore").style.display = "block";
 
     const inputRaw = document.getElementById("input").value;
     const resultDiv = document.getElementById("result");
@@ -540,7 +593,8 @@ function findCounters() {
 
     resultDiv.innerHTML = "";
     counterBox.innerHTML = "";
-    counterBox.style.display = "none";
+	counterBox.style.display = "block";
+	classBox.style.display = "block";
 
     const brawlers = inputRaw
         .split(",")
@@ -553,16 +607,11 @@ function findCounters() {
 
     for (const b of brawlers) {
         if (data[b]) {
-            allCounters.push(
-                ...(data[b].main || []),
-                ...(data[b].alt || [])
-            );
+            allCounters.push(...(data[b].main || []), ...(data[b].alt || []));
         }
     }
 
-    /* =========================
-       SCORE MAP (NO FREQUENCY MULTIPLIER)
-    ========================= */
+    /* SCORE MAP */
     const scoreMap = {};
 
     allCounters.forEach(c => {
@@ -576,36 +625,46 @@ function findCounters() {
     });
 
     Object.keys(scoreMap).forEach(key => {
-        scoreMap[key].score = computeScore(
-            key,
-            brawlers
-        );
+        scoreMap[key].score = computeScore(key, brawlers);
     });
 
-    /* =========================
-       CLASS SCORES (NORMALIZED)
-    ========================= */
+    /* CLASS SCORES */
     const classScores = computeClassScores(scoreMap);
 
-    const sortedClasses = Object.keys(classScores).sort((a, b) => {
-        return classScores[b] - classScores[a];
-    });
+    const maxClassScore = Math.max(...Object.values(classScores));
+
+    const topClasses = new Set(
+        Object.keys(classScores).filter(c => classScores[c] === maxClassScore)
+    );
+
+    const sortedClasses = Object.keys(classScores)
+        .sort((a, b) => classScores[b] - classScores[a]);
 
     classBox.innerHTML = `
         <div class="shared-title">Best Classes</div>
         ${sortedClasses.map(cls => {
             const val = classScores[cls];
 
+            const label = topClasses.has(cls)
+                ? `<span class="best-class ${cls}">${capitalize(cls)}</span>`
+                : `<span class="${cls}">${capitalize(cls)}</span>`;
+
             return `<div class="shared-item">
-                <span class="${cls}">${capitalize(cls)}</span>
+                ${label}
                 <span class="score">${val >= 0 ? "+" : ""}${val}</span>
             </div>`;
         }).join("")}
     `;
 
-    /* =========================
-       SORT PICKS
-    ========================= */
+    /* BEST PICKS */
+    const maxFreq = Math.max(...Object.values(scoreMap).map(x => x.freq));
+
+    const bestPickSet = new Set(
+		Object.keys(scoreMap).filter(k =>
+			scoreMap[k].freq === maxFreq && maxFreq >= 2
+		)
+	);
+
     const counterList = Object.keys(scoreMap).sort((a, b) => {
         if (scoreMap[b].score !== scoreMap[a].score) {
             return scoreMap[b].score - scoreMap[a].score;
@@ -615,53 +674,58 @@ function findCounters() {
             return scoreMap[b].freq - scoreMap[a].freq;
         }
 
-        const classA = getClass(a);
-        const classB = getClass(b);
-
-        const indexA = classOrder.indexOf(classA);
-        const indexB = classOrder.indexOf(classB);
-
-        if (indexA !== indexB) return indexA - indexB;
-
         return a.localeCompare(b);
     });
 
-    const filteredCounters = counterList.filter(c => scoreMap[c].freq >= 2);
+    const filteredCounters = Object.keys(scoreMap)
+		.filter(c => scoreMap[c].freq >= 2)
+		.sort((a, b) => {
+			// 1. frequency (x2, x3, etc)
+			if (scoreMap[b].freq !== scoreMap[a].freq) {
+				return scoreMap[b].freq - scoreMap[a].freq;
+			}
 
-    /* =========================
-       BEST PICKS BOX
-    ========================= */
-    if (counterList.length) {
-        counterBox.style.display = "block";
+			// 2. score
+			if (scoreMap[b].score !== scoreMap[a].score) {
+				return scoreMap[b].score - scoreMap[a].score;
+			}
 
-        counterBox.innerHTML = `
-            <div class="shared-title">Best Brawlers</div>
-            ${filteredCounters.map(c => {
-                const isCrossed = selectedSet.has(c);
+			// 3. class order
+			const ca = getClass(a);
+			const cb = getClass(b);
+			return classOrder.indexOf(ca) - classOrder.indexOf(cb);
+		});
 
-                return `<div class="shared-item">
-                    ${isCrossed ? `<s>${colorize(c)}</s>` : colorize(c)}
-                    <span class="score">(score ${scoreMap[c].score} | x${scoreMap[c].freq})</span>
-                </div>`;
-            }).join("")}
-        `;
-    }
+    counterBox.innerHTML = `
+		<div class="shared-title">Best Brawlers</div>
+		${filteredCounters.map(c => {
+			const nameHTML = colorizeWithState(c, {
+				bestPick: bestPickSet.has(c),
+				bestClass: topClasses.has(getClass(c)),
+				crossed: selectedSet.has(c)
+			});
 
-    /* =========================
-       ORIGINAL DISPLAY
-    ========================= */
+			return `<div class="shared-item">
+				${nameHTML}
+				<span class="score">(x${scoreMap[c].freq} | score ${scoreMap[c].score})</span>
+			</div>`;
+		}).join("")}
+	`;
+
+    /* BOTTOM LIST */
     brawlers.forEach(b => {
-        if (!data[b]) {
-            resultDiv.innerHTML += `
-            <div class="row">
-                <div class="name">${capitalize(b)}</div>
-                <div class="list">Not found</div>
-            </div>`;
-            return;
-        }
+        if (!data[b]) return;
 
-        const main = sortByClassThenAlpha(data[b].main || []).map(colorize).join(", ");
-        const alt = sortByClassThenAlpha(data[b].alt || []).map(colorize).join(", ");
+        const format = (n) => {
+			return colorizeWithState(n, {
+				bestPick: bestPickSet.has(normalize(n)),
+				bestClass: topClasses.has(getClass(n)),
+				crossed: false
+			});
+		};
+
+        const main = sortByClassThenAlpha(data[b].main || []).map(format).join(", ");
+        const alt = sortByClassThenAlpha(data[b].alt || []).map(format).join(", ");
 
         resultDiv.innerHTML += `
         <div class="row">
@@ -671,9 +735,7 @@ function findCounters() {
     });
 }
 
-/* =========================
-   INIT
-========================= */
+/* INIT */
 window.addEventListener("load", () => {
     document.getElementById("input").focus();
 });
