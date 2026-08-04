@@ -1,0 +1,376 @@
+:root {
+    --ui-width: min(95%);
+
+    /* COLORS */
+    --bg: #0f0f0f;
+    --panel: #161616;
+    --panel-hover: #1c1c1c;
+    --border: #555;
+    --soft-border: #333;
+
+    --text: #ffffff;
+    --text-dim: #bbb;
+
+    --accent: #4da6ff;
+}
+
+/* =========================
+   GLOBAL RESET
+========================= */
+*, *::before, *::after {
+    box-sizing: border-box; /* keeps width consistent regardless of padding/border */
+}
+
+/* =========================
+   BASE
+========================= */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    font-size: 26px;
+    background: var(--bg);
+    color: var(--text);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 24px;
+    gap: 16px;
+}
+
+/* =========================
+   HEADER
+========================= */
+#topUI {
+    max-height: 500px;
+}
+
+#topUI.hidden {
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    max-height: 0;
+    margin: 0;
+    overflow: hidden; /* only clip once it's actually collapsing */
+}
+
+#topUI,
+.shared-box,
+.row {
+    width: 95%;
+}
+
+h1 {
+    margin: 0 0 10px 0;
+    font-size: 50px;
+    text-align: center;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+}
+
+h1 small {
+    font-size: 0.4em;
+    font-weight: normal;
+    color: var(--text-dim);
+    font-style: italic;
+}
+
+p {
+    margin: 0 0 12px 0;
+    font-size: 30px;
+    color: var(--text-dim);
+    text-align: center;
+}
+
+/* =========================
+   INPUT
+========================= */
+.autocomplete-box {
+    position: relative;
+}
+
+input {
+    width: 100%;
+    padding: 16px 18px;
+    border: 1px solid var(--border);
+    background: #181818;
+    color: var(--text);
+    font-size: 28px;
+    border-radius: 8px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #888;
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.08);
+}
+
+/* =========================
+   AUTOCOMPLETE
+========================= */
+.suggestions {
+    position: absolute;
+    width: 100%;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    z-index: 10;
+    margin-top: 4px;
+}
+
+.suggestions div {
+    padding: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.suggestions div:hover,
+.suggestions div.active {
+    background: #2a2a2a;
+}
+
+/* =========================
+   ICONS
+========================= */
+.brawler-img {
+    width: 82px;
+    height: 70px;
+    border-radius: 5px;
+    border: 5px solid var(--soft-border);
+    object-fit: cover;
+}
+
+/* CLASS BORDER COLORS */
+.thrower { border-color: #FFA500 !important; }
+.tank { border-color: #FF4d4d !important; }
+.assassin { border-color: #00cc66 !important; }
+.antitank { border-color: #bbbbbb !important; }
+.support { border-color: #bb66ff !important; }
+.sniper { border-color: #ffff66 !important; }
+.control { border-color: #4da6ff !important; }
+
+/* =========================
+   ICON + LABEL
+========================= */
+.icon-label {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    width: 84px;
+    margin: 2px; /* was 6px — icons sit tighter together now */
+}
+
+.tiny-name {
+    font-size: 16px;
+    color: #e0e0e0;
+    margin-top: 4px;
+    text-align: center;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+/* =========================
+   SHARED BOX
+========================= */
+.shared-box {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+}
+
+/* Column layout: score sits on top of each icon, all side by side */
+.shared-columns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.shared-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.score-top {
+    font-family: monospace;
+    font-size: 20px;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+}
+
+/* Highlight the top pick(s) */
+
+.shared-col.best-pick .score-top {
+    color: #ffd700;
+    font-weight: bold;
+}
+
+/* Distinguish brawlers you already searched for from actual counters */
+.icon-label.best-pick .brawler-img {
+    box-shadow: 0 0 0 5px #ffd700, 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+.icon-label.best-pick .tiny-name {
+    color: #ffd700;
+    font-weight: bold;
+}
+
+.shared-col.crossed .score-top {
+    color: #ff6666;
+}
+
+/* =========================
+   ROWS
+========================= */
+#result {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 12px;
+    border: 1px solid var(--soft-border);
+    background: var(--panel);
+    border-radius: 8px;
+    padding: 6px 12px;
+    align-items: center;
+    width: 100%; /* now 100% of #result, which is a fixed 95% of the page */
+}
+
+.row:hover {
+    background: var(--panel-hover);
+}
+
+.name {
+    font-weight: bold;
+    border-right: 1px solid var(--soft-border);
+    padding-right: 12px;
+    text-align: center;
+}
+
+.list {
+    line-height: 1.7;
+    padding-left: 10px;
+    display: flex;
+    flex-wrap: wrap;      /* icons now wrap instead of overflowing */
+    align-items: center;
+    min-width: 0;         /* lets this grid/flex child shrink properly */
+}
+
+/* =========================
+   LEGEND
+========================= */
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    font-size: 14px;
+    color: var(--text-dim);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.legend-dot.thrower { background: #FFA500; }
+.legend-dot.tank { background: #FF4d4d; }
+.legend-dot.assassin { background: #00cc66; }
+.legend-dot.antitank { background: #bbbbbb; }
+.legend-dot.support { background: #bb66ff; }
+.legend-dot.sniper { background: #ffff66; }
+.legend-dot.control { background: #4da6ff; }
+
+/* =========================
+   CHIPS (selected brawlers)
+========================= */
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--panel-hover);
+    border: 1px solid var(--soft-border);
+    border-radius: 20px;
+    padding: 4px 10px 4px 4px;
+    font-size: 16px;
+}
+
+.chip-img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--soft-border);
+    object-fit: cover;
+}
+
+.chip-remove {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 2px;
+}
+
+.chip-remove:hover {
+    color: #ff6666;
+}
+
+/* =========================
+   INPUT ERROR
+========================= */
+.input-error {
+    display: none;
+    color: #ff6666;
+    font-size: 14px;
+    margin-top: 6px;
+    text-align: left;
+}
+
+/* =========================
+   TIER TAGS
+========================= */
+.tier-tag {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+}
+
+.tier-Splus { background: #7a0000; color: #ffffff; } /* Darkest */
+.tier-S     { background: #b02a2a; color: #ffffff; }
+.tier-A     { background: #c92a2a; color: #ffffff; }
+.tier-B     { background: #e8590c; color: #ffffff; }
+.tier-C     { background: #f08c00; color: #1a1a1a; }
+.tier-D     { background: #fcc419; color: #1a1a1a; }
+.tier-F     { background: #fff3bf; color: #1a1a1a; } /* Lightest */
