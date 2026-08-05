@@ -69,11 +69,12 @@ h1 {
     letter-spacing: 0.5px;
 }
 
-h1 small {
-    font-size: 0.4em;
+p small {
+    font-size: 0.7em;
     font-weight: normal;
     color: var(--text-dim);
     font-style: italic;
+    margin-left: 6px;
 }
 
 p {
@@ -237,7 +238,7 @@ input:focus {
 
 .row {
     display: grid;
-    grid-template-columns: 160px 1fr;
+    grid-template-columns: 120px 1fr;
     gap: 12px;
     border: 1px solid var(--soft-border);
     background: var(--panel);
@@ -258,6 +259,17 @@ input:focus {
     text-align: center;
 }
 
+.name .brawler-img {
+    width: 100px;
+    height: 82px;
+    border-width: 6px;
+}
+
+.name .tiny-name {
+    font-size: 18px;
+    margin-top: 6px;
+}
+
 .list {
     line-height: 1.7;
     padding-left: 10px;
@@ -266,41 +278,6 @@ input:focus {
     align-items: center;
     min-width: 0;         /* lets this grid/flex child shrink properly */
 }
-
-/* =========================
-   LEGEND
-========================= */
-.legend {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 14px;
-    font-size: 14px;
-    color: var(--text-dim);
-}
-
-.legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.legend-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-.legend-dot.thrower { background: #FFA500; }
-.legend-dot.tank { background: #FF4d4d; }
-.legend-dot.assassin { background: #00cc66; }
-.legend-dot.antitank { background: #bbbbbb; }
-.legend-dot.support { background: #bb66ff; }
-.legend-dot.sniper { background: #ffff66; }
-.legend-dot.control { background: #4da6ff; }
-
 /* =========================
    CHIPS (selected brawlers)
 ========================= */

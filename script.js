@@ -299,7 +299,7 @@ function findCounters() {
 			<div class="row">
 				<div class="name">
 					<img src="${data[b].img}" class="brawler-img ${getClass(b)}">
-					<div class="tiny-name">${capitalize(b)}</div>
+					<div class="tiny-name">⮞ ${capitalize(b)} ⮜</div>
 				</div>
 				<div class="list">
 					${icons || "<div class='tiny-name'>None</div>"}
