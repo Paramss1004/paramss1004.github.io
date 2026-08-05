@@ -178,10 +178,11 @@ input:focus {
    SHARED BOX
 ========================= */
 .shared-box {
-    background: var(--panel);
-    border: 1px solid var(--border);
+    background: linear-gradient(135deg, #1a2744, #241a3d, #1a1a1a);
+    border: 1px solid var(--accent);
     border-radius: 8px;
     padding: 14px 16px;
+    box-shadow: 0 0 20px rgba(77,166,255,0.15);
 }
 
 /* Column layout: score sits on top of each icon, all side by side */
@@ -238,7 +239,7 @@ input:focus {
 
 .row {
     display: grid;
-    grid-template-columns: 120px 1fr;
+    grid-template-columns: 140px 1fr;
     gap: 12px;
     border: 1px solid var(--soft-border);
     background: var(--panel);
@@ -351,3 +352,25 @@ input:focus {
 .tier-C     { background: #f08c00; color: #1a1a1a; }
 .tier-D     { background: #fcc419; color: #1a1a1a; }
 .tier-F     { background: #fff3bf; color: #1a1a1a; } /* Lightest */
+
+@media (max-width: 480px) {
+    #result {
+        column-count: 2;
+        column-gap: 12px;
+    }
+
+    .row {
+        display: block;         /* was grid — no longer needed with multi-column */
+        break-inside: avoid;    /* stops a single row from splitting across columns */
+        margin-bottom: 12px;
+        text-align: center;
+    }
+
+    .name {
+        border-right: none;
+        border-bottom: 1px solid var(--soft-border);
+        padding-right: 0;
+        padding-bottom: 10px;
+        width: 100%;
+    }
+}
