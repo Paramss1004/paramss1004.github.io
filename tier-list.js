@@ -1,5 +1,5 @@
 const tierList = {
-    "S+": ["surge","damian","8bit","bolt","max","starrnova","brock","meg"],
+    "S+": ["surge","damian","8bit","bolt","max","starrnova","brock","meg","nori"],
     "S": ["colette","lumi","crow","edgar","mortis","meeple","byron","ruffs","otis","chester","pierce","lou"],
     "A": ["griff","mina","najia","kaze","emz","gene","finx","charlie","alli","glowbert","spike","kit","shade","angelo","stu"],
     "B": ["sirius","kenji","cord","pearl","rico","belle","carl","nita","colt","penny","ash","fang","gray","rt","lily","moe","leon","poco","gus","sprout","amber","piper"],

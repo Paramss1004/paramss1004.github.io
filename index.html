@@ -8,19 +8,57 @@
 </head>
 <body>
 <div id="topUI">
-    <p>105 brawlers (latest: Nori) <small>by param</small></p>
-
     <div class="autocomplete-box">
-        <div id="chips" class="chips"></div>
-        <input id="input" placeholder="Brawler Name"
-               oninput="showSuggestions()"
-               onkeydown="handleKeyDown(event)">
-        <div id="suggestions" class="suggestions"></div>
-        <div id="inputError" class="input-error"></div>
-    </div>
+		<div id="chips" class="chips"></div>
+		<div class="input-wrap">
+			<input id="input" placeholder="Search Brawlers"
+				   oninput="showSuggestions()"
+				   onkeydown="handleKeyDown(event)">
+			<button id="enterBtn" class="enter-btn" onclick="findCounters()" aria-label="Search">↵</button>
+		</div>
+		<div id="suggestions" class="suggestions"></div>
+		<div id="inputError" class="input-error"></div>
+		<div id="teamSizeNote" class="team-size-note" style="display:none;"></div>
+	</div>
+
+	<div class="browse-bar">
+    <span class="browse-label">"Tab" to alternate</span>
+
+    <div class="browse-search-wrap">
+			<input id="browseInput" class="browse-input" placeholder="Search Tiers/Classes"
+				   oninput="showBrowseSuggestions()"
+				   onkeydown="handleBrowseKeyDown(event)">
+			<div id="browseSuggestions" class="suggestions"></div>
+		</div>
+
+		<div class="browse-tiers">
+			<span class="browse-chip tier-Splus" onclick="browseTier('S+')">S+</span>
+			<span class="browse-chip tier-S" onclick="browseTier('S')">S</span>
+			<span class="browse-chip tier-A" onclick="browseTier('A')">A</span>
+			<span class="browse-chip tier-B" onclick="browseTier('B')">B</span>
+			<span class="browse-chip tier-C" onclick="browseTier('C')">C</span>
+			<span class="browse-chip tier-D" onclick="browseTier('D')">D</span>
+			<span class="browse-chip tier-F" onclick="browseTier('F')">F</span>
+		</div>
+		<div class="browse-classes">
+			<span class="browse-chip class-chip" onclick="browseClass('thrower')">💥 Throwers</span>
+			<span class="browse-chip class-chip" onclick="browseClass('tank')">🛡️ Tanks</span>
+			<span class="browse-chip class-chip" onclick="browseClass('assassin')">⚡ Assassins</span>
+			<span class="browse-chip class-chip" onclick="browseClass('antitank')">⚔️ Antitanks</span>
+			<span class="browse-chip class-chip" onclick="browseClass('support')">💚 Supports</span>
+			<span class="browse-chip class-chip" onclick="browseClass('sniper')">🎯 Snipers</span>
+			<span class="browse-chip class-chip" onclick="browseClass('control')">🌀 Controllers</span>
+		</div>
+	</div>
 </div>
 <div id="shared" class="shared-box" style="display:none;"></div>
+<div id="sortControls" class="sort-controls" style="display:none;">
+    <button id="suggestTeamBtn" onclick="suggestTeam()">Suggest Full Team</button>
+    <button id="sortToggleBtn" onclick="toggleSortMode()">Sort by Tier 📉</button>
+</div>
+<div id="teamSuggestion" class="shared-box" style="display:none;"></div>
 <div id="result" class="result"></div>
+<button id="backBtn" class="back-btn" onclick="resetSearch()" style="display:none;">←-- Back</button>
 <script src="data.js"></script>
 <script src="tier-list.js"></script>
 <script src="script.js"></script>
