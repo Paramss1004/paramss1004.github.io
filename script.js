@@ -281,14 +281,33 @@ function toggleInfo(e, el) {
     e.stopPropagation();
     const wrap = el.closest(".info-container");
     const box = wrap.querySelector(".info-box");
-    const wasOpen = box.classList.contains("open");
-    document.querySelectorAll(".info-box.open").forEach(b => b.classList.remove("open"));
-    if (!wasOpen) box.classList.add("open");
+    openInfoModal(box.textContent);
+    openInfoIndex = null; // opened via click, not number key — no index to track
+}
+
+let openInfoIndex = null; // tracks which numbered brawler's info is currently showing
+
+function openInfoModal(text) {
+    const modal = document.getElementById("infoModal");
+    const modalText = document.getElementById("infoModalText");
+    modalText.textContent = text;
+    modal.style.display = "flex";
+}
+
+function closeInfoModal() {
+    document.getElementById("infoModal").style.display = "none";
+    openInfoIndex = null;
 }
 
 function openInfoByIndex(idx) {
     const b = currentBrawlers[idx];
     if (!b || !data[b] || !data[b].info) return;
+
+    // Pressing the same number again closes it
+    if (openInfoIndex === idx) {
+        closeInfoModal();
+        return;
+    }
 
     const rows = document.querySelectorAll("#result .row");
     const row = rows[idx];
@@ -297,9 +316,8 @@ function openInfoByIndex(idx) {
     const box = row.querySelector(".info-box");
     if (!box) return;
 
-    const wasOpen = box.classList.contains("open");
-    document.querySelectorAll(".info-box.open").forEach(b => b.classList.remove("open"));
-    if (!wasOpen) box.classList.add("open");
+    openInfoModal(box.textContent);
+    openInfoIndex = idx;
 }
 
 document.addEventListener("click", () => {

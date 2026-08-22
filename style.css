@@ -1,5 +1,5 @@
 :root {
-    --ui-width: min(95%);
+    --ui-width: min(100%);
 
     /* COLORS */
     --bg: #0f0f0f;
@@ -58,7 +58,7 @@ body {
 #topUI,
 .shared-box,
 .row {
-    width: 95%;
+    width: 100%;
 }
 
 /* =========================
@@ -73,7 +73,7 @@ body {
 }
 
 .back-btn {
-    width: 95%;
+    width: 100%;
     background: var(--panel);
     color: var(--text);
     border: 1px solid var(--border);
@@ -369,6 +369,53 @@ input:focus {
     display: block;
 }
 
+.info-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.info-modal-box {
+    position: relative;
+    background: var(--panel);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 24px 20px;
+    max-width: 420px;
+    max-height: 70vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+.info-modal-box p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--text);
+    text-align: left;
+}
+
+.info-modal-close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-size: 22px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.info-modal-close:hover {
+    color: #fff;
+}
+
 /* =========================
    SHARED BOX
 ========================= */
@@ -421,7 +468,7 @@ input:focus {
 }
 
 .sort-controls {
-    width: 95%;
+    width: 100%;
     display: flex;
     justify-content: flex-end;
     margin: -4px 0 4px 0;
@@ -447,7 +494,7 @@ input:focus {
    ROWS
 ========================= */
 #result {
-    width: 95%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -537,7 +584,7 @@ input:focus {
     text-align: center;
 }
 
-.tier-Splus { background: #2b003d; color: #ffffff; }
+.tier-Splus { background: #35004B; color: #ffffff; }
 .tier-S     { background: #003f88; color: #ffffff; }
 .tier-A     { background: #8b0000; color: #ffffff; }
 .tier-B     { background: #d35400; color: #ffffff; }

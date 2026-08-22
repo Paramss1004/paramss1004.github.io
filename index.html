@@ -22,7 +22,6 @@
 	</div>
 
 	<div class="browse-bar">
-    <span class="browse-label">"Tab" to alternate</span>
 
     <div class="browse-search-wrap">
 			<input id="browseInput" class="browse-input" placeholder="Search Tiers/Classes"
@@ -51,16 +50,22 @@
 		</div>
 	</div>
 </div>
-<div id="shared" class="shared-box" style="display:none;"></div>
 <div id="sortControls" class="sort-controls" style="display:none;">
     <button id="suggestTeamBtn" onclick="suggestTeam()">Suggest Full Team</button>
     <button id="sortToggleBtn" onclick="toggleSortMode()">Sort by Tier 📉</button>
 </div>
 <div id="teamSuggestion" class="shared-box" style="display:none;"></div>
+<div id="shared" class="shared-box" style="display:none;"></div>
 <div id="result" class="result"></div>
 <button id="backBtn" class="back-btn" onclick="resetSearch()" style="display:none;">←-- Back</button>
 <script src="data.js"></script>
 <script src="tier-list.js"></script>
 <script src="script.js"></script>
+<div id="infoModal" class="info-modal" onclick="if(event.target===this) closeInfoModal()">
+    <div class="info-modal-box">
+        <button class="info-modal-close" onclick="closeInfoModal()">&times;</button>
+        <p id="infoModalText"></p>
+    </div>
+</div>
 </body>
 </html>

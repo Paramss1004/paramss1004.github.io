@@ -2,124 +2,353 @@
    BRAWLERS COUNTERS
 ========================= */
 const data = {
-    "8bit": { img:"images/8bit.webp", main:["penny","belle","dyna","squeak","mandy","piper","brock","byron","pierce","barley","sprout","colette"], info:[""] },
-    "alli": { img:"images/alli.webp", main:["bull","buzz","draco","rt","doug","ash"], info:[""] },
-    "amber": { img:"images/amber.webp", main:["byron","belle","mortis","leon","poco","sprout","bonnie","piper","pam"], info:[""] },
-    "angelo": { img:"images/angelo.webp", main:["eve","kit","piper","nani","max","jaeyong"], info:[""] },
-    "ash": { img:"images/ash.webp", main:["frank","emz","gale","janet","bull"], info:[""] },
-    "barley": { img:"images/barley.webp", main:["tick","mortis","brock","edgar","kenji","kaze","mico"], info:[""] },
-    "bea": { img:"images/bea.webp", main:["charlie","tick","sprout","grom","mrp","byron","mandy"], info:[""] },
-    "belle": { img:"images/belle.webp", main:["piper","meg","leon","mandy","byron","kit","lily"], info:[""] },
-    "berry": { img:"images/berry.webp", main:["kaze","crow","barley","stu","kenji","kit","mortis"], info:[""] },
-    "bibi": { img:"images/bibi.webp", main:["mortis","jacky","stu","surge","griff","cord","primo","tara","bull"], info:[""] },
-    "bo": { img:"images/bo.webp", main:["max","piper","colt","stu","mico","mrp"], info:[""] },
-    "bolt": { img:"images/bolt.webp", main:[,], info:[""] },
-    "bonnie": { img:"images/bonnie.webp", main:["charlie","colette","bea","pam","piper","rt","gus","tara"], info:[""] },
-    "brock": { img:"images/brock.webp", main:["piper","rt","max","darryl","mortis","mandy","nani","kaze"], info:[""] },
-    "bull": { img:"images/bull.webp", main:["charlie","griff","shelly","emz","gale","cord","mina","otis","nita"], info:[""] },
-    "buster": { img:"images/buster.webp", main:["bull","mina","rt","ash","darryl","belle"], info:[""] },
-    "buzz": { img:"images/buzz.webp", main:["charlie","griff","stu","max","sandy","mina","cord","bull","surge","bibi","frank","ash"], info:[""] },
-    "byron": { img:"images/byron.webp", main:["piper","crow","bea","ash"], info:[""] },
-    "carl": { img:"images/carl.webp", main:["buzz","jacky","surge","colette","stu","mina","bull","cord","bibi"], info:[""] },
-    "charlie": { img:"images/charlie.webp", main:["amber","sandy","janet","juju"], info:[""] },
-    "chester": { img:"images/chester.webp", main:["pearl","amber","charlie","lumi","mina","stu"], info:[""] },
-    "chuck": { img:"images/chuck.webp", main:["charlie","crow","cord","mina","bull","kaze"], info:[""] },
-    "clancy": { img:"images/clancy.webp", main:["mrp","charlie","tara","bea","piper","byron"], info:[""] },
-    "colette": { img:"images/colette.webp", main:["tick","griff","bea","poco","charlie","belle","gus","lumi"], info:[""] },
-    "colt": { img:"images/colt.webp", main:["buster","darryl","mortis","spike","piper","bonnie","belle","gus","byron"], info:[""] },
-    "cord": { img:"images/cord.webp", main:["charlie","mina","frank","sandy","buster","surge","gale","nita"], info:[""] },
-    "crow": { img:"images/crow.webp", main:["piper","charlie","janet","spike","lola","bea","pearl","hank"], info:[""] },
-    "damian": { img:"images/damian.webp", main:["emz","sirius","surge","lou"], info:[""] },
-    "darryl": { img:"images/darryl.webp", main:["lou","surge","bea","ruffs","mina","cord","shelly","griff","rt"], info:[""] },
-    "doug": { img:"images/doug.webp", main:["crow","cord","lumi","bea","griff","frank","lily"], info:[""] },
-    "draco": { img:"images/draco.webp", main:["lumi","amber","pam","lou","mina","cord","frank","ash","kit"], info:[""] },
-    "dyna": { img:"images/dyna.webp", main:["mortis","bibi","stu","kenji","mico","kit","kaze","hank"], info:[""] },
-    "edgar": { img:"images/edgar.webp", main:["gale","otis","stu","shelly","hank","bull","doug","jacky","cord","poco"], info:[""] },
-    "primo": { img:"images/primo.webp", main:["stu","surge","colette","gale","cord","mina","griff","shelly","charlie"], info:[""] },
-    "emz": { img:"images/emz.webp", main:["mortis","stu","crow","janet","bonnie","amber"], info:[""] },
-    "eve": { img:"images/eve.webp", main:["alli","carl","janet","poco"], info:[""] },
-    "fang": { img:"images/fang.webp", main:["charlie","otis","gale","gene","eve","rt","chester","tara","draco"], info:[""] },
-    "finx": { img:"images/finx.webp", main:["emz","meeple","kenji","rosa","bull","shade","bibi","mortis","larry"], info:[""] },
-    "frank": { img:"images/frank.webp", main:["colette","surge","primo","charlie","chester","lou","sandy"], info:[""] },
-    "gale": { img:"images/gale.webp", main:["mico","buzz","spike","piper","belle","amber","janet","larry","juju","cord"], info:[""] },
-    "gene": { img:"images/gene.webp", main:["8bit","mrp","eve","penny","charlie","tara","belle"], info:[""] },
-    "gigi": { img:"images/gigi.webp", main:["shelly","fang","otis","cord","edgar"], info:[""] },
-    "glowbert": { img:"images/glowbert.webp", main:["crow","kenji","belle","jessie"], info:[""] },
-    "gray": { img:"images/gray.webp", main:["gene","tick","mortis","leon","crow","fang","max"], info:[""] },
-    "griff": { img:"images/griff.webp", main:[,"crow","spike","bea","janet","stu","mina"], info:[""] },
-    "grom": { img:"images/grom.webp", main:["lily","mico","mortis","fang","darryl","kenji","kit","kaze"], info:[""] },
-    "gus": { img:"images/gus.webp", main:["charlie","bo","byron","mandy","piper","eve","darryl","janet","8bit"], info:[""] },
-    "hank": { img:"images/hank.webp", main:["willow","larry","frank","dyna","mina","bull","draco","bibi"], info:[""] },
-    "jacky": { img:"images/jacky.webp", main:["griff","emz","crow","otis","shelly","surge","gale","frank","bull","primo","draco"], info:[""] },
-    "jaeyong": { img:"images/jaeyong.webp", main:["griff","bo","charlie","crow","kenji"], info:[""] },
-    "janet": { img:"images/janet.webp", main:["kenji","griff","bonnie","amber","carl","frank","darryl","gus"], info:[""] },
-    "jessie": { img:"images/jessie.webp", main:[,"piper","barley","larry","squeak"], info:[""] },
-    "juju": { img:"images/juju.webp", main:["barley","kaze","shade","frank","brock","cord","kit","tick"], info:[""] },
-    "kenji": { img:"images/kenji.webp", main:["pam","bull","frank","draco","cord","mina","lou","meeple","jaeyong","hank"], info:[""] },
-    "kaze": { img:"images/kaze.webp", main:["crow","bull","rt","otis","griff","stu"], info:[""] },
-    "kit": { img:"images/kit.webp", main:["cord","rt","frank","hank","ollie","lily","draco"], info:[""] },
-    "larry": { img:"images/larry.webp", main:["mico","edgar","mortis","kenji","willow"], info:[""] },
-    "leon": { img:"images/leon.webp", main:["crow","pearl","gene","pam","jaeyong","mina","janet","charlie"], info:[""] },
-    "lily": { img:"images/lily.webp", main:["buzz","cord","bull","draco","rt","pearl","8bit","doug"], info:[""] },
-    "lola": { img:"images/lola.webp", main:["belle","bo","penny","amber","carl","lumi"], info:[""] },
-    "lou": { img:"images/lou.webp", main:["hank","janet","carl","max","poco","gus","byron","bea","kenji"], info:[""] },
-    "lumi": { img:"images/lumi.webp", main:["amber","draco","piper","mandy","belle","gene","lola"], info:[""] },
-    "maisie": { img:"images/maisie.webp", main:["stu","charlie","mina","larry","juju"], info:[""] },
-	"mandy": { img:"images/mandy.webp", main:["",""], info:[""] },
-    "max": { img:"images/max.webp", main:["crow","lola","poco","gus","jaeyong"], info:[""] },
-    "meg": { img:"images/meg.webp", main:["draco","spike","bea","lola","buster"], info:[""] },
-    "melodie": { img:"images/melodie.webp", main:["amber","buzz","draco","crow","belle"], info:[""] },
-    "meeple": { img:"images/meeple.webp", main:["max","kenji","mortis","mico","frank","bull","mrp","penny"], info:[""] },
-    "mico": { img:"images/mico.webp", main:["gale","buzz","mortis","fang","darryl","kenji","kit","kaze","edgar"], info:[""] },
-    "mina": { img:"images/mina.webp", main:["bull","frank","cord","surge","griff","buster","ash","jacky"], info:[""] },
-    "moe": { img:"images/moe.webp", main:["spike","sprout","tick","grom","barley","willow"], info:[""] },
-    "mortis": { img:"images/mortis.webp", main:["jacky","stu","shelly","otis","bull","mina","griff","chester"], info:[""] },
-    "mrp": { img:"images/mrp.webp", main:["kit","sprout","janet","amber","carl","darryl","edgar","kenji","kaze"], info:[""] },
-    "najia": { img:"images/najia.webp", main:["byron","kenji","mortis","poco","bibi"], info:[""] },
-    "nani": { img:"images/nani.webp", main:["gene","leon","tick","max","sprout","darryl"], info:[""] },
-    "nita": { img:"images/nita.webp", main:["barley","carl","griff","amber","cord","sandy"], info:[""] },
-    "nori": { img:"images/nori.webp", main:[,], info:[""] },
-    "ollie": { img:"images/ollie.webp", main:["poco","maisie","surge","griff","lou","colette"], info:[""] },
-    "otis": { img:"images/otis.webp", main:["juju","larry","piper","byron","tick","amber","janet","stu"], info:[""] },
-    "pam": { img:"images/pam.webp", main:["crow","squeak","spike","lou","8bit","charlie","draco","amber","stu"], info:[""] },
-    "pearl": { img:"images/pearl.webp", main:["chester","leon","amber","crow","spike","lola","meg"], info:[""] },
-    "penny": { img:"images/penny.webp", main:["belle","grom","amber","squeak","juju","larry","kenji"], info:[""] },
-    "pierce": { img:"images/pierce.webp", main:["ruffs","mortis","charlie","tara","spike"], info:[""] },
-    "piper": { img:"images/piper.webp", main:["nani","max","leon","tick","gene","kit","kaze"], info:[""] },
-    "poco": { img:"images/poco.webp", main:["sam","crow","griff","mortis","emz","kit","kaze","kenji","lou","edgar"], info:[""] },
-    "rt": { img:"images/rt.webp", main:["piper","brock","max","leon","mortis","darryl","crow"], info:[""] },
-    "rico": { img:"images/rico.webp", main:["brock","ruffs","sprout","grom","buzz","stu","dyna","larry"], info:[""] },
-    "rosa": { img:"images/rosa.webp", main:["shelly","gale","frank","primo","bull","amber"], info:[""] },
-    "ruffs": { img:"images/ruffs.webp", main:["buzz","sprout","carl","belle"], info:[""] },
-    "sam": { img:"images/sam.webp", main:["gale","griff","surge","cord","charlie","nita","janet","draco","stu"], info:[""] },
-    "sandy": { img:"images/sandy.webp", main:["crow","nita","gene","poco","cord"], info:[""] },
-    "shade": { img:"images/shade.webp", main:["frank","jacky","doug","lou","bull","hank","trunk","brock"], info:[""] },
-    "shelly": { img:"images/shelly.webp", main:["chester","cord","stu","crow","emz","tara","nita","amber"], info:[""] },
-    "sirius": { img:"images/sirius.webp", main:["buzz","penny","mortis","pierce"], info:[""] },
-    "spike": { img:"images/spike.webp", main:["moe","sprout","tick","grom","carl","piper","larry","juju"], info:[""] },
-    "sprout": { img:"images/sprout.webp", main:["mico","tick","mortis","darryl","buzz","kaze","kenji","edgar"], info:[""] },
-    "squeak": { img:"images/squeak.webp", main:["darryl","kenji","mortis","max","leon","buzz","kaze"], info:[""] },
-    "starrnova": { img:"images/starrnova.webp", main:[], info:[""] },
-    "stu": { img:"images/stu.webp", main:["charlie","amber","crow","lola","poco","ruffs","tara","pam","sam"], info:[""] },
-    "surge": { img:"images/surge.webp", main:["mrp","ruffs","spike","eve","tara","charlie","larry","juju","stu","ash"], info:[""] },
-    "tara": { img:"images/tara.webp", main:["willow","emz","janet","poco","amber","sandy","juju","larry"], info:[""] },
-    "tick": { img:"images/tick.webp", main:["mandy","gene","fang","sam","kenji","kit","mortis","kaze","darryl"], info:[""] },
-    "trunk": { img:"images/trunk.webp", main:["lou","spike","amber","maisie"], info:[""] },
-    "willow": { img:"images/willow.webp", main:["tick","barley","larry","juju","stu","buzz"], info:[""] },
-    "ziggy": { img:"images/ziggy.webp", main:["stu","mortis","gray","bibi","tick","hank"], info:[""] }
-};
+    "8bit": { img:"images/8bit.webp", 
+	main:["pierce","byron","piper","brock","colette","barley","lou","squeak","penny"],
+    info:["8-Bit remains vulnerable to long-range pressure and his slow movement; ideally having a brawler to break his turret."] },
 
+    "alli": { img:"images/alli.webp", 
+	main:["gale","jaeyong","hank","squeak","darryl","rt","chuck","emz","bull","buzz"],
+    info:["Alli's attack range is affected by her movement speed, which makes slows particularly effective against her. When Alli is slowed, her attack range becomes shorter, making it much harder for her to safely engage or reach targets. The matchup remains dependent on map geometry, particularly maps where bushes allow Alli to approach safely."] },
+
+    "amber": { img:"images/amber.webp", main:["brock","piper","jessie","crow","bea","belle","leon","mortis","darryl","buzz","byron"],
+    info:["Amber is vulnerable to range, wall-peeking and aggressive approaches. Long-range brawlers can pressure her before she gets close enough to use her continuous attack safely, while assassins can punish her when they reach her. The exact strength depending heavily on map geometry, such as bushes, and how safely Amber can control her fuel."] },
+
+    "angelo": { img:"images/angelo.webp", main:["nani","mrp","poco","max","eve","kit","piper"],
+    info:["Nani is the clearest direct counter mentioned because she can challenge Angelo at long range and punish predictable positioning, similarly to Piper. Mr. P and Eve can interfere with Angelo's aim using spawnables from long-range. Poco and Max are also suggested as alternative answers depending on the map and team composition, such as Kit, with the water. The important idea is to avoid giving Angelo an uncontested lane where he can repeatedly charge and land his strongest shots."] },
+
+    "ash": { img:"images/ash.webp", main:["carl","amber","nita","primo","frank","draco","kenji","tara","sam","spike","buzz","chester","lou","emz"],
+    info:["Ash is vulnerable to brawlers that can either outrange him, survive his rage-fueled aggression or punish him while he is forced to approach. Carl is specifically highlighted as a strong pick. Piercing attacks, control effects and high sustained damage are especially useful because Ash becomes much more threatening once he reaches high Rage."] },
+
+    "barley": { img:"images/barley.webp", main:["tick","mortis","brock","edgar","kenji","kaze","mico","grom"],
+    info:[""] },
+
+    "bea": { img:"images/bea.webp", main:["tara","ruffs","charlie","ash","larry","juju","barley","tick","piper"],
+    info:["Pet-spawning brawlers and throwers are repeatedly recommended because they make Bea spend attacks dealing with additional targets instead of directly controlling the lane. Other snipers can also work because Bea's projectile speed can make long-range mirror matchups uncomfortable for her."] },
+
+    "belle": { img:"images/belle.webp", main:["piper","meg","leon","mandy","byron","kit","lily"],
+    info:["Belle's main weakness is her low HP, so the goal is to avoid giving grouping up as teammates and giving her open space while gradually forcing her backward with cover and pressure. Bushes, cover and attacks from multiple directions are particularly useful because they prevent Belle from simply holding a long lane."] },
+
+    "berry": { img:"images/berry.webp", main:["kaze","crow","barley","stu","kenji","kit","mortis"],
+    info:[""] },
+
+    "bibi": { img:"images/bibi.webp", main:["mortis","jacky","stu","surge","griff","cord","primo","tara","bull","emz","shelly"],
+    info:["The key to counter Bibi is by preventing her from repeatedly using her movement advantage to isolate weaker targets, knockbacks are a great way to stop her."] },
+
+    "bo": { img:"images/bo.webp", main:["piper","colt","stu","max","edgar","mico","leon","mrp","8bit","surge"],
+    info:["Bo is vulnerable to being outranged, having his mines bypassed and being pressured before he can comfortably set up. Piper and Colt can challenge him from long range, while Stu and Max can use mobility to dodge his attacks and control spacing. Edgar and Mico can attack him directly once they find an opening. Leon, Mr. P, 8-Bit and Surge are also mentioned as useful ways to deal with his mines or pressure him. The most important part of the matchup is not allowing Bo to control the approach with his mines."] },
+
+    "bolt": { img:"images/bolt.webp", main:["damian","bibi","nori","meeple","starrnova","brock","gale"],
+    info:["Bolt is heavily dependent on speed and movement, so the best counters are brawlers that can stop, root, push or otherwise punish him when he tries to move through you. Gale, Damian and Bibi are directly listed as strong answers, while Nori with the rooting gadget, Meeple with the Ragequit gadget, Starrnova with the Floating gadget and Brock with the Jumping gadget are also recommended. Keeping distance and NOT using wallbreak reduces Bolt's ability to approach safely. Avoiding grouped positioning is also important because grouped targets allow him to charge Super more efficiently."] },
+
+    "bonnie": { img:"images/bonnie.webp", main:["charlie","colette","bea","pam","piper","rt","gus","tara","pearl"],
+    info:[""] },
+
+    "brock": { img:"images/brock.webp", main:["piper","rt","max","darryl","mortis","mandy","nani","kaze","stu","leon"],
+    info:["Brock is strongest when he can keep enemies at the edge of his range. His attacks become easier to dodge once opponents reach mid-range, making fast brawlers and assassins particularly dangerous. Piper, Max, Stu and Leon are specifically named, while tanks and throwers positioned behind permanent walls can also create difficult matchups. Removing Brock's preferred distance and forcing him to fight while moving is the central way to reduce his effectiveness."] },
+
+    "bull": { img:"images/bull.webp", main:["charlie","griff","shelly","emz","gale","cord","mina","otis","nita","lou","sandy","meeple"],
+    info:["Bull is most dangerous when he has Super or Hypercharge available, so the strongest counters are brawlers that can interrupt his dash. Otis, Lou and Cord are specifically described as some of his hardest counters because they can cancel his Super and force him to recharge it. Sandy can stun Bull out of his Super, while Charlie can interrupt the dash and use Cocoon to reduce his Hypercharge impact. Meeple's stun gadget can stop Bull's dash even through walls. Cordelius can also isolate Bull in the Shadow Realm, where Bull has fewer ways to create value."] },
+
+    "buster": { img:"images/buster.webp", main:["darryl","bull","ash","frank","rt","belle"],
+    info:["Buster is vulnerable to tanks that can outdamage him in direct close-range fights. Buster normally wants to use his Super and defensive tools to control a close-range interaction, but these tanks can survive the initial pressure and overwhelm him instead of allowing him to dictate the fight."] },
+
+    "buzz": { img:"images/buzz.webp", main:["charlie","griff","stu","max","sandy","mina","cord","bull","surge","frank","ash","otis","jacky","primo","gale","shelly","fang","clancy"],
+    info:["Buzz relies heavily on landing his Super, so anything that can interrupt his engage is extremely valuable. Otis is specifically called the best counter. Griff is dangerous because his burst can kill Buzz before Buzz gets value from his stun. Jacky, Primo, Gale and Shelly can disrupt his approach, while Surge, Max, Fang and Clancy can either reposition, survive the engage or provide their own crowd control. Keeping Buzz from landing a clean hook is the main priority."] },
+
+    "byron": { img:"images/byron.webp", main:["piper","mandy","crow","bea","ash","mrp","edgar","fang","sprout"],
+    info:["Byron is vulnerable when opponents can outrange him, attack him from behind walls or force him into close-range fights before he can repeatedly heal himself and his teammates. Sniper-style answers such as Piper and Mandy can pressure him from a safe distance. Mr. P can interfere with his attacks using spawned units, while Edgar and Fang can dive him when their engage is timed correctly. Crow's anti-heal also reduces the value of Byron's healing. Sprout's walls separates him from his teammates. The important part is denying Byron the safe distance and time he needs to cycle healing and damage."] },
+
+    "carl": { img:"images/carl.webp", main:["buzz","jacky","surge","colette","stu","mina","bull","cord","bibi","darryl","gene"],
+    info:["Carl gets countered by brawlers that can interrupt his super. Buster is a good counter because Carl's close-range DPS is limited and Buster can use his Super to close the distance and his pull gadget to interrupt Carl's Super."] },
+
+    "charlie": { img:"images/charlie.webp", main:["juju","penny","amber","sandy","tara","jaeyong","janet","carl","pearl","barley","larry"],
+    info:["Charlie is difficult to hard-counter because her range and Cocoon give her reliable defensive options. Penny is particularly useful because her attacks can deal with Charlie's Cocoon while her turret continues providing pressure. Amber is repeatedly named as one of the strongest answers. Sandy and Tara become more useful on closer or more enclosed maps, while Jae-Yong's range and piercing pressure can work on longer maps. Janet, Carl and Pearl are more situational answers. The matchup changes substantially with map geometry."] },
+
+    "chester": { img:"images/chester.webp", main:["pearl","amber","charlie","lumi","mina","stu"],
+    info:[""] },
+
+    "chuck": { img:"images/chuck.webp", main:["charlie","crow","cord","mina","bull","kaze"],
+    info:[""] },
+
+    "clancy": { img:"images/clancy.webp", main:["mrp","charlie","tara","ruffs","sirius","penny","lou","willow","belle"],
+    info:["Clancy becomes much harder to deal with after gaining levels, so the main strategy is preventing him from farming value rather than simply trying to out-DPS him. Ruffs and Charlie are strong because they can pressure him from range while their spawned objects interfere with his projectiles, preventing easy level progression. Sirius is described as a hard counter because Clancy's projectiles do not pierce the Shadows, allowing them to absorb attacks while denying Clancy value. Penny's Salty Barrel can also interfere with his projectiles. Lou can pressure him in Brawl Ball and Hot Zone because of his range and freeze potential, while Willow can turn him against his team with Mind Control in the right situation."] },
+
+    "colette": { img:"images/colette.webp", main:["tick","griff","bea","poco","charlie","belle","gus","lumi"],
+    info:[""] },
+
+    "colt": { img:"images/colt.webp", main:["buster","darryl","mortis","spike","piper","bonnie","belle","gus","byron","gigi","edgar","mico"],
+    info:["Piper is the clearest counter because a good Piper can control the long-range matchup while remaining difficult for Colt to punish. Edgar and Mico can exploit Colt once they reach him and force a close-range interaction. Colt's performance is highly dependent on landing a full stream of bullets, so forcing him to move, dodge or fight without ideal spacing greatly reduces his effectiveness."] },
+
+    "cord": { img:"images/cord.webp", main:["charlie","mina","sandy","surge","nita","gale","crow","tara","buster","juju","otis","ruffs","frank"],
+    info:["Cordelius is dangerous because he can isolate a target with Super, burst them down and escape using his mobility. Gale is specifically praised because he has longer range and more consistent damage, making it difficult for Cordelius to force a favorable approach. Crow with slow can make it harder for Cordelius to close the gap. Juju, Otis and Ruffs are also comfortable picks into Cordelius, while Frank can work in tank-heavy matchups. Amber is more situational because Cordelius can still close the gap quickly."] },
+
+    "crow": { img:"images/crow.webp", main:["piper","janet","bea","pearl","hank","tara","charlie","sirius","penny","nani","darryl","meeple","lola","gray","spike","gus","rosa"],
+    info:["Crow has very few universal hard counters because of his mobility, range and anti-heal. Tara and Charlie are strong because their spawned units give Crow additional targets and reduce the value of his single-target attacks. Sirius provides similar pressure. Penny can outrange him, pressure him with her cannon and use her barrel to absorb attacks. Nani is particularly useful on long-range maps. Darryl becomes much stronger when walls allow him to close the distance safely. Gray can survive poison pressure while threatening a close-range kill. Spike can repeatedly push Crow backward, while Meeple and Lola can pressure him from outside his preferred range. Gus is also mentioned as a useful option with the right setup."] },
+
+    "damian": { img:"images/damian.webp", main:["emz","sirius","surge","lou","cord","otis","jessie","charlie","griff","lumi","bull","rt","doug","colette","piper","gale","belle","chester","stu"],
+    info:["Damian is most vulnerable to tools that prevent him from using his abilities or punish his long attack sequences. Cordelius and Otis can silence him and remove access to the abilities that let him control fights. Jessie's turrets can generate repeated value while forcing Damian to spend attacks on spawned objects. Charlie can shut down his Super with Cocoon. Griff can open the map and force Damian to rely more heavily on his defensive options. Bull and R-T can deliver enough burst to kill him during the right interaction. Doug is an unusual but strong answer because Damian cannot reliably kill him alone, while Doug can survive the pressure and force Damian to waste resources."] },
+
+    "darryl": { img:"images/darryl.webp", main:["lou","surge","bea","ruffs","mina","cord","shelly","griff","rt"],
+    info:[""] },
+
+    "doug": { img:"images/doug.webp", main:["lumi","bea","griff","frank","clancy","bull","belle","crow","byron","rt","draco","cord"],
+    info:["Doug's strength comes from sustaining himself and his teammates, so the best counters either deny his healing, outrange him or force him into an unfavorable engagement. Bull is one of the strongest answers because Doug struggles to survive a direct close-range tank fight. Belle can punish grouped targets and discourage Doug from standing directly beside teammates. Crow's anti-heal makes Doug's sustain much less effective. Byron with Malaise can reduce Doug's healing while pressuring him from range. R-T can deal heavy damage from range without giving Doug an easy melee interaction. Draco and Cordelius are also useful when they can prevent Doug from controlling a close-range fight. Opening walls and bushes is especially useful because it reduces Doug's ability to safely sustain himself."] },
+
+    "draco": { img:"images/draco.webp", main:["lumi","amber","mina","cord","pam","lou","frank","charlie","kit","shade","hank","nita"],
+    info:["Draco becomes extremely dangerous once his Hypercharge and Super cycle starts, so the strongest counters are brawlers that can interrupt him or deny the resources required for the sequence. Pam's ammo-stealing gadget can leave Draco without enough ammunition to continue attacking. Lou can repeatedly freeze him, while Frank can also stun him. Charlie and Cordelius can use super during Draco's Hypercharge, wasting a large portion of its duration and stopping his momentum. Kit can stun Draco as his Super begins. Shade and Hank can also punish his approach under the right conditions. Any reliable stun is valuable because cancelling Draco's Super animation prevents him from getting the full benefit of the engage."] },
+
+    "dyna": { img:"images/dyna.webp", main:["mortis","bibi","stu","kenji","mico","kit","kaze","sam","edgar","chester","brock","leon","chuck"],
+    info:["Dyna gets countered by almost every assassin and wallbreakers. Some particular ones are Chester, particularly the bomb super, which is just a better version of Dyna's, used to destroy his cover."] },
+
+    "edgar": { img:"images/edgar.webp", main:["hank","doug","jacky","cord","poco","chester","otis","gale","chuck","bull","shelly","stu","fang","buzz","mina","surge","griff"],
+    info:["Edgar is easiest to counter when his jump options are limited before he lands. Zoning him from more than six tiles away can force him to spend movement resources simply reaching the target, leaving fewer options after the engage. Otis is one of the most reliable answers with his super. Chester can kill him consistently with the 3-4 sequence. Gale and Shelly can use knockback to deny his close-range pressure. Bull can make the dive awkward, while Stu and Mina can reposition away from him while still threatening damage. Fang and Buzz can survive the initial engage and provide their own crowd control. Chuck is another possible answer because his movement and durability make it difficult for Edgar to get the isolated target he wants."] },
+
+    "emz": { img:"images/emz.webp", main:["crow","janet","bonnie","amber","barley","juju","larry","gus","rt","cord","otis","meeple","mortis","stu"],
+    info:["Emz is strongest when she can keep opponents inside the correct portion of her attack range, so brawlers that outrange her or approach from unexpected angles are especially effective. Gus and R-T are recommended because their faster projectiles make it easier to land damage without giving Emz time to control the interaction. Cordelius can approach through ambush angles and prevent Emz from freely using her abilities. Otis combines high damage with enough range to pressure her and can shut her down with Super. Meeple can attack from outside Emz's preferred range. Mortis can exploit spacing mistakes, while Stu can kite her and switch into melee when an opening appears. Bushes and unexpected angles are particularly dangerous and also advantageous, which is why Amber is a good answer to Emz because she becomes much weaker once an opponent gets close enough to avoid her normal spacing."] },
+
+    "eve": { img:"images/eve.webp", main:["alli","carl","janet","poco","penny","shade","max","piper"],
+    info:["Eve's Hatchlings make single-target brawlers much less effective, so area damage and attacks that can pass through or bypass the spawned units are valuable. Penny can pressure Eve while dealing with Hatchlings through her attacks and cannon. Janet can also handle the spawned units without giving Eve the same advantage she gets against single-target brawlers. Carl is a strong direct answer because his pickaxe passes through Eve's Hatchlings and gives him better damage efficiency. Carl can also use his gadgets to approach or burst Eve, although Eve's extra range and escape tools make the matchup more difficult on open maps. Shade can pressure Eve through the space created by her Hatchlings rather than having to remove each Hatchling individually."] },
+
+    "fang": { img:"images/fang.webp", main:["charlie","otis","gale","eve","chester","tara","draco","cord","8bit","rt","jacky","rosa","buster","nita","maisie","shelly","colette","mrp","chuck","primo","griff","clancy"],
+    info:["Fang's biggest strength is chaining Super hits, so the strongest counters are brawlers that can interrupt the chain, survive the initial engage or punish him before he starts it. Cordelius can stop Fang during his Super and isolate him in the Shadow Realm. 8-Bit can increase team damage enough to make Fang easier to kill before he can sustain himself through a fight. R-T can leave Fang at one shot or kill him outright. Jacky and Rosa are strong lane counters because Fang has difficulty winning a straight close-range fight against them. Buster can save ammunition for Fang's approach and punish him after he commits. Nita's bear gives Fang another target and disrupts his Super chain. Maisie's gadget can cancel his Super and her burst can finish him afterward. Shelly and Colette can punish his approach with strong close-range damage, while Mr. P's spawnable pressure can interfere with his Super targets. Chuck is another possible answer because his movement and durability make it difficult for Fang to get the isolated target he wants."] },
+
+    "finx": { img:"images/finx.webp", main:["meeple","darryl","emz","edgar","kenji","rosa","bull","shade","bibi","mortis","primo","gus","larry"],
+    info:["Finx is much easier to pressure at close range because he has limited defensive options once an opponent is already on top of him. Darryl can rapidly close the gap and force a direct fight. Emz is an unusual matchup because her attack covers the area around Finx and her damage can benefit from being slowed, making Finx's Super less effective against her. Throwers become more useful on maps with many walls because Finx has difficulty reaching them safely. Carl should not be treated as a hard counter because attacking Finx during his Super can actually give Finx a major DPS advantage."] },
+
+    "frank": { img:"images/frank.webp", main:["colette","surge","primo","charlie","chester","lou","sandy","squeak","otis","bibi","tara","edgar","bull","doug","shelly","rt","pearl"],
+    info:["Frank is most vulnerable when he cannot freely walk into close range or charge attacks safely. Otis can disable him and prevent him from converting his high health into a successful engage. Bibi can repeatedly push Frank away and control his movement. Tara can save Super specifically for Frank and interrupt his momentum. Squeak is a safer ranged answer because Frank has difficulty reaching him without taking repeated damage. Edgar can exploit Frank's slow movement and recover much of the damage taken during the engage. Lou can freeze Frank, while Chester can burst him when Frank lacks defensive options. Bull, Doug, Shelly, R-T and Pearl are also viable because they can survive or punish Frank at close range instead of allowing him to dominate the interaction. Frank's Hypercharge and pull gadget make careless close-range approaches especially dangerous, so timing matters."] },
+
+    "gale": { img:"images/gale.webp", main:["mico","buzz","spike","piper","belle","amber","janet","larry","juju","cord","colt","max","crow","ruffs","lou"],
+    info:["Gale is difficult to fight at close range because his attacks are easy to connect and his Super can repeatedly create distance or stun. The strongest answers maintain enough range to damage him while having enough mobility to avoid his shots. Colt is particularly effective because he can punish Gale from range while moving quickly enough to avoid predictable attacks. Max can use speed to control the distance. Crow can stay at maximum range while using mobility to avoid being pinned. Belle and Piper benefit from open lanes where they can consistently outrange him. Ruffs can also pressure Gale from outside his preferred range. Lou is more conditional because his shorter range makes the matchup dependent on map geometry. Removing walls is valuable because Gale benefits from fighting around cover and forcing close-range interactions."] },
+
+    "gene": { img:"images/gene.webp", main:["8bit","mrp","eve","penny","charlie","tara","belle","nita","larry","juju","tick","leon","lola","kenji","mortis","kit","edgar","poco","pam","berry","nani","piper"],
+    info:["Gene has a slow reload and relatively limited damage output, so spawned units are particularly effective because they force him to spend ammunition on something other than the enemy brawler. Nita, Penny, Larry, Juju, Eve, Mr. P, Charlie, Tara, Tick and Lola all have persistent or disposable pressure that can interfere with Gene's ammo economy. In Gem Grab, Kenji, Mortis, Kit and Edgar can force Gene to spend resources defensively and keep him away from the center. In Brawl Ball, mobile brawlers can repeatedly reach him and force him to use Super defensively. In Knockout and Bounty, Nani and Piper can force Gene to retreat after only a few successful hits because of their burst damage. Poco, Pam and Berry are more situational answers against his relatively low sustained damage."] },
+
+    "gigi": { img:"images/gigi.webp", main:["shelly","fang","otis","cord","edgar","bull","bibi","buster"],
+    info:["Gigi is strongest against brawlers that repeatedly feed her Super with many projectiles. Griff, Meg, Colt and Rico are particularly dangerous for themselves because their multi-projectile attacks can charge her Super quickly. Gigi is much weaker against brawlers that can approach without constantly feeding her Super and then overwhelm her with concentrated close-range damage. Edgar and Bull can do this when they force the engagement correctly, while Shelly and Bibi can punish her at close range. Buster can also threaten her because his damage becomes more dangerous up close without giving her the same projectile spam. Gigi can still survive against some assassins when she has a full ammunition cycle available, so forcing her to waste ammo before engaging is more reliable than blindly diving."] },
+
+    "glowbert": { img:"images/glowbert.webp", main:["crow","kenji","belle","jessie","byron","sam","mortis","bibi","amber","pierce","piper","emz","alli"],
+    info:["Glowbert becomes much harder to kill when he can maintain his tether and continuously heal from the damage he deals. Byron with anti-heal is one of the strongest direct answers because it attacks the healing that keeps Glowbert alive. Crow's poison and anti-heal similarly reduce his sustain. Glowbert's tether cannot pass through walls, so breaking line of sight forces him to release the target and lose his damage and healing cycle. Sam, Mortis, Bibi and Alli can exploit this by forcing close-range engagements where Glowbert has less time to establish his tether safely. Pierce, Piper and Emz can pressure him from outside his comfortable range, especially in open space. Amber is also useful because she can maintain pressure while continuously repositioning. Glowbert is much easier to kill when isolated; removing the protection of a tank or teammate is often more important than attacking him immediately."] },
+
+    "gray": { img:"images/gray.webp", main:["gene","tick","mortis","leon","crow","fang","max","darryl","kit","piper","brock","griff"],
+    info:["Gray is strongest when he can use walls, portals and precise shots to support a teammate or create unexpected engagements. Aggressive tanks such as Darryl and Kit can pressure him before he gets enough value from his portals. Piper and Brock can outrange him while dealing enough damage to force him away before he creates a favorable setup. Max is effective because Gray's narrow shots become much harder to land against high movement speed. Griff can pressure Gray's tank teammates and punish the compositions in which Gray is commonly used, although the matchup is more map-dependent. Spawnables can also interfere with Gray because they force him to spend attacks dealing with them instead of directly pressuring the enemy."] },
+
+    "griff": { img:"images/griff.webp", main:["crow","spike","bea","janet","stu","mina","amber","finx","chester","max","bull","mico"],
+    info:["Griff loses effectiveness when opponents can consistently avoid his main attack while staying outside the range where all of his projectiles connect. Amber, Stu and Finx can maintain pressure without giving Griff comfortable close-range opportunities. Bea can repeatedly poke him from outside his strongest damage range. Chester can burst Griff if he reaches the correct attack sequence before Griff can respond. Max and Crow can keep moving while forcing Griff to waste attacks, which is particularly effective because missed ammo leaves him vulnerable during reload. Crow with anti-heal is especially useful against Griff's healing Star Power. Bull and Mico can work as surprise engages when they can approach from cover and deal enough burst before Griff unloads his attacks. Spike can maintain distance while threatening high damage."] },
+
+    "grom": { img:"images/grom.webp", main:["lily","mico","mortis","fang","darryl","kenji","kit","kaze","shade","bibi","jessie","sam","clancy"],
+    info:["Grom becomes much easier to defeat after an opponent closes the gap because his attacks are designed to control space from a distance rather than win direct point-blank fights. Mico, Mortis, Darryl and Shade can rapidly reach him and punish him before he can establish another safe position. Bibi and Sam can use mobility to pressure him and force him to throw defensively. Jessie's turret creates additional pressure and forces Grom to spend ammunition on spawned units. Clancy can also overwhelm him once he reaches effective range. Dodging Grom's attacks and moving forward after he has spent ammunition creates a reliable opening; once he is low on ammo and an opponent reaches his personal space, his ability to defend himself drops sharply."] },
+
+    "gus": { img:"images/gus.webp", main:["charlie","bo","byron","mandy","piper","eve","darryl","janet","8bit","ash","mortis","chuck","colt","crow","mrp","frank","leon","lily","cord"],
+    info:["Gus is vulnerable when opponents can either reach him directly or prevent him from safely using ranged attacks. Ash is one of the strongest close-range answers because he can use walls to reach Gus, build Rage and then overwhelm him before Gus can stabilize. Mortis can also win the matchup with the right timing. Chuck can burst Gus and use his Super to stay on him while avoiding the separation Gus wants. Piper and Colt can pressure Gus from long range, while Crow can maintain maximum distance and repeatedly dodge his shots. Mr. P is useful because porters force Gus to spend ammunition on spawned units. Frank can overwhelm him when he gets close enough, while Charlie can slow the pace of the fight and force Gus to spend resources defensively. Leon, Lily and Cordelius can bypass Gus's preferred spacing and force direct engagements. Throwers are strong because Gus has no reliable way to attack around walls, making map geometry a major factor."] },
+
+    "hank": { img:"images/hank.webp", main:["willow","larry","frank","dyna","mina","bull","draco","bibi","lou","cord","colette","nita","maisie","surge","spike","crow"],
+    info:["Hank is vulnerable to brawlers that can interrupt his bubble, force him out of position or damage him without allowing him to establish close-range pressure. Dynamike and Frank are particularly effective because their crowd control can disrupt Hank while he is charging or positioning his bubble. Lou can repeatedly slow or freeze him, making it difficult for Hank to maintain the spacing needed for his attacks. cord can use his Super to isolate Hank, while Colette can consistently damage his high health and punish him from outside his preferred range. Nita can pressure Hank with Bruce and force him to spend ammunition dealing with the bear. Maisie and Surge can use knockback to disrupt his bubble timing. Spike can maintain range while dealing heavy damage, and Crow can continuously chip Hank while making his healing less effective. Hank is particularly vulnerable when he has to approach through open space."] },
+
+    "jacky": { img:"images/jacky.webp", main:["griff","emz","crow","otis","shelly","surge","gale","frank","bull","primo","draco","edgar","chester","bonnie","kenji","bibi"],
+    info:["Jacky is most dangerous after she reaches close range, especially when she has her speed gadget or Hypercharge available. Emz and Edgar can sustain themselves through her damage and prevent her from winning through repeated close-range pressure. Bull is one of the strongest direct answers because he can shred Jacky at close range. Griff can use his Super and gadget to survive her engage and punish her. Shelly can stop Jacky's approach with her Super and finish her at close range. Chester can become a strong answer with the correct attack sequence. Bonnie can remain outside Jacky's range and use burst to punish an approach. Kenji can survive some of Jacky's damage and threaten her during the engage, while Bibi can use knockback to prevent Jacky from maintaining contact."] },
+
+    "jaeyong": { img:"images/jaeyong.webp", main:["griff","bo","charlie","crow","kenji"],
+    info:[""] },
+
+    "janet": { img:"images/janet.webp", main:["kenji","griff","bonnie","amber","carl","frank","darryl","gus","kit","ash","sam"],
+    info:["Janet is strongest when she can comfortably control a lane with her long-range piercing attack, so she becomes more vulnerable when opponents can consistently force close-range engagements. Kit can pressure her from above with his Super and make it difficult for Janet to maintain safe positioning. Ash and Sam can approach through her lane pressure and force her to retreat. Her Super also gives her a powerful escape tool, meaning opponents should pressure her before she can charge it rather than assuming they can finish her after activation."] },
+
+    "jessie": { img:"images/jessie.webp", main:["piper","barley","larry","squeak","edgar","mico","mortis","carl","penny","colt","brock"],
+    info:["Jessie's main attack becomes much more threatening when opponents group together because each bounce can create additional damage. Spreading out and avoiding unnecessary chains reduces much of her lane pressure. Edgar, Mico and Mortis can exploit her vulnerability when they reach her directly, although they must account for Scrappy and defensive gadgets. Carl can pressure Jessie from range while his pickaxe gives him efficient damage against Jessie and her turret. Penny can pressure the turret while creating area denial. Colt, Piper and Brock can attack Jessie and Scrappy from outside her comfortable range and destroy the turret before it becomes a persistent source of damage."] },
+
+    "juju": { img:"images/juju.webp", main:["barley","kaze","shade","frank","brock","cord","kit","tick","mortis","edgar","kenji","lily","mico","leon"],
+    info:["Juju is strongest when she has time to use the terrain to select the attack effect that best fits the situation. Mortis, Edgar, Kenji, Lily and Mico can reduce that preparation time by forcing her into immediate close-range fights. Leon can approach from stealth and punish Juju before she has established a safe position. Her effectiveness also decreases when opponents avoid predictable terrain interactions and refuse to give her easy targets for enhanced attacks."] },
+
+    "kenji": { img:"images/kenji.webp", main:["pam","bull","frank","draco","cord","mina","lou","meeple","jaeyong","hank","bibi","griff","shelly"],
+    info:["Kenji is strongest against brawlers that cannot deal enough burst damage to stop his approach. His dash attacks let him avoid incoming shots, while his defensive Super and healing can allow him to recover from damage that would normally force another brawler to retreat. Bull, Bibi, Griff and Shelly can threaten him with concentrated burst and enough health to survive his initial engagement. Draco can also pressure Kenji because his durability makes it difficult for Kenji to win through a short burst sequence. Cordelius can remove Kenji from the normal fight with Shadow Realm and prevent him from relying on teammates. Low-damage brawlers are generally poor answers because Kenji can repeatedly dash through their attacks and recover."] },
+
+    "kaze": { img:"images/kaze.webp", main:["crow","bull","rt","otis","griff","stu"],
+    info:[""] },
+
+    "kit": { img:"images/kit.webp", main:["cord","rt","frank","hank","ollie","lily","draco","otis","charlie","shelly","bull","bibi","gene"],
+    info:["Kit's biggest advantage comes from attaching to a target and converting the initial Super into a longer control sequence. Brawlers that can interrupt him, survive the attachment or punish his approach are the most reliable answers. Hank can make the close-range approach dangerous because Kit has to enter Hank's effective damage area to commit. Cordelius can isolate Kit in the Shadow Realm. Otis can silence Kit and remove his ability to continue the sequence. Charlie can use Cocoon to interrupt Kit. Shelly, Frank and Bull can survive or punish Kit when he commits directly onto them, while Bibi can use knockback to disrupt his positioning. Gene can keep Kit away from preferred targets and use Super to interrupt or reposition him."] },
+
+    "larry": { img:"images/larry.webp", main:["mico","edgar","mortis","kenji","willow","stu","cord","darryl","sam","bibi","clancy"],
+    info:["Larry and Lawrie are strongest when they can control an area with Larry's long-range attacks and use Lawrie to punish opponents who enter the wrong space. Stu is one of the most reliable answers because his repeated dashes let him dodge Larry's projectiles while closing the distance and repositioning around Lawrie. Mortis, Mico and Edgar can also reach Larry quickly, while Cordelius can isolate one brother. Darryl and Sam can bypass Larry's projectile zone and force a direct fight. Bibi can use knockback to disrupt Lawrie and prevent the brothers from maintaining their preferred spacing. Clancy can overwhelm them after gaining enough levels."] },
+
+    "leon": { img:"images/leon.webp", main:["crow","pearl","gene","pam","jaeyong","mina","janet","charlie","mrp","tara","shelly","bull","buster","otis","cord","penny"],
+    info:["Leon relies heavily on invisibility and burst to isolate targets, so brawlers that create additional targets, reveal him or survive his initial attack reduce his effectiveness. Mr. P is one of the strongest answers because porters force Leon to spend ammunition. Tara can create multiple targets with her Super and punish Leon when he commits. Charlie can interrupt his approach and remove him from the fight with Cocoon. Shelly and Bull can survive or punish Leon at close range, while Buster can absorb his burst. Otis can silence Leon and prevent him from continuing the attack sequence. Cordelius can isolate Leon, while Penny can use her cannon and splash damage to make his approach more difficult."] },
+
+    "lily": { img:"images/lily.webp", main:["buzz","cord","bull","draco","rt","pearl","8bit","doug","tara","charlie","nita","ash","bibi"],
+    info:["Lily is strongest when she can use Vanish to approach an isolated target and immediately convert the surprise into a kill. Tara can create additional targets with her gadgets and Super, making it harder for Lily to find a clean engagement. Cordelius can isolate Lily after she commits and remove support from her team. Charlie can interfere with Lily's close-range attack sequence. Nita is particularly useful because Bruce gives Lily additional targets. Ash, Draco and Bibi can survive Lily's initial burst and threaten her during the close-range fight."] },
+
+    "lola": { img:"images/lola.webp", main:["belle","bo","penny","amber","carl","lumi"],
+    info:["Belle is the clearest answer because she can consistently pressure Lola from outside her preferred range and punish predictable positioning with her Super. Lola's Ego gives her a major damage advantage when positioned correctly, so avoiding unnecessary fights inside its attack range is important. Destroying or forcing the Ego away from the lane can remove much of Lola's pressure and leave her with considerably less damage output. Divers are particularly effective when they can reach Lola without taking excessive chip damage."] },
+
+    "lou": { img:"images/lou.webp", main:["hank","janet","carl","max","poco","gus","byron","bea","kenji"],
+    info:[""] },
+
+    "lumi": { img:"images/lumi.webp", main:["amber","draco","piper","mandy","belle","gene","lola"],
+    info:["Amber is the clearest answer because she can maintain continuous pressure while moving unpredictably and denying Lumi comfortable positioning. Piper and Mandy can exploit longer sightlines and punish Lumi before she reaches her preferred range, while Belle can repeatedly pressure her from distance. Gene can disrupt Lumi's positioning with Super, and Lola can challenge Lumi at range while using her Ego to increase pressure. Lumi becomes easier to handle when she is forced to fight around open lanes without enough cover."] },
+
+    "maisie": { img:"images/maisie.webp", main:["stu","charlie","mina","larry","juju"],
+    info:["Stu is the clearest counter because his repeated Super dashes make Maisie's slow projectile progression much harder to land consistently. Maisie is also pressured by brawlers that can force her to react instead of comfortably holding a lane. Her first shot is relatively slow and her attacks become easier to avoid when the opponent moves unpredictably. Her Super provides strong close-range control, so rushing without accounting for it can backfire."] },
+
+    "mandy": { img:"images/mandy.webp", main:["","","piper","belle","brock","gene","lola","lumi"],
+    info:["Mandy's biggest advantage is her ability to control long sightlines with her focused attacks, so the best counters either match her range or prevent her from comfortably charging and firing. Piper can contest her directly at long range while maintaining strong burst damage. Belle can repeatedly pressure Mandy and punish predictable lane positioning with her Super. Brock can use his range and area damage to force Mandy away from favorable positions. Gene can disrupt her positioning with Super. Lola and Lumi can apply sustained ranged pressure. Mandy is much weaker when forced to reposition repeatedly."] },
+
+    "max": { img:"images/max.webp", main:["crow","lola","poco","gus","jaeyong"],
+    info:[""] },
+
+    "meg": { img:"images/meg.webp", main:["draco","spike","bea","lola","buster"],
+    info:["Draco is the clearest answer because his durability and close-range pressure allow him to fight Meg without immediately losing to her health advantage. Spike can consistently damage Meg from range while using his Super to restrict her movement. Bea can punish Meg from outside her preferred range. Lola can maintain sustained damage with her Ego, while Buster can absorb pressure and threaten Meg when she commits to close range. Maintaining distance and forcing Meg to approach through open space is generally safer than taking unnecessary point-blank fights."] },
+
+    "melodie": { img:"images/melodie.webp", main:["amber","buzz","draco","crow","belle"],
+    info:[""] },
+
+    "meeple": { img:"images/meeple.webp", main:["max","kenji","mortis","mico","frank","bull","mrp","penny"],
+    info:["Max is the clearest answer because her speed allows her to control the distance against Meeple and repeatedly reposition before Meeple can establish a comfortable attack pattern. Kenji, Mortis and Mico can exploit openings by rapidly entering Meeple's personal space. Frank and Bull can pressure through high health and close-range damage, particularly when walls allow them to approach safely. Mr. P and Penny can create additional targets that force Meeple to spend ammunition dealing with something other than the main target."] },
+
+    "mico": { img:"images/mico.webp", main:["gale","buzz","mortis","fang","darryl","kenji","kit","kaze","edgar","hank","bull","ollie","chester","griff","lou","penny","nita","jessie","mrp","rt","jacky","doug"],
+    info:["Mico is most vulnerable to brawlers that can survive his attack cycle and punish him immediately after he lands. Gale and Buzz can interrupt his movement with crowd control, while Hank is especially difficult because Mico cannot safely rely on walls to escape. Bull, Fang, Jacky and Doug can survive or threaten Mico during close-range attacks, while Chester and Griff can time their burst between Mico's jumps. Lou and Penny can interrupt Mico. Spawnables are effective because Mico has to spend attacks dealing with them. Nita's Bruce, Jessie's turret and Mr. P's porters can interfere with his approach. R-T can punish Mico when he lands."] },
+
+    "mina": { img:"images/mina.webp", main:["bull","frank","cord","surge","griff","buster","ash","jacky","bibi"],
+    info:["Bibi is the clearest counter because her knockback can interrupt Mina's attack sequence and prevent her from maintaining the close-range pressure she needs. Bull can challenge Mina directly when he can force the engagement at the correct distance. Stu provides mobility that can keep up with Mina. Maisie can punish Mina when she commits into predictable movement, and Frank can become effective with enough health and correct crowd-control timing. Mina has relatively few completely reliable counters because her mobility allows her to disengage from unfavorable fights."] },
+
+    "moe": { img:"images/moe.webp", main:["spike","sprout","tick","grom","barley","willow"],
+    info:[""] },
+
+    "mortis": { img:"images/mortis.webp", main:["jacky","stu","shelly","otis","bull","mina","griff","chester"],
+    info:["Mortis is most dangerous when he can freely choose isolated targets and chain his dashes without being punished. Jacky can make direct approaches extremely dangerous. Stu can match his mobility and repeatedly reposition after Mortis spends a dash. Shelly and Bull can punish Mortis when he enters their effective range, while Otis can shut down his abilities. Mina can keep up with Mortis and threaten him during his movement cycle. Griff can punish Mortis with concentrated burst when he commits too far. Chester can survive the initial approach and retaliate with enough damage to end the engagement."] },
+
+    "mrp": { img:"images/mrp.webp", main:["kit","sprout","janet","amber","carl","darryl","edgar","kenji","kaze"],
+    info:["Kit and Sprout are the clearest answers because they can pressure Mr. P without giving his porters as much control over the fight. Janet can approach from angles that make Mr. P's normal lane control less effective, while Amber can continuously pressure him and his porters. Carl can attack around porter pressure and quickly reposition. Darryl, Edgar and Kenji can bypass the normal lane and reach Mr. P directly. Mr. P becomes significantly stronger when Porter Reinforcement remains active, so destroying the station or forcing Mr. P away from it is often more valuable than repeatedly fighting the spawned porters."] },
+
+    "najia": { img:"images/najia.webp", main:["byron","kenji","mortis","poco","bibi","charlie","tara"],
+    info:["Charlie is the clearest answer because her spiders give Najia additional targets and make it harder for her to focus her main attack on the intended target. Charlie can maintain pressure without entering Najia's preferred range. Tara can work because her summons create similar target saturation, but her shorter range makes the matchup less consistent. Najia has an exceptionally long main attack, so attempting to beat her purely through range is unreliable."] },
+
+    "nani": { img:"images/nani.webp", main:["gene","leon","tick","max","sprout","darryl"],
+    info:["Nani is particularly difficult to counter on open maps because her range and burst allow her to punish predictable movement. The most reliable counterplay is constant, unpredictable movement that makes it harder for her to connect all three projectiles. Avoiding straight-line movement is especially important because Nani's full attack can deal enormous burst when all projectiles connect. The supplied source does not provide enough consistently supported individual brawler names, so main is intentionally empty."] },
+
+    "nita": { img:"images/nita.webp", main:["barley","carl","griff","amber","cord","sandy","jaeyong","willow"],
+    info:["Nita becomes much easier to handle when opponents can attack both her and Bruce efficiently or remove the terrain that allows her to approach safely. Amber can maintain range while continuously pressuring Nita and can also deal with Bruce. Carl can damage Nita and Bruce efficiently while retaining mobility. Jae-Yong can maintain distance and pressure Nita before she reaches a comfortable position. Griff is particularly useful because his wall break removes the cover Nita relies on, while his high damage lets him punish both Nita and Bruce. Willow is effective because she can attack around terrain and avoid giving Bruce an easy path to her."] },
+
+    "nori": { img:"images/nori.webp", main:[],
+    info:["The supplied source does not provide enough usable matchup information to identify reliable individual counters. No names are being added until there is sufficient evidence to support them."] },
+
+    "ollie": { img:"images/ollie.webp", main:["poco","maisie","surge","griff","lou","colette","frank"],
+    info:["Frank is the clearest direct counter because Noise Cancelling prevents Ollie from relying on his main ability to control the engagement. Ollie does not have enough sustained damage to quickly break through Frank's high health, while Frank's Super can punish Ollie once he commits to close range. The supplied source also mentions Rosa and Hank as durable brawlers that can create similarly difficult interactions, but Frank has the clearest directly supported interaction."] },
+
+    "otis": { img:"images/otis.webp", main:["juju","larry","piper","byron","tick","amber","janet","stu"],
+    info:["The supplied source is from an earlier version of the game and the original matchup chart has been deleted. Its remaining material is not sufficient to establish reliable current counters, so main is intentionally empty."] },
+
+    "pam": { img:"images/pam.webp", main:["crow","squeak","spike","lou","8bit","charlie","draco","amber","stu","piper","belle","mandy","brock","nani"],
+    info:["Pam struggles most against brawlers that can consistently attack from outside her effective range. Piper, Belle, Mandy, Brock and Nani can pressure her from distance while avoiding the sustained close-range damage that makes Pam dangerous. Pam's healing station can compensate for chip damage and allow her to hold a position, so forcing her away from it or destroying it before committing to the fight is important."] },
+
+    "pearl": { img:"images/pearl.webp", main:["chester","leon","amber","crow","spike","lola","meg","byron","piper","belle","mandy"],
+    info:["Pearl is strongest when she has enough time to charge her heat bar and choose when to commit her enhanced damage. Constant pressure prevents this setup from becoming reliable. Crow can repeatedly chip Pearl and reduce her ability to recover, while Byron can maintain pressure from range. Piper, Belle and Mandy can keep Pearl at a distance and force her to spend heat without getting comfortable access to the enemy."] },
+
+    "penny": { img:"images/penny.webp", main:["belle","grom","amber","squeak","juju","larry","kenji","edgar","mortis","mico","darryl","sam"],
+    info:["Penny's main weakness is her vulnerability when opponents reach her directly. Edgar, Mortis, Mico, Darryl and Sam can bypass her preferred range and force close-range fights. Her barrel gives her an important defensive tool, but melee brawlers can bait it first and then commit once it has been wasted."] },
+
+    "pierce": { img:"images/pierce.webp", main:["ruffs","mortis","charlie","tara","spike","sirius","mrp","penny"],
+    info:["Pierce becomes much more dangerous when he can repeatedly hit multiple enemy players and generate additional ammunition or value from those interactions. Sirius, Tara, Mr. P, Penny and Charlie can create extra targets that interfere with this pattern. Penny can use her barrel and mortar to create more objects for Pierce to interact with, while Charlie can add another target through her spiders. The main objective is to avoid giving him easy multi-target attacks while forcing him to spend ammunition on disposable units."] },
+
+    "piper": { img:"images/piper.webp", main:["nani","max","leon","tick","gene","kit","kaze","mandy","angelo","lily","pearl"],
+    info:["Nani is the most consistent direct counter because she outranges Piper and has tools that specifically punish long-range single-projectile attacks. Mandy can also outrange Piper when she properly uses her focused range, while Angelo can contest her from extreme distance. Lily is more map-dependent but becomes dangerous on bush-heavy maps where she can approach before Piper has enough time to react. Pearl can absorb multiple shots with defensive tools and answer with high damage once Piper moves too close. Piper becomes much easier to handle when she cannot maintain maximum range."] },
+
+    "poco": { img:"images/poco.webp", main:["sam","crow","griff","mortis","emz","kit","kaze","kenji","lou","edgar"],
+    info:["Crow can reduce Poco's healing through poison and anti-heal, but the matchup becomes less favorable when Poco uses his immunity gadget to remove poison effects. Emz is a stronger direct answer because her sustained area damage pressures Poco while helping control the frontline around him. Poco is most difficult to defeat when he can continuously heal a tank or Frank, so attacking him from range and forcing him to spend Super defensively is more reliable than repeatedly trying to burst the frontline first."] },
+
+    "primo": { img:"images/primo.webp", main:["stu","surge","colette","gale","cord","mina","griff","shelly","charlie","lumi","sirius","lou","doug","nita","max","rico"],
+    info:["Primo struggles most against brawlers that can keep him outside his effective range or punish him after he commits. Shelly can outrange him and use mobility and Super to punish his approach. Sirius, Griff, Surge and Lou can either keep him away or deal enough damage to prevent him from comfortably reaching melee range. Doug can survive prolonged close-range pressure and sustain himself. Nita can use Bruce to deny Primo's approach. Max can repeatedly reposition and kite him. Rico can exploit open firing lanes before Primo reaches him. Primo can overcome some counters with well-timed Super usage, so the key is forcing him to commit defensively rather than allowing him to start the engagement on his terms."] },
+
+    "rt": { img:"images/rt.webp", main:["piper","brock","max","leon","mortis","darryl","crow","willow","grom"],
+    info:["Willow is the clearest direct counter because Mind Control can take control of R-T while he is in his Super form and force him to attack his own team. Grom can pressure R-T from behind walls, where his normal attacks become much less effective. This is heavily map-dependent because R-T is commonly drafted on maps where walls are limited or where he can use speed and vision to avoid throwers."] },
+
+    "rico": { img:"images/rico.webp", main:["brock","ruffs","sprout","grom","buzz","stu","dyna","larry","shade"],
+    info:["Shade is the clearest counter because he can attack through walls and does not need to give Rico the wall-based interaction that normally makes him difficult to approach. Shade can also charge Super against Rico while Rico is hiding behind cover, allowing Shade to eventually force the fight instead of trying to win through the same corridors Rico controls. Rico is much easier to handle with a brawler that can bypass his wall advantage rather than simply trying to outrange him."] },
+
+    "rosa": { img:"images/rosa.webp", main:["shelly","gale","frank","primo","bull","amber"],
+    info:["Rosa is strongest when she can enter close range against a low-damage team and use her Super to survive the initial burst. She becomes much weaker when opponents can consistently damage her from outside her range and force her to approach without enough cover. Pierce is specifically a poor matchup for Rosa when played correctly because he can remain outside her effective range and pressure her continuously. The supplied source does not provide enough consistently supported individual brawlers to populate main without padding it with weak or generic entries."] },
+
+    "ruffs": { img:"images/ruffs.webp", main:["buzz","sprout","carl","belle"],
+    info:["The supplied Brawlscope counter source could not be retrieved reliably, so there is not enough source-specific evidence here to establish individual counters. No brawlers are being added until a usable source is available."] },
+
+    "sam": { img:"images/sam.webp", main:["gale","griff","surge","cord","charlie","nita","janet","draco","stu","colette"],
+    info:["Surge, Colette and Gale are the clearest answers in the supplied source. Colette can rapidly remove Sam's health and neutralize the value he normally gets from repeatedly collecting and throwing his knuckle-busters. Gale becomes especially effective once he has Super because he can push Sam away and repeatedly deny his close-range engagement. Surge can use his movement and Super to keep Sam from establishing a clean melee fight and punish him when he commits."] },
+
+    "sandy": { img:"images/sandy.webp", main:["crow","nita","gene","poco","cord","emz","amber","janet","bo","willow","jessie","lou","otis"],
+    info:["Sandy's strongest position comes from using Super to create a large area where his team can approach while remaining difficult to track. Emz can pressure him directly. Crow provides scouting and slows that make Sandy's Hypercharge speed much less effective. Amber can burn bushes and maintain distance, while Janet can scout and reposition safely. Bo can control choke points and reveal Sandy's hiding areas, while Nita can resist the aggression with Bruce. Poco can provide sustained healing and use the appropriate gadget to interfere with Sandy's Hypercharge effects. Cordelius can isolate Sandy in Shadow Realm, while Willow can reveal or Mind Control aggressive Sandy plays. Jessie, Lou and Otis can also disrupt Sandy compositions through control effects."] },
+
+    "shade": { img:"images/shade.webp", main:["frank","jacky","doug","lou","bull","hank","trunk","brock","meeple","kit","barley","charlie","chester","cord","rt","colt","stu","ruffs","primo","bo","shelly"],
+    info:["Shade becomes much weaker when opponents remove the walls he relies on or attack through those walls without feeding him excessive Super charge. Meeple is directly identified as an effective answer, while Kit has a strong interaction that can punish Shade when he is inside a wall. Hank can cover Shade's movement space, while Barley can control the spaces Shade wants to occupy. Charlie and Chester can disrupt him, while Cordelius can handle him through direct isolation. Trunk, Doug, Jacky and R-T can attack through walls. Colt, Stu, Frank, Ruffs, Bull, El Primo, Bo and Shelly can use wallbreak to open the map before Shade begins cycling Super. The most important rule is not to feed Shade unnecessary Super charge."] },
+
+    "shelly": { img:"images/shelly.webp", main:["chester","cord","stu","crow","emz","tara","nita","amber","pam","gale","surge"],
+    info:["Shelly is strongest when she can fight at close range with Super available, so the most reliable counters either maintain distance or force her to waste Super defensively. Nita and Pam are consistent counters; Nita can use Bruce to absorb Shelly's ammunition while fighting from cover, while Pam can sustain herself through Shelly's chip damage. Gale can repeatedly push Shelly away. Surge is a strong answer because his mobility and upgrades let him stay outside Shelly's preferred range while punishing her approach. Stu and Crow can constantly reposition, while Emz can keep Shelly outside her strongest damage area. Chester can win the interaction when Shelly does not have Super, although the matchup becomes more volatile once Shelly has her full combo available."] },
+
+    "sirius": { img:"images/sirius.webp", 
+	main:["buzz","penny","mortis","pierce"],
+    info:["Penny should not be treated as a Sirius counter despite the favorable-looking interaction on paper. Sirius can steadily destroy Penny's turret from over walls, removing the main source of area control that makes Penny useful. The supplied source does not provide enough reliable individual alternatives to populate main without guessing."] },
+
+    "spike": { img:"images/spike.webp", 
+	main:["moe","sprout","tick","grom","carl","piper","larry","juju","ruffs","otis","amber","pierce","penny"],
+    info:["Spike becomes much easier to handle when opponents can maintain distance, avoid Curveball shots and efficiently deal with his Life Plant. Ruffs is repeatedly recommended as a safe answer. Amber can outrange Spike and her attack passes through Life Plant. Carl can pressure Spike from range while his pickaxe provides efficient damage and mobility. Otis can shut down Spike and prevent him from freely using Super to control close-range fights. Pierce is useful on certain long-range maps, while Penny can pressure Spike and create additional targets."] },
+
+    "sprout": { img:"images/sprout.webp", 
+	main:["mico","tick","mortis","darryl","buzz","kaze","kenji","edgar","gene","gray"],
+    info:["Sprout becomes much weaker when opponents can bypass his wall-based control or pressure him from an angle he cannot easily defend. Gene and Gray can interfere with his positioning and reduce the safety provided by walls, while Mico and Buzz can directly pressure him. Sprout is strongest when the map gives him enough walls to repeatedly bounce shots and isolate areas, so maps with fewer safe positions make those counters more reliable."] },
+
+    "squeak": { img:"images/squeak.webp", 
+	main:["darryl","kenji","mortis","max","leon","buzz","kaze","edgar"],
+    info:["Squeak's slow projectile speed and relatively low sustained damage make him vulnerable when an aggressive brawler can reach him before enough shots connect. Edgar and Mortis can exploit this by rapidly closing the distance and forcing Squeak into a fight where his normal zoning is much less effective. Squeak is much better against slow, tanky or grouped targets because his attacks can repeatedly force them to move and punish enemies that stay together."] },
+
+    "starrnova": { img:"images/starrnova.webp", 
+	main:["moe"],
+    info:["Moe is a particularly strong answer because his high health allows him to survive Starrnova's normal pressure while his mid-range damage consistently threatens her. His Super is especially important because it can shred Starrnova and prevents her from comfortably controlling the engagement. Starrnova can still win if she rushes Moe while he does not have Super, so preserving Super for her engage is essential. The supplied source does not establish additional individual counters strongly enough to add them to main."] },
+
+    "stu": { img:"images/stu.webp", 
+	main:["charlie","amber","crow","lola","poco","ruffs","tara","pam","sam","najia","chester","mina","meeple","finx","sirius","ash","berry"],
+    info:["Stu relies heavily on mobility to choose favorable engagements and escape before opponents can punish him, so the strongest counters either give him too many targets to deal with, survive his damage or control his movement. Charlie and Tara can use spawned units to make Stu waste ammunition. Najia, Chester, Crow and Mina can pressure him from range. Meeple, Finx and Sirius can interfere with his movement through crowd control. Sam and Ash are strong high-health options because Stu's relatively low sustained damage makes it difficult for him to win extended fights. Poco is particularly troublesome because his wide attacks are difficult for Stu to dodge and his healing allows him to survive Stu's chip damage. Ruffs and Berry can provide similar problems through survivability and sustained pressure."] },
+
+    "surge": { img:"images/surge.webp", 
+	main:["mrp","ruffs","spike","eve","tara","charlie","larry","juju","stu","ash","najia","sirius","sprout","otis","8bit","crow","draco","ollie"],
+    info:["Surge is difficult to hard-counter because his upgrades dramatically improve range, mobility and damage, while his Super gives him another way to force favorable engagements. Charlie can outrange him while using spawnables to interfere with his shots and can shut him down with Super. Ruffs, Najia, Sirius and Sprout can attack from safer positions while using objects or terrain to deny his approach. Otis can chip Surge during weaker stages and then disable him with Super. Buffed 8-Bit can punish Surge on open maps. Ash, Crow, Draco and Ollie are more situational options that can survive or punish his approach. Preventing early upgrades is more important than trying to win against a fully upgraded Surge."] },
+
+    "tara": { img:"images/tara.webp", 
+	main:["willow","emz","janet","poco","amber","sandy","juju","larry","penny","buster","cord","stu"],
+    info:["Tara is much easier to lane against when the opponent can pierce through her shadows and continue damaging her without losing attack value. Penny and Janet are strong lane counters because their piercing attacks can hit Tara through her spawned shadows while keeping her at a manageable distance. Amber provides similar pressure. Buster is useful because his health and wall-peeking allow him to survive Tara's normal pressure while his Super can protect him from her burst. Cordelius and Stu can escape or bypass Tara's pull when timed correctly. Spreading out and avoiding unnecessary grouping also reduces her ability to convert Super into multiple kills."] },
+
+    "tick": { img:"images/tick.webp", 
+	main:["mandy","gene","fang","sam","kenji","kit","mortis","kaze","darryl","lily","dynamike","melodie","stu","buzz"],
+    info:["Tick is most vulnerable when an opponent can reach him before he has time to cycle his defensive gadget and Super. Lily is one of his hardest matchups because she can kill him quickly. Mandy can also instantly remove Tick with Super even when he is hiding behind cover. Dynamike can pressure Tick from range. Kenji, Darryl and Melodie can survive enough of Tick's defensive damage to continue the engage, while Mortis, Stu and Buzz can use mobility to reach him and escape before his teammates retaliate. Tick often needs both Gadget and Super to survive an aggressive engage."] },
+
+    "trunk": { img:"images/trunk.webp", 
+	main:["lou","spike","amber","maisie","clancy","crow","najia"],
+    info:["Trunk has strong damage scaling and can become dangerous when he reaches sustained close-range fights, but he is particularly vulnerable to long-range pressure and repeated chip damage. Clancy, Crow and Najia can keep damaging Trunk without allowing him to comfortably establish his preferred fight. Range forces Trunk to spend more time approaching while taking damage, reducing the opportunity for him to build momentum."] },
+
+    "willow": { img:"images/willow.webp", 
+	main:["tick","barley","larry","juju","stu","buzz","poco","mortis","alli","leon","kenji","shade","berry","grom","sprout","frank","bibi","colt","brock","otis","charlie"],
+    info:["Willow struggles when opponents can attack her from outside her preferred range or reach her before she gets repeated attacks and Super value. Poco with Protective Tunes is a particularly strong answer because the gadget can negate Willow's poison and protect teammates. Juju, Larry, Barley, Grom, Tick and Sprout can pressure Willow as fellow long-range wall-based options, although the interaction depends heavily on map and cover. Mortis, Alli, Leon, Kenji and Shade can exploit Willow's low burst and relatively slow reload by forcing close range. Berry and Bibi can survive or pressure her through sustained aggression. Frank can absorb Willow's attacks while breaking her walls. Stu can dash around her attacks, while Colt and Brock can remove her walls and expose her. Otis and Charlie can interrupt her before she gets enough Super value."] },
+
+    "ziggy": { img:"images/ziggy.webp", 
+	main:["stu","mortis","gray","bibi","tick","hank"],
+    info:["Ziggy is strongest when he can fight behind walls and repeatedly control an area with his instant attacks, Super and barrage gadget. He is especially effective against low-mobility brawlers and damage dealers that cannot safely reach him through his area denial. His main weakness is direct pressure: getting close reduces the value of his long-range control. Mobility, wallbreak and the ability to quickly cross the distance therefore make his life much harder. His teleport gadget can protect him from aggressive dives, so forcing that gadget out before committing is important. The supplied source does not identify enough individual brawlers to populate main reliably."] }
+
+};
 /* =========================
    GROUP CLASSES
 ========================= */
 const classGroups = {
     "thrower": ["barley","dyna","larry","tick","sprout","grom","ziggy","sirius","juju","willow","berry"],
+	
     "tank": ["trunk","draco","frank","buster","primo","hank","jacky","rosa","ash","damian","bibi","bull"],
-    "assassin": ["ollie","kenji","mortis","shade","mina","buzz","alli","carl","edgar","kaze","lily","mico","sam","chuck","gigi","melodie","darryl","bolt","nori","fang","starrnova"],
-    "antitank": ["chester","nita","moe","rico","tara","emz","lou","finx","ruffs","otis","lumi","shelly","surge","charlie","gale","spike","cord","maisie","colt","griff","crow","8bit","clancy","colette","meg"],
-    "support": ["kit","max","gray","poco","jaeyong","doug","glowbert"],
-    "sniper": ["mandy","rt","gus","piper","brock","byron","angelo","pierce","nani","belle","bea"],
-    "control": ["amber","meeple","leon","pam","bo","pearl","gene","stu","janet","penny","jessie","sandy","squeak","eve","lola","najia","bonnie","mrp"]
+    
+	"assassin": ["ollie","kenji","mortis","shade","mina","buzz","alli","carl","edgar","kaze","lily","mico","sam","chuck","gigi","melodie","darryl","bolt","nori","fang","starrnova"],
+    
+	"antitank": ["chester","nita","moe","rico","tara","emz","lou","finx","ruffs","otis","lumi","shelly","surge","charlie","gale","spike","cord","maisie","colt","griff","crow","8bit","clancy","colette","meg"],
+    
+	"support": ["kit","max","gray","poco","jaeyong","doug","glowbert"],
+    
+	"sniper": ["mandy","rt","gus","piper","brock","byron","angelo","pierce","nani","belle","bea"],
+    
+	"control": ["amber","meeple","leon","pam","bo","pearl","gene","stu","janet","penny","jessie","sandy","squeak","eve","lola","najia","bonnie","mrp"]
 };
 
 const brawlerClass = {};
