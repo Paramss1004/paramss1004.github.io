@@ -27,7 +27,6 @@ const classEmoji = {
     "tank": "🛡️",
     "assassin": "⚡",
     "antitank": "⚔️",
-    "support": "💚",
     "sniper": "🎯",
     "control": "🌀"
 };
@@ -36,6 +35,79 @@ function classBadge(cls) {
     return cls && classEmoji[cls]
         ? `<span class="class-badge">${classEmoji[cls]}</span>`
         : "";
+}
+
+/* =========================
+   CLASS MATCHUP CHART
+   Fixed rock-paper-scissors style chart: classWeakness[cls] = classes that counter it.
+   classStrength is auto-derived as the reverse of that.
+========================= */
+const classWeakness = {
+    thrower: ["assassin"],
+    tank: ["antitank", "control"],
+    assassin: ["tank", "antitank"],
+    antitank: ["thrower", "sniper", "control"],
+    sniper: ["thrower", "assassin"],
+    control: ["thrower", "sniper"]
+};
+
+const classStrength = {};
+Object.keys(classWeakness).forEach(cls => { classStrength[cls] = []; });
+Object.entries(classWeakness).forEach(([cls, weakTo]) => {
+    weakTo.forEach(counterCls => {
+        if (!classStrength[counterCls]) classStrength[counterCls] = [];
+        classStrength[counterCls].push(cls);
+    });
+});
+
+function classPill(cls) {
+    return `<span class="class-pill">${classEmoji[cls] || ""} ${capitalize(cls)}</span>`;
+}
+
+/* Item 3: pill variant that also shows a numeric "counter score" badge,
+   used by the Class Matchups calculator and the class-based team suggestion. */
+function classPillWithScore(cls, score) {
+    return `<span class="class-pill">${classEmoji[cls] || ""} ${capitalize(cls)} <span class="class-score">${score}</span></span>`;
+}
+
+/* Item 3/1: aggregate "countered by" calculator.
+   For a set of enemy classes, scores every class by how many of those
+   enemy classes it counters (per classWeakness). Internally this is the
+   same relationship classStrength represents in reverse — a high score
+   here means that class is strong against many of the enemy's classes. */
+function getClassCounterScores(classesPresent) {
+    const scores = {};
+    Object.keys(classWeakness).forEach(cls => { scores[cls] = 0; });
+
+    classesPresent.forEach(enemyCls => {
+        (classWeakness[enemyCls] || []).forEach(counterCls => {
+            scores[counterCls] = (scores[counterCls] || 0) + 1;
+        });
+    });
+
+    return scores;
+}
+
+function isOwned(name) {
+    return ownedBrawlers.has(normalize(name));
+}
+
+/* Renders a list of icon-label items with a tiny divider bar inserted
+   wherever the class changes from one item to the next. */
+function withClassDividers(keys, renderFn) {
+    let html = "";
+    let lastClass = null;
+
+    keys.forEach((k, i) => {
+        const cls = getClass(k);
+        if (i > 0 && cls !== lastClass) {
+            html += `<div class="class-divider"></div>`;
+        }
+        html += renderFn(k);
+        lastClass = cls;
+    });
+
+    return html;
 }
 
 /* =========================
@@ -82,7 +154,8 @@ function getCombinedCounters(b) {
     return unique;
 }
 
-let sortMode = "tier"; // "tier" or "class"
+/* Item 6: default sort mode is now "class" instead of "tier" */
+let sortMode = "class"; // "tier" or "class"
 
 function classRank(name) {
     const cls = getClass(name);
@@ -109,9 +182,9 @@ function toggleSortMode() {
 }
 
 /* =========================
-   BROWSE MODE
+   RESULTS GRID (shared by class-browse and the strengths database)
 ========================= */
-function renderBrowseGrid(title, keys, sortFn) {
+function renderResultsGrid(title, keys, sortFn) {
     document.getElementById("topUI").classList.add("hidden");
     document.getElementById("input").blur();
     document.getElementById("backBtn").style.display = "inline-block";
@@ -119,6 +192,7 @@ function renderBrowseGrid(title, keys, sortFn) {
     document.getElementById("shared").style.display = "none";
     document.getElementById("sortControls").style.display = "none";
     document.getElementById("teamSuggestion").style.display = "none";
+    document.getElementById("classCounters").style.display = "none";
 
     const resultDiv = document.getElementById("result");
 
@@ -127,7 +201,7 @@ function renderBrowseGrid(title, keys, sortFn) {
         return;
     }
 
-    const sorted = [...keys].sort(sortFn);
+    const sorted = sortFn ? [...keys].sort(sortFn) : keys;
 
     resultDiv.innerHTML = `
         <div class="shared-box browse-results">
@@ -139,120 +213,212 @@ function renderBrowseGrid(title, keys, sortFn) {
     `;
 }
 
-/* =========================
-   BROWSE SEARCH (Tab-activated)
-========================= */
-let browseSelectedIndex = -1;
-
-function matchBrowseOptions(raw) {
-    const q = raw.toLowerCase().trim();
-    if (!q) return [];
-
-    const tierKeys = ["s+", "s", "a", "b", "c", "d", "f"];
-
-    // Exact tier match wins outright — nothing else should show alongside it
-    const exactTier = tierKeys.find(t => t === q);
-    if (exactTier) {
-        return [{ type: "tier", key: exactTier.toUpperCase(), label: `${exactTier.toUpperCase()} Tier` }];
-    }
-
-    const results = [];
-
-    tierKeys.forEach(t => {
-        if (t.startsWith(q)) results.push({ type: "tier", key: t.toUpperCase(), label: `${t.toUpperCase()} Tier` });
+function browseClass(cls) {
+    const keys = Object.keys(data).filter(k => getClass(k) === cls);
+    const label = cls.charAt(0).toUpperCase() + cls.slice(1);
+    // within this class, sort by tier order
+    renderResultsGrid(label, keys, (a, b) => {
+        const diff = tierRank(a) - tierRank(b);
+        return diff !== 0 ? diff : a.localeCompare(b);
     });
-
-    Object.keys(classGroups).forEach(cls => {
-        if (cls.startsWith(q)) results.push({ type: "class", key: cls, label: capitalize(cls) });
-    });
-
-    return results.slice(0, 6);
 }
 
-function showBrowseSuggestions() {
-    const input = document.getElementById("browseInput");
-    const box = document.getElementById("browseSuggestions");
-    box.innerHTML = "";
-    browseSelectedIndex = -1;
+/* =========================
+   STRENGTHS DATABASE (item 5)
+   Reverse lookup: who does a given brawler counter / beat?
+========================= */
+function getStrengths(name) {
+    const n = normalize(name);
+    if (!data[n]) return [];
 
-    if (!input.value.trim()) {
+    const beats = [];
+    for (const x in data) {
+        if (x === n) continue;
+        if (getCombinedCounters(x).includes(n)) beats.push(x);
+    }
+
+    beats.sort((a, b) => {
+        const diff = currentRank(a) - currentRank(b);
+        if (diff !== 0) return diff;
+        return secondaryRank(a) - secondaryRank(b);
+    });
+
+    return beats;
+}
+
+function searchStrengths(rawName) {
+    const key = normalize(rawName);
+
+    if (!data[key]) {
+        showInputError(`Unknown brawler: "${rawName}"`, "strengthInputError");
+        return;
+    }
+
+    clearInputError("strengthInputError");
+    document.getElementById("strengthInput").value = "";
+    document.getElementById("strengthSuggestions").innerHTML = "";
+    document.getElementById("strengthSuggestions").style.display = "none";
+
+    const beats = getStrengths(key);
+    renderResultsGrid(`${capitalize(key)}'s Strengths — Countered By`, beats, null);
+}
+
+function searchStrengthsFromInput() {
+    const raw = document.getElementById("strengthInput").value.trim();
+
+    if (!raw) {
+        showInputError("Enter a brawler to search", "strengthInputError");
+        return;
+    }
+
+    const key = normalize(raw);
+    if (!data[key]) {
+        showInputError(`Unknown brawler: "${raw}"`, "strengthInputError");
+        return;
+    }
+
+    searchStrengths(key);
+}
+
+let strengthSelectedIndex = -1;
+
+function showStrengthSuggestions() {
+    const input = document.getElementById("strengthInput");
+    const box = document.getElementById("strengthSuggestions");
+    const currentRaw = input.value.toLowerCase().trim();
+
+    box.innerHTML = "";
+    strengthSelectedIndex = -1;
+    clearInputError("strengthInputError");
+
+    if (!currentRaw) {
         box.style.display = "none";
         return;
     }
 
-    const matches = matchBrowseOptions(input.value);
+    const matches = Object.keys(data)
+        .filter(n => n.toLowerCase().startsWith(currentRaw))
+        .sort()
+        .slice(0, 6);
+
     box.style.display = matches.length > 0 ? "block" : "none";
 
-    matches.forEach(m => {
+    matches.forEach(name => {
         const div = document.createElement("div");
-        div.innerHTML = `<span>${m.label}</span>`;
-        div.dataset.type = m.type;
-        div.dataset.key = m.key;
-        div.onclick = () => selectBrowseOption(m.type, m.key);
+
+        div.innerHTML = `
+            <img src="${data[name].img}" class="brawler-img ${getClass(name)}">
+            <span class="${getClass(name)}">${capitalize(name)}</span>
+        `;
+
+        div.dataset.name = name;
+        div.onclick = () => searchStrengths(name);
         box.appendChild(div);
     });
 }
 
-function selectBrowseOption(type, key) {
-    document.getElementById("browseInput").value = "";
-    document.getElementById("browseSuggestions").innerHTML = "";
-    document.getElementById("browseInput").blur();
-
-    if (type === "tier") browseTier(key);
-    else browseClass(key);
-}
-
-function handleBrowseKeyDown(e) {
-    const box = document.getElementById("browseSuggestions");
+function handleStrengthKeyDown(e) {
+    const box = document.getElementById("strengthSuggestions");
     const items = box.querySelectorAll("div");
-
-    if (e.key === "Tab" || e.key === "Escape") {
-        e.preventDefault();
-        document.getElementById("browseInput").value = "";
-        box.innerHTML = "";
-        document.getElementById("input").focus();
-        return;
-    }
 
     if (items.length > 0) {
         if (e.key === "ArrowDown") {
-            browseSelectedIndex = (browseSelectedIndex + 1) % items.length;
-            items.forEach((el, i) => el.classList.toggle("active", i === browseSelectedIndex));
+            strengthSelectedIndex = (strengthSelectedIndex + 1) % items.length;
+            items.forEach((el, i) => el.classList.toggle("active", i === strengthSelectedIndex));
             e.preventDefault();
         }
 
         if (e.key === "ArrowUp") {
-            browseSelectedIndex = (browseSelectedIndex - 1 + items.length) % items.length;
-            items.forEach((el, i) => el.classList.toggle("active", i === browseSelectedIndex));
+            strengthSelectedIndex = (strengthSelectedIndex - 1 + items.length) % items.length;
+            items.forEach((el, i) => el.classList.toggle("active", i === strengthSelectedIndex));
             e.preventDefault();
         }
 
         if (e.key === "Enter") {
             e.preventDefault();
-			e.stopPropagation();
-            const chosen = browseSelectedIndex >= 0 ? items[browseSelectedIndex] : items[0];
-            selectBrowseOption(chosen.dataset.type, chosen.dataset.key);
+            e.stopPropagation();
+            const chosen = strengthSelectedIndex >= 0 ? items[strengthSelectedIndex].dataset.name : items[0].dataset.name;
+            searchStrengths(chosen);
         }
+
+        return;
+    }
+
+    if (e.key === "Enter") {
+        e.preventDefault();
+        e.stopPropagation();
+        searchStrengthsFromInput();
     }
 }
 
-function browseTier(tier) {
-    const keys = Object.keys(data).filter(k => getTier(k) === tier);
-    // within this tier, sort by class order
-    renderBrowseGrid(`Tier ${tier}`, keys, (a, b) => {
-        const diff = classRank(a) - classRank(b);
-        return diff !== 0 ? diff : a.localeCompare(b);
-    });
+/* =========================
+   TIER LIST DISPLAY
+   Hidden by default and built lazily on first click of "Show Tier List" —
+   generating ~90 icon-label blocks up front was adding to page load time.
+========================= */
+let tierListBuilt = false;
+
+function toggleTierList() {
+    const container = document.getElementById("tierListDisplay");
+    const btn = document.getElementById("tierListToggleBtn");
+    if (!container || !btn) return;
+
+    const isShowing = container.style.display !== "none";
+
+    if (isShowing) {
+        container.style.display = "none";
+        btn.textContent = "Show Tier List";
+        return;
+    }
+
+    if (!tierListBuilt) {
+        renderTierListDisplay();
+        tierListBuilt = true;
+    }
+
+    container.style.display = "flex";
+    btn.textContent = "Hide Tier List";
 }
 
-function browseClass(cls) {
-    const keys = Object.keys(data).filter(k => getClass(k) === cls);
-    const label = cls.charAt(0).toUpperCase() + cls.slice(1);
-    // within this class, sort by tier order
-    renderBrowseGrid(label, keys, (a, b) => {
-        const diff = tierRank(a) - tierRank(b);
-        return diff !== 0 ? diff : a.localeCompare(b);
-    });
+function renderTierListDisplay() {
+    const container = document.getElementById("tierListDisplay");
+    if (!container) return;
+
+    container.innerHTML = tierOrder.map(tier => {
+        const keys = Object.keys(data)
+            .filter(k => getTier(k) === tier)
+            .sort((a, b) => {
+                const diff = classRank(a) - classRank(b);
+                return diff !== 0 ? diff : a.localeCompare(b);
+            });
+
+        if (keys.length === 0) return "";
+
+        return `
+            <div class="tier-row">
+                <div class="tier-row-label tier-${tier.replace('+', 'plus')}">${tier}</div>
+                <div class="tier-row-icons">
+                    ${withClassDividers(keys, tierIconLabel)}
+                </div>
+            </div>
+        `;
+    }).join("");
+}
+
+function tierIconLabel(name) {
+    const n = normalize(name);
+    if (!data[n]) return "";
+    const cls = getClass(n);
+
+    return `
+        <div class="icon-label" onclick="showBrawlerPopup('${n}')">
+            <div class="img-wrap">
+                <img src="${data[n].img}" class="brawler-img ${cls}">
+                ${classBadge(cls)}
+            </div>
+            <div class="tiny-name">${capitalize(n)}</div>
+        </div>
+    `;
 }
 
 /* =========================
@@ -265,7 +431,7 @@ function iconLabel(name, isBest = false, isRisky = false) {
     const tier = getTier(n);
 
     return `
-        <div class="icon-label info-container ${isBest ? "best-pick" : ""} ${isRisky ? "risky-pick" : ""}">
+        <div class="icon-label info-container ${isBest ? "best-pick" : ""} ${isRisky ? "risky-pick" : ""}" onclick="showBrawlerPopup('${n}')">
             <div class="img-wrap">
                 <img src="${data[n].img}" class="brawler-img ${cls}">
                 ${classBadge(cls)}
@@ -292,6 +458,31 @@ function openInfoModal(text) {
     const modalText = document.getElementById("infoModalText");
     modalText.textContent = text;
     modal.style.display = "flex";
+}
+
+/* Item 2: popup showing a brawler's counters and strengths on separate lines.
+   Triggered by clicking a brawler icon in the tier list or in any counters list. */
+function showBrawlerPopup(name) {
+    const n = normalize(name);
+    if (!data[n]) return;
+
+    const counters = getCombinedCounters(n);   // brawlers that counter n
+    const strengths = getStrengths(n);          // brawlers that n counters
+
+    const countersText = counters.length ? counters.map(capitalize).join(", ") : "None";
+    const strengthsText = strengths.length ? strengths.map(capitalize).join(", ") : "None";
+
+    const modal = document.getElementById("infoModal");
+    const modalText = document.getElementById("infoModalText");
+
+    modalText.innerHTML = `
+        <strong>${capitalize(n)}</strong><br><br>
+        <strong>Countered by:</strong> ${countersText}<br><br>
+        <strong>Strong against:</strong> ${strengthsText}
+    `;
+
+    modal.style.display = "flex";
+    openInfoIndex = null;
 }
 
 function closeInfoModal() {
@@ -327,14 +518,14 @@ document.addEventListener("click", () => {
 /* =========================
    INPUT ERROR HELPERS
 ========================= */
-function showInputError(msg) {
-    const el = document.getElementById("inputError");
+function showInputError(msg, id = "inputError") {
+    const el = document.getElementById(id);
     el.textContent = msg;
     el.style.display = "block";
 }
 
-function clearInputError() {
-    const el = document.getElementById("inputError");
+function clearInputError(id = "inputError") {
+    const el = document.getElementById(id);
     el.textContent = "";
     el.style.display = "none";
 }
@@ -429,20 +620,11 @@ function showSuggestions() {
    KEY HANDLING
 ========================= */
 function handleKeyDown(e) {
-	if (e.key === "Tab") {
-        e.preventDefault();
-        document.getElementById("suggestions").innerHTML = "";
-        document.getElementById("browseInput").focus();
-        return;
-    }
-	
     const box = document.getElementById("suggestions");
     const items = box.querySelectorAll("div");
 
     if (items.length > 0) {
 
-		
-		
         if (e.key === "ArrowDown") {
             selectedIndex = (selectedIndex + 1) % items.length;
             updateActive(items);
@@ -499,6 +681,44 @@ function updateActive(items) {
 }
 
 /* =========================
+   CLASS COUNTER SECTION (item 3)
+   Aggregate calculator: for the classes present among the searched
+   brawlers, scores every class by how many of those enemy classes it
+   counters, then shows only the ranked "Countered by" results.
+========================= */
+function renderClassCounters(brawlers) {
+    const box = document.getElementById("classCounters");
+    if (!box) return;
+
+    const classesPresent = [...new Set(brawlers.map(getClass).filter(Boolean))];
+
+    if (classesPresent.length === 0) {
+        box.style.display = "none";
+        return;
+    }
+
+    const scores = getClassCounterScores(classesPresent);
+    const ranked = Object.keys(scores)
+        .filter(cls => scores[cls] > 0)
+        .sort((a, b) => scores[b] - scores[a]);
+
+    if (ranked.length === 0) {
+        box.style.display = "none";
+        return;
+    }
+
+    box.style.display = "block";
+    box.innerHTML = `
+        <div class="shared-title">Class Matchups — Countered By</div>
+        <div class="class-matchup-grid">
+            <div class="class-matchup-detail weak">
+                ${ranked.map(cls => classPillWithScore(cls, scores[cls])).join("")}
+            </div>
+        </div>
+    `;
+}
+
+/* =========================
    MAIN
 ========================= */
 let currentBrawlers = [];
@@ -526,29 +746,35 @@ function findCounters() {
     sortControls.style.display = "flex";
     const selectedSet = new Set(brawlers);
 
-    let allCounters = [];
+    renderClassCounters(brawlers);
 
-    for (const b of brawlers) {
-        if (data[b]) {
-            allCounters.push(...getCombinedCounters(b));
-        }
-    }
-
+    /* scoreMap tracks, per counter: how many searched brawlers it counters (freq),
+       and exactly WHICH searched brawlers those are (sources) — item 1.
+       Counters that are themselves one of the searched brawlers are dropped
+       entirely rather than just crossed out — item 4. */
     const scoreMap = {};
 
-    allCounters.forEach(c => {
-        const key = normalize(c);
+    for (const b of brawlers) {
+        if (!data[b]) continue;
 
-        if (!scoreMap[key]) {
-            scoreMap[key] = { freq: 0 };
-        }
+        const counters = getCombinedCounters(b).filter(c => !selectedSet.has(c) && isOwned(c));
 
-        scoreMap[key].freq++;
-    });
+        counters.forEach(c => {
+            if (!scoreMap[c]) scoreMap[c] = { freq: 0, sources: [] };
+            scoreMap[c].freq++;
+            scoreMap[c].sources.push(b);
+        });
+    }
 
+    /* Item 3: risky picks (they also get countered by another searched enemy)
+       are sorted to the end of the list, instead of being mixed in by tier/freq. */
     const filteredCounters = Object.keys(scoreMap)
 		.filter(c => scoreMap[c].freq >= 2)
 		.sort((a, b) => {
+			const riskyA = isRiskyGlobal(a, selectedSet) ? 1 : 0;
+			const riskyB = isRiskyGlobal(b, selectedSet) ? 1 : 0;
+			if (riskyA !== riskyB) return riskyA - riskyB;
+
 			if (scoreMap[b].freq !== scoreMap[a].freq) {
 				return scoreMap[b].freq - scoreMap[a].freq;
 			}
@@ -564,35 +790,42 @@ function findCounters() {
 		counterBox.style.display = "block";
 		counterBox.innerHTML = `
 			<div class="shared-columns">
-				${filteredCounters.map(c => {
-					const isCrossed = selectedSet.has(c);
+				${withClassDividers(filteredCounters, c => {
 					const isRisky = isRiskyGlobal(c, selectedSet);
+					const sources = scoreMap[c].sources;
+					const sourceNames = sources.map(capitalize).join(", ");
 
 					return `
-						<div class="shared-col ${isCrossed ? "crossed" : ""}">
-							<div class="score-top">x${scoreMap[c].freq}</div>
+						<div class="shared-col">
+							<div class="mini-sources" title="Strong against: ${sourceNames}">
+								${sources.map(s => `<img src="${data[s].img}" class="mini-source-img ${getClass(s)}" title="${capitalize(s)}">`).join("")}
+							</div>
 							${iconLabel(c, false, isRisky)}
 						</div>
 					`;
-				}).join("")}
+				})}
 			</div>
 		`;
 	} else {
 		counterBox.style.display = "none";
 	}
 
-    /* BOTTOM LIST (ROWS) — unchanged from here down */
+    /* BOTTOM LIST (ROWS) */
     brawlers.forEach((b, idx) => {
 		if (!data[b]) return;
 
-		const counters = getCombinedCounters(b);
-		const icons = counters
-			.map(n => {
-				const isBest = scoreMap[normalize(n)]?.freq >= 2;
-				const isRisky = isRiskyForRow(n, b, selectedSet);
-				return iconLabel(n, isBest, isRisky);
-			})
-			.join("");
+		const counters = getCombinedCounters(b).filter(c => !selectedSet.has(c) && isOwned(c)); // item 4 + owned-only
+
+		// item 3: push risky picks to the end of this row's list too
+		const nonRisky = counters.filter(n => !isRiskyForRow(n, b, selectedSet));
+		const risky = counters.filter(n => isRiskyForRow(n, b, selectedSet));
+		const ordered = [...nonRisky, ...risky];
+
+		const icons = withClassDividers(ordered, n => {
+			const isBest = scoreMap[normalize(n)]?.freq >= 2;
+			const isRisky = isRiskyForRow(n, b, selectedSet);
+			return iconLabel(n, isBest, isRisky);
+		});
 
 		resultDiv.innerHTML += `
 			<div class="row">
@@ -603,7 +836,6 @@ function findCounters() {
 						${data[b].info ? `<span class="info-btn" onclick="toggleInfo(event, this)">i</span>` : ""}
 					</div>
 					<div class="tiny-name">
-						<span class="row-number">${idx + 1}</span>
 						${capitalize(b)}
 					</div>
 					${data[b].info ? `<div class="info-box">${data[b].info}</div>` : ""}
@@ -618,6 +850,9 @@ function findCounters() {
 
 /* =========================
    TEAM SUGGESTION
+   Item 1: for the time being, this suggests the best CLASSES to draft
+   against the searched enemies (using the same calculator as the Class
+   Matchups section) rather than suggesting specific brawlers.
 ========================= */
 function countBits(mask) {
     let count = 0;
@@ -654,51 +889,32 @@ function suggestTeam() {
         return;
     }
 
-    // Build: for each candidate brawler, which searched enemies does it counter?
-    const coverage = {};
-    enemies.forEach((enemy, i) => {
-        getCombinedCounters(enemy).forEach(c => {
-            coverage[c] = (coverage[c] || 0) | (1 << i);
-        });
-    });
+    const classesPresent = [...new Set(enemies.map(getClass).filter(Boolean))];
 
-    const candidates = Object.keys(coverage);
-
-    if (candidates.length === 0) {
+    if (classesPresent.length === 0) {
         box.style.display = "block";
-        box.innerHTML = `<div class="shared-title">No counter data available to suggest a team.</div>`;
+        box.innerHTML = `<div class="shared-title">No class data available to suggest a team.</div>`;
         return;
     }
 
-    const teamSize = Math.min(3, candidates.length);
-    const combos = combinations(candidates, teamSize);
+    const scores = getClassCounterScores(classesPresent);
+    const ranked = Object.keys(scores)
+        .filter(cls => scores[cls] > 0)
+        .sort((a, b) => scores[b] - scores[a]);
 
-    let best = null;
-    combos.forEach(team => {
-        let mask = 0;
-        let rankSum = 0;
-        team.forEach(t => {
-            mask |= coverage[t];
-            rankSum += currentRank(t); // lower = stronger tier/class
-        });
-        const coverCount = countBits(mask);
-
-        if (
-            !best ||
-            coverCount > best.coverCount ||
-            (coverCount === best.coverCount && rankSum < best.rankSum)
-        ) {
-            best = { team, coverCount, rankSum, mask };
-        }
-    });
+    if (ranked.length === 0) {
+        box.style.display = "block";
+        box.innerHTML = `<div class="shared-title">No strong counter classes found.</div>`;
+        return;
+    }
 
     box.style.display = "block";
     box.innerHTML = `
-        <div class="shared-title">
-            Suggested Team — covers ${best.coverCount}/${enemies.length} enemies
-        </div>
-        <div class="shared-columns">
-            ${best.team.map(t => iconLabel(t)).join("")}
+        <div class="shared-title">Suggested Classes — best counters for this matchup</div>
+        <div class="class-matchup-grid">
+            <div class="class-matchup-detail weak">
+                ${ranked.map(cls => classPillWithScore(cls, scores[cls])).join("")}
+            </div>
         </div>
     `;
 }
@@ -710,10 +926,13 @@ function resetSearch() {
     document.getElementById("result").innerHTML = "";
     document.getElementById("shared").innerHTML = "";
     document.getElementById("shared").style.display = "none";
+    document.getElementById("classCounters").innerHTML = "";
+    document.getElementById("classCounters").style.display = "none";
     document.getElementById("sortControls").style.display = "none";
     document.getElementById("teamSuggestion").style.display = "none";
     document.getElementById("backBtn").style.display = "none";
     clearInputError();
+    clearInputError("strengthInputError");
 
     const topUI = document.getElementById("topUI");
     topUI.style.display = "";
@@ -726,7 +945,18 @@ document.addEventListener("keydown", (e) => {
     const tag = document.activeElement.tagName;
     const typing = tag === "INPUT" || tag === "TEXTAREA";
 
-    if ((e.key === "Backspace" || e.key === "Enter") && !typing) {
+    // Item 2: Tab switches sort mode (Tier <-> Class) whenever results are showing
+    if (e.key === "Tab") {
+        const sortControls = document.getElementById("sortControls");
+        if (sortControls && sortControls.style.display !== "none") {
+            e.preventDefault();
+            toggleSortMode();
+        }
+        return;
+    }
+
+    // Item 5: only Backspace exits the results view — Enter no longer does.
+    if (e.key === "Backspace" && !typing) {
         const backBtn = document.getElementById("backBtn");
         if (backBtn && backBtn.style.display !== "none") {
             e.preventDefault();
@@ -742,6 +972,10 @@ document.addEventListener("keydown", (e) => {
 
 /* INIT */
 window.addEventListener("load", () => {
+    // Item 8: cursor + (where supported) keyboard ready to go on load, including mobile.
+    // Note: iOS Safari in particular will not pop the keyboard from a script-only
+    // focus() call without a user gesture — the `autofocus` attribute on the input
+    // in index.html is the more reliable half of this, this call is the fallback.
     document.getElementById("input").focus();
 
     const topUI = document.getElementById("topUI");

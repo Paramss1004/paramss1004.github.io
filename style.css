@@ -43,7 +43,7 @@ body {
    HEADER
 ========================= */
 #topUI {
-    max-height: 500px;
+    max-height: 3000px;
 }
 
 #topUI.hidden {
@@ -189,10 +189,28 @@ input:focus {
 }
 
 /* =========================
+   SECTION DIVIDERS (used above the database search & tier list)
+========================= */
+.section-divider {
+    width: 100%;
+    margin-top: 18px;
+    margin-bottom: 4px;
+    padding-top: 14px;
+    border-top: 1px solid var(--soft-border);
+}
+
+.section-label {
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: bold;
+    letter-spacing: 0.3px;
+}
+
+/* =========================
    ICONS
 ========================= */
 .brawler-img {
-    width: 82px;
+    width: 84px;
     height: 70px;
     border-radius: 5px;
     border: 5px solid var(--soft-border);
@@ -203,7 +221,6 @@ input:focus {
 .tank      { border-color: #F44336 !important; }
 .assassin  { border-color: #FFFF33 !important; }
 .antitank  { border-color: #607D8B !important; }
-.support   { border-color: #4CAF50 !important; }
 .sniper    { border-color: #FFFFFF !important; }
 .control   { border-color: #2196F3 !important; }
 
@@ -216,8 +233,8 @@ input:focus {
 .class-badge {
     position: absolute;
     top: -4px;
-    right: -12px;
-    font-size: 24px;
+    right: -10px;
+    font-size: 14px;
     line-height: 1;
     border-radius: 50%;
     padding: 3px;
@@ -276,6 +293,7 @@ input:focus {
     align-items: center;
     width: 84px;
     margin: 2px;
+    cursor: pointer;
 }
 
 .icon-label.risky-pick {
@@ -309,21 +327,6 @@ input:focus {
     text-align: center;
     font-weight: 500;
     letter-spacing: 0.3px;
-}
-
-.row-number {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 18px;
-    height: 18px;
-    border-radius: 4px;
-    background: var(--soft-border);
-    color: var(--text-dim);
-    font-size: 12px;
-    font-weight: bold;
-    margin-right: 4px;
-    vertical-align: middle;
 }
 
 .name {
@@ -440,31 +443,23 @@ input:focus {
     align-items: center;
 }
 
-.score-top {
-    font-family: monospace;
-    font-size: 20px;
-    color: var(--text-dim);
+/* Small avatars shown above a "Best Brawler" pick, identifying exactly
+   which of the searched brawlers it counters (item 1) */
+.mini-sources {
+    display: flex;
+    justify-content: center;
+    gap: 2px;
     margin-bottom: 4px;
+    flex-wrap: wrap;
+    max-width: 84px;
 }
 
-.shared-col.crossed .brawler-img {
-    opacity: 0.45;
-    filter: grayscale(70%);
-    border-style: dashed;
-}
-
-.shared-col.crossed .tiny-name {
-    text-decoration: line-through;
-    color: #ff6666;
-}
-
-.shared-col.crossed .score-top {
-    color: #ff6666;
-}
-
-.shared-col.best-pick .score-top {
-    color: #ffd700;
-    font-weight: bold;
+.mini-source-img {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--soft-border);
+    object-fit: cover;
 }
 
 .sort-controls {
@@ -584,7 +579,6 @@ input:focus {
     text-align: center;
 }
 
-.tier-Splus { background: #35004B; color: #ffffff; }
 .tier-S     { background: #003f88; color: #ffffff; }
 .tier-A     { background: #8b0000; color: #ffffff; }
 .tier-B     { background: #d35400; color: #ffffff; }
@@ -593,24 +587,13 @@ input:focus {
 .tier-F     { background: #ffffff; color: #1a1a1a; }
 
 .browse-bar {
-	display: none;
     width: 100%;
-    margin-top: 20px;
-    padding-top: 16px;
-    border-top: 1px solid var(--soft-border); /* visually separates it from the search box above */
+    margin-top: 6px;
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-.browse-label {
-    font-size: 14px;
-    color: var(--accent);
-    font-weight: bold;
-    letter-spacing: 0.3px;
-}
-
-.browse-tiers,
 .browse-classes {
     display: flex;
     flex-wrap: wrap;
@@ -632,27 +615,6 @@ input:focus {
     filter: brightness(1.15);
 }
 
-.browse-search-wrap {
-    position: relative;
-    margin-bottom: 4px;
-}
-
-.browse-input {
-    width: 100%;
-    padding: 16px 18px; /* matches main input exactly */
-    border: 1px solid var(--border);
-    background: #181818;
-    color: var(--text);
-    font-size: 28px; /* matches main input exactly */
-    border-radius: 8px;
-}
-
-.browse-input:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(255,255,255,0.08); /* matches main input's focus style */
-}
-
 .class-chip {
     background: var(--panel);
     color: var(--text);
@@ -660,6 +622,184 @@ input:focus {
 
 .browse-results {
     margin-top: 4px;
+}
+
+/* =========================
+   TIER LIST DISPLAY (tiermaker-style, always visible on the front page)
+========================= */
+.tier-list-display {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.tier-toggle-btn {
+    background: var(--panel);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.15s ease;
+    align-self: flex-start;
+}
+
+.tier-toggle-btn:hover {
+    background: var(--panel-hover);
+    border-color: var(--accent);
+}
+
+.tier-row {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+    border: 1px solid var(--soft-border);
+    background: var(--panel);
+    border-radius: 8px;
+    padding: 8px 10px;
+}
+
+.tier-row-label {
+    flex: 0 0 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+.tier-row-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    flex: 1;
+    align-content: flex-start;
+}
+
+.tier-row-icons .icon-label {
+    width: 60px;
+    cursor: pointer;
+}
+
+.tier-row-icons .icon-label:hover .brawler-img {
+    filter: brightness(1.15);
+}
+
+.tier-row-icons .brawler-img {
+    width: 52px;
+    height: 44px;
+    border-width: 3px;
+}
+
+.tier-row-icons .tiny-name {
+    font-size: 11px;
+}
+
+/* Item 2: smaller class indicator icon in the tier list rows */
+.tier-row-icons .class-badge {
+    font-size: 12px;
+    padding: 2px;
+    top: -2px;
+    right: -6px;
+}
+
+/* Item 1: tiny separator bar between class groups, used in the counters
+   lists (best-brawlers box, per-row lists) and the tier list rows. Uses
+   align-self: stretch so it fills whatever row/line height it sits in. */
+.class-divider {
+    width: 3px;
+    align-self: stretch;
+    background: var(--soft-border);
+    margin: 2px 6px;
+    border-radius: 2px;
+}
+
+/* =========================
+   CLASS MATCHUPS (class-counter section)
+========================= */
+.class-matchup-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.class-matchup-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 14px;
+    border-bottom: 1px solid var(--soft-border);
+    padding-bottom: 8px;
+}
+
+.class-matchup-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.class-matchup-name {
+    flex: 0 0 140px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.class-matchup-detail {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px 6px;
+    font-size: 13px;
+}
+
+.matchup-label {
+    color: var(--text-dim);
+    margin-right: 2px;
+}
+
+.class-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: var(--panel-hover);
+    border: 1px solid var(--soft-border);
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: 13px;
+}
+
+.class-matchup-detail.weak .class-pill {
+    border-color: #a83232;
+}
+
+.class-matchup-detail.strong .class-pill {
+    border-color: #2e8b57;
+}
+
+.class-pill.none {
+    color: var(--text-dim);
+    font-style: italic;
+}
+
+/* Item 3/1: numeric score badge shown inside a class pill, used by the
+   Class Matchups calculator and the class-based team suggestion. */
+.class-score {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    margin-left: 2px;
+    border-radius: 8px;
+    background: var(--accent);
+    color: #0f0f0f;
+    font-size: 11px;
+    font-weight: bold;
 }
 
 @media (max-width: 480px) {
