@@ -20,7 +20,8 @@ function getClass(name) {
 }
 
 /* =========================
-   CLASS BADGES
+   CLASS EMOJI (still used by class pills / legend text, just no longer
+   shown as an overlay badge on brawler portraits — see KIT TAG BADGES)
 ========================= */
 const classEmoji = {
     "thrower": "💥",
@@ -31,20 +32,35 @@ const classEmoji = {
     "control": "🌀"
 };
 
-function classBadge(cls) {
-    return cls && classEmoji[cls]
-        ? `<span class="class-badge">${classEmoji[cls]}</span>`
-        : "";
+/* =========================
+   KIT TAG BADGES
+   Small row of icons on a brawler's portrait (top-right corner — the
+   spot the class indicator used to occupy, now freed up since class is
+   read off the border color instead). A brawler can have zero or several.
+   Data lives in brawler-tags.js.
+========================= */
+function tagBadges(name) {
+    const n = normalize(name);
+    const tags = brawlerTags[n] || [];
+    if (tags.length === 0) return "";
+
+    const titleText = tags.map(t => tagLabel[t] || t).join(", ");
+
+    return `
+        <div class="tag-badges" title="${titleText}">
+            ${tags.map(t => `<span class="tag-badge">${tagEmoji[t] || ""}</span>`).join("")}
+        </div>
+    `;
 }
 
 /* =========================
    CLASS MATCHUP CHART
-   Fixed rock-paper-scissors style chart: classWeakness[cls] = classes that counter it.
-   classStrength is auto-derived as the reverse of that.
+   classWeakness[cls] = classes that counter it. classStrength is
+   auto-derived as the reverse of that.
 ========================= */
 const classWeakness = {
     thrower: ["assassin"],
-    tank: ["antitank", "control"],
+    tank: ["antitank", "thrower"],
     assassin: ["tank", "antitank"],
     antitank: ["thrower", "sniper", "control"],
     sniper: ["thrower", "assassin"],
@@ -64,24 +80,35 @@ function classPill(cls) {
     return `<span class="class-pill">${classEmoji[cls] || ""} ${capitalize(cls)}</span>`;
 }
 
-/* Item 3: pill variant that also shows a numeric "counter score" badge,
-   used by the Class Matchups calculator and the class-based team suggestion. */
-function classPillWithScore(cls, score) {
-    return `<span class="class-pill">${classEmoji[cls] || ""} ${capitalize(cls)} <span class="class-score">${score}</span></span>`;
+/* Item 4: pill variant showing a signed net score (+/-), color-coded
+   green/red/neutral, used by the Class Matchups calculator. */
+function classPillWithNetScore(cls, score) {
+    const sign = score > 0 ? "net-positive" : score < 0 ? "net-negative" : "net-neutral";
+    const display = score > 0 ? `+${score}` : `${score}`;
+    return `<span class="class-pill ${sign}">${classEmoji[cls] || ""} ${capitalize(cls)} <span class="class-score ${sign}">${display}</span></span>`;
 }
 
-/* Item 3/1: aggregate "countered by" calculator.
-   For a set of enemy classes, scores every class by how many of those
-   enemy classes it counters (per classWeakness). Internally this is the
-   same relationship classStrength represents in reverse — a high score
-   here means that class is strong against many of the enemy's classes. */
+/* Item 4: net "+1 / -1" calculator.
+   classesPresent is expected WITH multiplicity (one entry per searched
+   brawler, not deduplicated) — e.g. two Controllers + one Assassin
+   searched means "control" appears twice in the array.
+
+   For each candidate class X and each enemy-class instance E:
+     +1 if X counters E   (X ∈ classWeakness[E])
+     -1 if E counters X   (E ∈ classWeakness[X])
+   summed into a single net total per class. */
 function getClassCounterScores(classesPresent) {
     const scores = {};
     Object.keys(classWeakness).forEach(cls => { scores[cls] = 0; });
 
     classesPresent.forEach(enemyCls => {
-        (classWeakness[enemyCls] || []).forEach(counterCls => {
-            scores[counterCls] = (scores[counterCls] || 0) + 1;
+        Object.keys(classWeakness).forEach(candidate => {
+            if ((classWeakness[enemyCls] || []).includes(candidate)) {
+                scores[candidate] += 1; // candidate counters this enemy instance
+            }
+            if ((classWeakness[candidate] || []).includes(enemyCls)) {
+                scores[candidate] -= 1; // candidate is countered by this enemy instance
+            }
         });
     });
 
@@ -154,7 +181,7 @@ function getCombinedCounters(b) {
     return unique;
 }
 
-/* Item 6: default sort mode is now "class" instead of "tier" */
+/* Item 6: default sort mode is "class" instead of "tier" */
 let sortMode = "class"; // "tier" or "class"
 
 function classRank(name) {
@@ -182,7 +209,7 @@ function toggleSortMode() {
 }
 
 /* =========================
-   RESULTS GRID (shared by class-browse and the strengths database)
+   RESULTS GRID (shared by class-browse, tag-browse and the strengths database)
 ========================= */
 function renderResultsGrid(title, keys, sortFn) {
     document.getElementById("topUI").classList.add("hidden");
@@ -191,7 +218,6 @@ function renderResultsGrid(title, keys, sortFn) {
 
     document.getElementById("shared").style.display = "none";
     document.getElementById("sortControls").style.display = "none";
-    document.getElementById("teamSuggestion").style.display = "none";
     document.getElementById("classCounters").style.display = "none";
 
     const resultDiv = document.getElementById("result");
@@ -223,8 +249,108 @@ function browseClass(cls) {
     });
 }
 
+/* Item 2: browse the roster by kit tag (knockback, wallbreak, etc.) —
+   same list/grid machinery as browseClass, just filtered on brawlerTags. */
+function browseTag(tag) {
+    const keys = Object.keys(data).filter(k => (brawlerTags[k] || []).includes(tag));
+    const label = `${tagEmoji[tag] || ""} ${tagLabel[tag] || tag}`;
+    renderResultsGrid(label, keys, (a, b) => {
+        const diff = tierRank(a) - tierRank(b);
+        return diff !== 0 ? diff : a.localeCompare(b);
+    });
+}
+
+/* Builds the tag-browse chip row once the page loads and inserts it right
+   after the existing class-browse bar — no index.html edits needed. */
+function renderTagBrowseBar() {
+    if (document.getElementById("tagBrowseBar")) return;
+    const browseBar = document.querySelector(".browse-bar");
+    if (!browseBar) return;
+
+    const bar = document.createElement("div");
+    bar.id = "tagBrowseBar";
+    bar.className = "browse-bar browse-tags";
+    bar.innerHTML = Object.keys(tagEmoji).map(t => `
+        <span class="browse-chip tag-chip" onclick="browseTag('${t}')">${tagEmoji[t]} ${tagLabel[t]}</span>
+    `).join("");
+
+    browseBar.parentNode.insertBefore(bar, browseBar.nextSibling);
+}
+
+/* Item 2: relabel the Database section + input placeholder now that it
+   shows a full profile, not just a strengths list. Done via JS so no
+   index.html edit is needed. */
+function updateDatabaseLabel() {
+    document.querySelectorAll(".section-label").forEach(el => {
+        if (el.textContent.includes("Database")) {
+            el.textContent = "📚 Database — Brawler Profiles & Kit Browser";
+        }
+    });
+
+    const strengthInput = document.getElementById("strengthInput");
+    if (strengthInput) {
+        strengthInput.placeholder = "Search a brawler for its full profile";
+    }
+}
+
 /* =========================
-   STRENGTHS DATABASE (item 5)
+   BRAWLER PROFILE (item 2)
+   Full profile view for the Database search: portrait, tier, class,
+   kit tags, and both directional matchup lists in clearly separated
+   red/green panels (mirrors the popup styling from item 1).
+========================= */
+function renderBrawlerProfile(key) {
+    document.getElementById("topUI").classList.add("hidden");
+    document.getElementById("input").blur();
+    document.getElementById("backBtn").style.display = "inline-block";
+
+    document.getElementById("shared").style.display = "none";
+    document.getElementById("sortControls").style.display = "none";
+    document.getElementById("classCounters").style.display = "none";
+
+    const cls = getClass(key);
+    const tier = getTier(key);
+    const tags = brawlerTags[key] || [];
+    const counters = getCombinedCounters(key);
+    const strengths = getStrengths(key);
+
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = `
+        <div class="shared-box browse-results profile-box">
+            <div class="profile-header">
+                <div class="img-wrap">
+                    <img src="${data[key].img}" class="brawler-img ${cls}">
+                    ${tagBadges(key)}
+                </div>
+                <div class="profile-title">
+                    <div class="profile-name">${capitalize(key)}</div>
+                    <div class="profile-meta">
+                        ${cls ? classPill(cls) : ""}
+                        ${tier ? `<span class="tier-tag tier-${tier.replace('+', 'plus')}">${tier}</span>` : ""}
+                    </div>
+                    ${tags.length ? `<div class="profile-meta">${tags.map(t => `<span class="class-pill">${tagEmoji[t] || ""} ${tagLabel[t] || t}</span>`).join("")}</div>` : ""}
+                </div>
+            </div>
+            <div class="profile-columns">
+                <div class="popup-section popup-countered profile-section">
+                    <div class="shared-title">Countered by (${counters.length})</div>
+                    <div class="shared-columns">
+                        ${counters.length ? counters.map(c => iconLabel(c)).join("") : "<div class='tiny-name'>None</div>"}
+                    </div>
+                </div>
+                <div class="popup-section popup-strengths profile-section">
+                    <div class="shared-title">Strong against (${strengths.length})</div>
+                    <div class="shared-columns">
+                        ${strengths.length ? strengths.map(c => iconLabel(c)).join("") : "<div class='tiny-name'>None</div>"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+/* =========================
+   STRENGTHS DATABASE
    Reverse lookup: who does a given brawler counter / beat?
 ========================= */
 function getStrengths(name) {
@@ -246,6 +372,8 @@ function getStrengths(name) {
     return beats;
 }
 
+/* Item 2: this now opens the full profile view instead of just a
+   strengths list. */
 function searchStrengths(rawName) {
     const key = normalize(rawName);
 
@@ -259,8 +387,7 @@ function searchStrengths(rawName) {
     document.getElementById("strengthSuggestions").innerHTML = "";
     document.getElementById("strengthSuggestions").style.display = "none";
 
-    const beats = getStrengths(key);
-    renderResultsGrid(`${capitalize(key)}'s Strengths — Countered By`, beats, null);
+    renderBrawlerProfile(key);
 }
 
 function searchStrengthsFromInput() {
@@ -353,8 +480,6 @@ function handleStrengthKeyDown(e) {
 
 /* =========================
    TIER LIST DISPLAY
-   Hidden by default and built lazily on first click of "Show Tier List" —
-   generating ~90 icon-label blocks up front was adding to page load time.
 ========================= */
 let tierListBuilt = false;
 
@@ -414,7 +539,7 @@ function tierIconLabel(name) {
         <div class="icon-label" onclick="showBrawlerPopup('${n}')">
             <div class="img-wrap">
                 <img src="${data[n].img}" class="brawler-img ${cls}">
-                ${classBadge(cls)}
+                ${tagBadges(n)}
             </div>
             <div class="tiny-name">${capitalize(n)}</div>
         </div>
@@ -434,8 +559,8 @@ function iconLabel(name, isBest = false, isRisky = false) {
         <div class="icon-label info-container ${isBest ? "best-pick" : ""} ${isRisky ? "risky-pick" : ""}" onclick="showBrawlerPopup('${n}')">
             <div class="img-wrap">
                 <img src="${data[n].img}" class="brawler-img ${cls}">
-                ${classBadge(cls)}
                 ${isRisky ? `<span class="risky-badge">⛔</span>` : ""}
+                ${tagBadges(n)}
             </div>
             <div class="tiny-name">${capitalize(n)}</div>
             ${tier ? `<div class="tier-tag tier-${tier.replace('+', 'plus')}">${tier}</div>` : ""}
@@ -460,25 +585,37 @@ function openInfoModal(text) {
     modal.style.display = "flex";
 }
 
-/* Item 2: popup showing a brawler's counters and strengths on separate lines.
-   Triggered by clicking a brawler icon in the tier list or in any counters list. */
+/* Item 1: popup showing a brawler's counters and strengths, now with
+   clearly separated red ("Countered by") / green ("Strong against")
+   panels so the two lists are easy to tell apart at a glance.
+   Triggered by clicking ANY brawler icon — tier list, counters lists,
+   AND now the searched-brawler's own row header too. */
 function showBrawlerPopup(name) {
     const n = normalize(name);
     if (!data[n]) return;
 
     const counters = getCombinedCounters(n);   // brawlers that counter n
     const strengths = getStrengths(n);          // brawlers that n counters
+    const tags = brawlerTags[n] || [];
 
     const countersText = counters.length ? counters.map(capitalize).join(", ") : "None";
     const strengthsText = strengths.length ? strengths.map(capitalize).join(", ") : "None";
+    const tagsLine = tags.length
+        ? `<strong>Kit:</strong> ${tags.map(t => `${tagEmoji[t] || ""} ${tagLabel[t] || t}`).join(", ")}<br><br>`
+        : "";
 
     const modal = document.getElementById("infoModal");
     const modalText = document.getElementById("infoModalText");
 
     modalText.innerHTML = `
         <strong>${capitalize(n)}</strong><br><br>
-        <strong>Countered by:</strong> ${countersText}<br><br>
-        <strong>Strong against:</strong> ${strengthsText}
+        ${tagsLine}
+        <span class="popup-section popup-countered">
+            <strong>Countered by:</strong> ${countersText}
+        </span>
+        <span class="popup-section popup-strengths">
+            <strong>Strong against:</strong> ${strengthsText}
+        </span>
     `;
 
     modal.style.display = "flex";
@@ -681,16 +818,18 @@ function updateActive(items) {
 }
 
 /* =========================
-   CLASS COUNTER SECTION (item 3)
-   Aggregate calculator: for the classes present among the searched
-   brawlers, scores every class by how many of those enemy classes it
-   counters, then shows only the ranked "Countered by" results.
+   CLASS COUNTER SECTION (item 4)
+   Net +1/-1 calculator: for the classes present among the searched
+   brawlers (WITH multiplicity — e.g. two Controllers count twice),
+   scores every class by (# enemy instances it counters) minus
+   (# enemy instances that counter it), then shows all six classes
+   ranked by that net total.
 ========================= */
 function renderClassCounters(brawlers) {
     const box = document.getElementById("classCounters");
     if (!box) return;
 
-    const classesPresent = [...new Set(brawlers.map(getClass).filter(Boolean))];
+    const classesPresent = brawlers.map(getClass).filter(Boolean); // multiplicity kept on purpose
 
     if (classesPresent.length === 0) {
         box.style.display = "none";
@@ -698,21 +837,14 @@ function renderClassCounters(brawlers) {
     }
 
     const scores = getClassCounterScores(classesPresent);
-    const ranked = Object.keys(scores)
-        .filter(cls => scores[cls] > 0)
-        .sort((a, b) => scores[b] - scores[a]);
-
-    if (ranked.length === 0) {
-        box.style.display = "none";
-        return;
-    }
+    const ranked = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
 
     box.style.display = "block";
     box.innerHTML = `
-        <div class="shared-title">Class Matchups — Countered By</div>
+        <div class="shared-title">Class Matchups — Net Score</div>
         <div class="class-matchup-grid">
-            <div class="class-matchup-detail weak">
-                ${ranked.map(cls => classPillWithScore(cls, scores[cls])).join("")}
+            <div class="class-matchup-detail">
+                ${ranked.map(cls => classPillWithNetScore(cls, scores[cls])).join("")}
             </div>
         </div>
     `;
@@ -749,9 +881,9 @@ function findCounters() {
     renderClassCounters(brawlers);
 
     /* scoreMap tracks, per counter: how many searched brawlers it counters (freq),
-       and exactly WHICH searched brawlers those are (sources) — item 1.
+       and exactly WHICH searched brawlers those are (sources).
        Counters that are themselves one of the searched brawlers are dropped
-       entirely rather than just crossed out — item 4. */
+       entirely rather than just crossed out. */
     const scoreMap = {};
 
     for (const b of brawlers) {
@@ -766,7 +898,7 @@ function findCounters() {
         });
     }
 
-    /* Item 3: risky picks (they also get countered by another searched enemy)
+    /* Risky picks (they also get countered by another searched enemy)
        are sorted to the end of the list, instead of being mixed in by tier/freq. */
     const filteredCounters = Object.keys(scoreMap)
 		.filter(c => scoreMap[c].freq >= 2)
@@ -814,9 +946,9 @@ function findCounters() {
     brawlers.forEach((b, idx) => {
 		if (!data[b]) return;
 
-		const counters = getCombinedCounters(b).filter(c => !selectedSet.has(c) && isOwned(c)); // item 4 + owned-only
+		const counters = getCombinedCounters(b).filter(c => !selectedSet.has(c) && isOwned(c));
 
-		// item 3: push risky picks to the end of this row's list too
+		// push risky picks to the end of this row's list too
 		const nonRisky = counters.filter(n => !isRiskyForRow(n, b, selectedSet));
 		const risky = counters.filter(n => isRiskyForRow(n, b, selectedSet));
 		const ordered = [...nonRisky, ...risky];
@@ -830,10 +962,10 @@ function findCounters() {
 		resultDiv.innerHTML += `
 			<div class="row">
 				<div class="name info-container">
-					<div class="img-wrap">
+					<div class="img-wrap" onclick="showBrawlerPopup('${b}')">
 						<img src="${data[b].img}" class="brawler-img ${getClass(b)}">
-						${classBadge(getClass(b))}
 						${data[b].info ? `<span class="info-btn" onclick="toggleInfo(event, this)">i</span>` : ""}
+						${tagBadges(b)}
 					</div>
 					<div class="tiny-name">
 						${capitalize(b)}
@@ -848,77 +980,6 @@ function findCounters() {
 	});
 }
 
-/* =========================
-   TEAM SUGGESTION
-   Item 1: for the time being, this suggests the best CLASSES to draft
-   against the searched enemies (using the same calculator as the Class
-   Matchups section) rather than suggesting specific brawlers.
-========================= */
-function countBits(mask) {
-    let count = 0;
-    while (mask) {
-        count += mask & 1;
-        mask >>= 1;
-    }
-    return count;
-}
-
-function combinations(arr, k) {
-    const results = [];
-    function helper(start, combo) {
-        if (combo.length === k) {
-            results.push([...combo]);
-            return;
-        }
-        for (let i = start; i < arr.length; i++) {
-            combo.push(arr[i]);
-            helper(i + 1, combo);
-            combo.pop();
-        }
-    }
-    helper(0, []);
-    return results;
-}
-
-function suggestTeam() {
-    const enemies = currentBrawlers;
-    const box = document.getElementById("teamSuggestion");
-
-    if (enemies.length === 0) {
-        box.style.display = "none";
-        return;
-    }
-
-    const classesPresent = [...new Set(enemies.map(getClass).filter(Boolean))];
-
-    if (classesPresent.length === 0) {
-        box.style.display = "block";
-        box.innerHTML = `<div class="shared-title">No class data available to suggest a team.</div>`;
-        return;
-    }
-
-    const scores = getClassCounterScores(classesPresent);
-    const ranked = Object.keys(scores)
-        .filter(cls => scores[cls] > 0)
-        .sort((a, b) => scores[b] - scores[a]);
-
-    if (ranked.length === 0) {
-        box.style.display = "block";
-        box.innerHTML = `<div class="shared-title">No strong counter classes found.</div>`;
-        return;
-    }
-
-    box.style.display = "block";
-    box.innerHTML = `
-        <div class="shared-title">Suggested Classes — best counters for this matchup</div>
-        <div class="class-matchup-grid">
-            <div class="class-matchup-detail weak">
-                ${ranked.map(cls => classPillWithScore(cls, scores[cls])).join("")}
-            </div>
-        </div>
-    `;
-}
-
 function resetSearch() {
     selectedBrawlers = [];
     renderChips();
@@ -929,7 +990,6 @@ function resetSearch() {
     document.getElementById("classCounters").innerHTML = "";
     document.getElementById("classCounters").style.display = "none";
     document.getElementById("sortControls").style.display = "none";
-    document.getElementById("teamSuggestion").style.display = "none";
     document.getElementById("backBtn").style.display = "none";
     clearInputError();
     clearInputError("strengthInputError");
@@ -945,7 +1005,7 @@ document.addEventListener("keydown", (e) => {
     const tag = document.activeElement.tagName;
     const typing = tag === "INPUT" || tag === "TEXTAREA";
 
-    // Item 2: Tab switches sort mode (Tier <-> Class) whenever results are showing
+    // Tab switches sort mode (Tier <-> Class) whenever results are showing
     if (e.key === "Tab") {
         const sortControls = document.getElementById("sortControls");
         if (sortControls && sortControls.style.display !== "none") {
@@ -955,7 +1015,7 @@ document.addEventListener("keydown", (e) => {
         return;
     }
 
-    // Item 5: only Backspace exits the results view — Enter no longer does.
+    // Only Backspace exits the results view — Enter no longer does.
     if (e.key === "Backspace" && !typing) {
         const backBtn = document.getElementById("backBtn");
         if (backBtn && backBtn.style.display !== "none") {
@@ -972,10 +1032,6 @@ document.addEventListener("keydown", (e) => {
 
 /* INIT */
 window.addEventListener("load", () => {
-    // Item 8: cursor + (where supported) keyboard ready to go on load, including mobile.
-    // Note: iOS Safari in particular will not pop the keyboard from a script-only
-    // focus() call without a user gesture — the `autofocus` attribute on the input
-    // in index.html is the more reliable half of this, this call is the fallback.
     document.getElementById("input").focus();
 
     const topUI = document.getElementById("topUI");
@@ -984,4 +1040,7 @@ window.addEventListener("load", () => {
             topUI.style.display = "none";
         }
     });
+
+    renderTagBrowseBar();
+    updateDatabaseLabel();
 });
