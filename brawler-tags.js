@@ -82,8 +82,8 @@ const tagLabel = {
 };
 
 const brawlerTags = {
-    "8bit": ["mobility", "heal", "mobility", "spawnable"],
-    "alli": ["mobility", "invisibility", "water"],
+    "8bit": ["mobility", "chain", "heal", "spawnable"],
+    "alli": ["mobility", "pierce", "heal", "water", "invisibility"],
     "amber": ["decay"],
     "angelo": ["decay", "heal", "mobility", "pierce", "water"],
     "ash": ["heal", "spawnable"],
