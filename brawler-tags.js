@@ -9,16 +9,11 @@
    brawlers here, so treat blank entries as "not yet reviewed" rather
    than "confirmed no tag."
 ========================= */
-# ── CROWD CONTROL ──────────────
-knockback: "💨"
-slow: "🐌"
-root: "💫"
-stun: "🥴"
-silence: "🤐"
-pull: "🧲"
-
-# ── MOVEMENT ───────────────────
-mobility: "🏃"
+# ── HEALTH ─────────────────────
+heal: "💖"
+antiheal: "🖤"
+lifesteal: "🧛"
+decay: "💀"
 
 # ── ATTACK ─────────────────────
 pierce: "🏹"
@@ -29,11 +24,16 @@ chain: "⛓️"
 shield: "🛡️"
 invulnerability: "✨"
 
-# ── HEALTH ─────────────────────
-heal: "💖"
-antiheal: "🖤"
-lifesteal: "🧛"
-decay: "💀"
+# ── CROWD CONTROL ──────────────
+slow: "🐌"
+root: "💫"
+silence: "🤐"
+stun: "🥴"
+knockback: "💨"
+pull: "🧲"
+
+# ── MOVEMENT ───────────────────
+mobility: "🏃"
 
 # ── MAP / ENVIRONMENT ──────────
 wallbreak: "💥"
@@ -45,17 +45,12 @@ invisibility: "👻"
 reveal: "👁️"
 
 const tagLabel = {
-    // Crowd Control
-    knockback: "Knockback",
-    slow: "Slow",
-    root: "Root",
-    stun: "Stun",
-    silence: "Silence",
-    pull: "Pull",
-
-    // Movement
-    mobility: "Mobility",
-
+	// Health
+    heal: "Heal",
+    antiheal: "Anti-Heal",
+    lifesteal: "Lifesteal",
+    decay: "Decay",
+	
     // Attack
     pierce: "Pierce",
     bounce: "Bounce",
@@ -65,12 +60,17 @@ const tagLabel = {
     shield: "Shield",
     invulnerability: "Invulnerability",
 
-    // Health
-    heal: "Heal",
-    antiheal: "Anti-Heal",
-    lifesteal: "Lifesteal",
-    decay: "Decay",
+	// Crowd Control
+	slow: "Slow",
+    root: "Root",
+    silence: "Silence",
+	stun: "Stun",
+    knockback: "Knockback",
+    pull: "Pull",
 
+    // Movement
+    mobility: "Mobility",
+	
     // Map / Environment
     wallbreak: "Wallbreak",
     water: "Water-walking",
@@ -82,111 +82,111 @@ const tagLabel = {
 };
 
 const brawlerTags = {
-    "8bit": ["mobility", "chain", "heal", "spawnable"],
-    "alli": ["mobility", "pierce", "heal", "water", "invisibility"],
-    "amber": ["decay"],
-    "angelo": ["decay", "heal", "mobility", "pierce", "water"],
+    "8bit": ["heal", "chain", "mobility", "spawnable"],
+    "alli": ["heal", "pierce", "mobility", "water", "invisibility"],
+    "amber": ["decay", "pierce"],
+    "angelo": ["heal", "decay", "pierce", "mobility", "water"],
     "ash": ["heal", "spawnable"],
-    "barley": ["slow", "heal", "decay"],
+    "barley": ["heal", "decay", "slow"],
     "bea": ["slow", "spawnable"],
     "belle": ["bounce"],
-    "berry": ["heal", "knockback", "mobility", "decay"],
-    "bibi": ["knockback", "bounce"],
-    "bo": ["knockback", "spawnable", "wallbreak"],
+    "berry": ["heal", "decay", "knockback", "mobility"],
+    "bibi": ["bounce", "knockback"],
+    "bo": ["knockback", "wallbreak", "spawnable"],
     "bolt": ["mobility"],
     "bonnie": ["knockback", "mobility"],
-    "brock": ["mobility", "wallbreak", "decay"],
-    "bull": ["heal", "mobility", "knockback", "slow", "stun", "wallbreak", "pierce"],
+    "brock": ["decay", "mobility", "wallbreak"],
+    "bull": ["heal", "pierce", "slow", "stun", "knockback", "mobility", "wallbreak"],
     "buster": ["heal", "shield", "pull"],
     "buzz": ["stun", "mobility"],
     "byron": ["heal", "decay", "pierce"],
-    "carl": ["mobility", "pierce"],
-    "charlie": ["root", "slow", "spawnable"],
+    "carl": ["pierce", "mobility"],
+    "charlie": ["slow", "root", "spawnable"],
     "chester": ["knockback", "wallbreak"],
     "chuck": ["mobility"],
     "clancy": [],
     "colette": ["mobility"],
-    "colt": ["slow", "pierce", "wallbreak"],
-    "cord": ["silence", "slow", "mobility"],
+    "colt": ["pierce", "slow", "wallbreak"],
+    "cord": ["slow", "silence", "mobility"],
     "cosmo": [],
-    "crow": ["decay", "antiheal", "slow"],
-    "damian": ["heal", "knockback", "decay"],
+    "crow": ["antiheal", "decay", "slow"],
+    "damian": ["heal", "decay", "knockback"],
     "darryl": ["knockback", "mobility"],
     "doug": ["heal"],
     "draco": ["pierce", "mobility"],
-    "dynamike": ["knockback", "stun", "mobility", "wallbreak"],
+    "dynamike": ["stun", "knockback", "mobility", "wallbreak"],
     "edgar": ["heal", "lifesteal", "mobility"],
-    "emz": ["knockback", "slow", "stun", "decay"],
-    "eve": ["spawnable", "water"],
+    "emz": ["decay", "slow", "stun", "knockback"],
+    "eve": ["water", "spawnable"],
     "fang": ["stun", "mobility"],
-    "finx": ["root", "mobility", "slow"],
+    "finx": ["slow", "root", "mobility"],
     "frank": ["stun", "pull", "wallbreak"],
-    "gale": ["knockback", "slow", "stun"],
+    "gale": ["slow", "stun", "knockback"],
     "gene": ["heal", "knockback", "pull"],
     "gigi": ["mobility", "invisibility"],
     "glowbert": ["heal"],
-    "gray": ["pull", "heal", "mobility", "wallbreak"],
+    "gray": ["heal", "pull", "mobility", "wallbreak"],
     "griff": ["heal", "knockback", "wallbreak"],
-    "grom": ["knockback", "pierce", "wallbreak"],
-    "gus": ["knockback", "heal", "shield", "spawnable"],
+    "grom": ["pierce", "knockback", "wallbreak"],
+    "gus": ["heal", "shield", "knockback", "spawnable"],
     "hank": ["heal", "slow"],
     "jacky": ["pull", "mobility"],
     "jaeyong": ["heal", "pierce", "mobility"],
     "janet": ["mobility", "spawnable"],
     "jessie": ["bounce", "slow", "spawnable"],
-    "juju": ["invisibility", "spawnable", "water"],
-    "kenji": ["mobility", "invulnerability", "heal"],
+    "juju": ["water", "spawnable", "invisibility"],
+    "kenji": ["heal", "invulnerability", "mobility"],
     "kaze": ["heal", "mobility", "invisibility"],
     "kit": ["heal", "mobility", "invisibility"],
     "larry": ["spawnable"],
-    "leon": ["invisibility", "mobility", "spawnable"],
+    "leon": ["mobility", "spawnable", "invisibility"],
     "lily": ["mobility", "invisibility"],
     "lola": ["heal", "shield", "spawnable"],
-    "lou": ["root", "slow", "invulnerability"],
-    "lumi": ["slow", "stun", "antiheal", "decay"],
-    "maisie": ["knockback", "stun", "slow", "mobility"],
+    "lou": ["invulnerability", "slow", "root"],
+    "lumi": ["antiheal", "decay", "slow", "stun"],
+    "maisie": ["slow", "stun", "knockback", "mobility"],
     "mandy": ["pierce", "slow"],
-    "max": ["mobility", "invulnerability"],
-    "meeple": ["knockback", "stun", "pierce", "spawnable"],
-    "meg": ["knockback", "heal"],
+    "max": ["invulnerability", "mobility"],
+    "meeple": ["pierce", "stun", "knockback", "spawnable"],
+    "meg": ["heal", "knockback"],
     "melodie": ["mobility"],
-    "mico": ["mobility", "invulnerability", "knockback"],
-    "mina": ["knockback", "mobility", "stun"],
-    "moe": ["knockback", "mobility", "bounce", "pierce"],
-    "mortis": ["mobility", "lifesteal"],
+    "mico": ["invulnerability", "knockback", "mobility"],
+    "mina": ["stun", "knockback", "mobility"],
+    "moe": ["pierce", "bounce", "knockback", "mobility"],
+    "mortis": ["lifesteal", "mobility"],
     "mrp": ["bounce", "spawnable"],
     "najia": ["decay", "spawnable"],
     "nani": ["mobility", "wallbreak"],
     "nita": ["heal", "spawnable"],
-    "nori": ["heal", "mobility", "pull"],
-    "ollie": ["pierce", "mobility", "pull"],
-    "otis": ["silence", "decay"],
+    "nori": ["heal", "pull", "mobility"],
+    "ollie": ["pierce", "pull", "mobility"],
+    "otis": ["decay", "silence"],
     "pam": ["heal", "spawnable"],
     "pearl": ["heal", "decay"],
-    "penny": ["pierce", "decay", "spawnable"],
-    "pierce": ["pierce", "slow", "shield", "knockback"],
+    "penny": ["decay", "pierce", "spawnable"],
+    "pierce": ["pierce", "shield", "slow", "knockback"],
     "piper": ["knockback", "mobility", "wallbreak"],
     "poco": ["heal"],
-    "primo": ["knockback", "mobility", "wallbreak", "decay"],
+    "primo": ["decay", "knockback", "mobility", "wallbreak"],
     "rt": ["mobility"],
     "rico": ["pierce", "bounce", "spawnable"],
     "rosa": ["shield"],
     "ruffs": ["bounce", "spawnable"],
-    "sam": ["pull", "heal", "mobility", "pierce"],
-    "sandy": ["pierce", "heal", "invisibility"],
+    "sam": ["heal", "pierce", "pull", "mobility"],
+    "sandy": ["heal", "pierce", "mobility", "invisibility"],
     "shade": ["mobility"],
-    "shelly": ["knockback", "mobility", "wallbreak", "invulnerability"],
+    "shelly": ["invulnerability", "knockback", "mobility", "wallbreak"],
     "sirius": ["spawnable"],
-    "spike": ["slow", "root", "heal", "spawnable"],
-    "sprout": ["bounce", "heal", "spawnable"],
+    "spike": ["heal", "slow", "root", "spawnable"],
+    "sprout": ["heal", "bounce", "spawnable"],
     "squeak": ["slow", "reveal"],
     "starrnova": [],
-    "stu": ["mobility", "decay", "wallbreak"],
+    "stu": ["decay", "mobility", "wallbreak"],
     "surge": ["knockback", "mobility"],
     "tara": ["pierce", "pull", "spawnable", "reveal"],
-    "tick": ["knockback", "spawnable", "wallbreak"],
-    "trunk": ["mobility", "bounce", "spawnable"],
-    "wendy": ["shield", "slow", "antiheal", "mobility"],
-    "willow": ["decay", "heal"],
+    "tick": ["knockback", "wallbreak", "spawnable"],
+    "trunk": ["bounce", "mobility", "spawnable"],
+    "wendy": ["antiheal", "shield", "slow", "mobility"],
+    "willow": ["heal", "decay"],
     "ziggy": []
 };
