@@ -11,38 +11,45 @@
 ========================= */
 
 const tagEmoji = {
-    knockback: "💨",
-	stun: "😵",
-    wallbreak: "🔨",
-    pierce: "🏹",
-    spawnable: "🤖",
-    poison: "☣️",
-    heal: "💖",
-    invisibility: "👻",
-    antiheal: "🩸",
+    knockback: "👟",
+    stun: "😵‍💫",
     pull: "🧲",
-	water: "🌊"
+    wallbreak: "💥",
+    pierce: "🏹",
+
+    heal: "💖",
+    antiheal: "🖤",
+    decay: "☠️",
+
+    mobility: "🏃",
+    invisibility: "👻",
+	water: "🌊",
+    spawnable: "🤖"
 };
+
 
 const tagLabel = {
     knockback: "Knockback",
-	stun: "Stun",
+    stun: "Stun",
+    pull: "Pull",
     wallbreak: "Wallbreak",
     pierce: "Pierce",
-    spawnable: "Spawnable",
-    poison: "Poison",
+
     heal: "Heal",
-    invisibility: "Invisibility",
     antiheal: "Anti-Heal",
-    pull: "Pull",
-	water: "Water-walking"
+    decay: "Decay",
+
+    mobility: "Mobility",
+    invisibility: "Invisibility",
+	water: "Water-walking",
+    spawnable: "Spawnable"
 };
 
 const brawlerTags = {
-    "8bit": ["spawnable"],
-    "alli": ["heal", "invisibility", "water","pierce"],
-    "amber": ["poison","pierce"],
-    "angelo": ["heal", "pierce", "poison", "water"],
+    "8bit": ["heal", "mobility", "spawnable"],
+    "alli": ["pierce", "heal", "mobility", "invisibility", "water"],
+    "amber": ["pierce", "decay", "spawnable"],
+    "angelo": ["pierce", "heal", "antiheal", "decay", "mobility", "water"],
     "ash": ["heal", "spawnable"],
     "barley": ["heal", "poison"],
     "bea": [],
@@ -62,7 +69,7 @@ const brawlerTags = {
     "chester": ["wallbreak", "knockback"],
     "chuck": ["spawnable"],
     "clancy": [],
-    "colette": [],
+    "colette": ["knockback"],
     "colt": ["wallbreak"],
     "cord": ["pull"],
     "crow": ["poison", "antiheal"],
@@ -75,7 +82,7 @@ const brawlerTags = {
     "eve": ["spawnable"],
     "fang": [],
     "finx": [],
-    "frank": ["knockback", "wallbreak"],
+    "frank": ["wallbreak"],
     "gale": ["knockback"],
     "gene": ["heal", "pull", "wallbreak"],
     "gigi": ["invisibility"],
@@ -83,8 +90,8 @@ const brawlerTags = {
     "gray": ["spawnable", "wallbreak"],
     "griff": ["heal", "knockback", "wallbreak"],
     "grom": ["knockback", "pierce", "wallbreak"],
-    "gus": ["heal", "spawnable"],
-    "hank": ["knockback"],
+    "gus": ["knockback", "heal", "spawnable"],
+    "hank": [],
     "jacky": [],
     "jaeyong": ["heal", "pierce"],
     "janet": [],
@@ -102,7 +109,7 @@ const brawlerTags = {
     "maisie": ["knockback"],
     "mandy": ["pierce"],
     "max": [],
-    "meg": ["heal"],
+    "meg": ["knockback", "heal"],
     "melodie": [],
     "meeple": ["knockback"],
     "mico": ["knockback"],
