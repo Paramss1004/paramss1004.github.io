@@ -7,8 +7,7 @@
    IMPORTANT: this is a best-effort STARTING DRAFT, not a verified list.
    Brawl Stars kits change with balance updates and there are 100+
    brawlers here, so treat blank entries as "not yet reviewed" rather
-   than "confirmed no tag." Same pattern as brawler-main.js — just edit
-   the array for a brawler to add/remove a tag.
+   than "confirmed no tag."
 ========================= */
 
 const tagEmoji = {
@@ -16,7 +15,7 @@ const tagEmoji = {
 	stun: "😵",
     wallbreak: "🔨",
     pierce: "🏹",
-    spawnable: "👾",
+    spawnable: "🤖",
     poison: "☣️",
     heal: "💖",
     invisibility: "👻",
