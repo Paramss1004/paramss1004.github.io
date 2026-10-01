@@ -9,40 +9,74 @@
    brawlers here, so treat blank entries as "not yet reviewed" rather
    than "confirmed no tag."
 ========================= */
+# ── CROWD CONTROL ──────────────
+knockback: "💨"
+slow: "🐌"
+root: "💫"
+stun: "🥴"
+silence: "🤐"
+pull: "🧲"
 
-const tagEmoji = {
-    knockback: "👟",
-    stun: "😵‍💫",
-    pull: "🧲",
-    wallbreak: "💥",
-    pierce: "🏹",
+# ── MOVEMENT ───────────────────
+mobility: "🏃"
 
-    heal: "💖",
-    antiheal: "🖤",
-    decay: "☠️",
+# ── ATTACK ─────────────────────
+pierce: "🏹"
+bounce: "🔄"
+	
+# ── DEFENSE ────────────────────
+shield: "🛡️"
+invulnerability: "✨"
 
-    mobility: "🏃",
-    invisibility: "👻",
-	water: "🌊",
-    spawnable: "🤖"
-};
+# ── HEALTH ─────────────────────
+heal: "💖"
+antiheal: "🖤"
+lifesteal: "🧛"
+decay: "💀"
 
+# ── MAP / ENVIRONMENT ──────────
+wallbreak: "💥"
+water: "🌊"
+
+# ── UTILITY ────────────────────
+spawnable: "🤖"
+invisibility: "👻"
+reveal: "👁️"
 
 const tagLabel = {
+    // Crowd Control
     knockback: "Knockback",
+    slow: "Slow",
+    root: "Root",
     stun: "Stun",
+    silence: "Silence",
     pull: "Pull",
-    wallbreak: "Wallbreak",
-    pierce: "Pierce",
 
+    // Movement
+    mobility: "Mobility",
+
+    // Attack
+    pierce: "Pierce",
+    bounce: "Bounce",
+
+    // Defense
+    shield: "Shield",
+    invulnerability: "Invulnerability",
+
+    // Health
     heal: "Heal",
     antiheal: "Anti-Heal",
+    lifesteal: "Lifesteal",
     decay: "Decay",
 
-    mobility: "Mobility",
+    // Map / Environment
+    wallbreak: "Wallbreak",
+    water: "Water-walking",
+
+    // Utility
+    spawnable: "Spawnable",
     invisibility: "Invisibility",
-	water: "Water-walking",
-    spawnable: "Spawnable"
+    reveal: "Reveal"
 };
 
 const brawlerTags = {
@@ -50,9 +84,9 @@ const brawlerTags = {
     "alli": ["pierce", "heal", "mobility", "invisibility", "water"],
     "amber": ["pierce", "decay", "spawnable"],
     "angelo": ["pierce", "heal", "antiheal", "decay", "mobility", "water"],
-    "ash": ["heal", "spawnable"],
-    "barley": ["heal", "poison"],
-    "bea": [],
+    "ash": ["pierce", "heal", "spawnable"],
+    "barley": ["slow", "pierce", "heal"],
+    "bea": ["slow", "],
     "belle": ["pierce"],
     "berry": ["heal", "knockback"],
     "bibi": ["knockback"],
