@@ -30,6 +30,7 @@ const brawlerMain = {
     "colette": ["stu","bea","griff","jessie","crow","charlie","ruffs","meeple","sirius","rico","eve","tick","poco","belle","gus","lumi"],
     "colt": ["gus","buster","darryl","mortis","spike","piper","bonnie","belle","byron","gigi","edgar","mico"],
     "cord": ["charlie","sandy","surge","nita","gale","crow","tara","buster","juju","otis","ruffs","frank"],
+	"cosmo": [""],
     "crow": ["piper","janet","bea","pearl","tara","charlie","sirius","penny","nani","meeple","lola","gray","spike","gus","rosa"],
     "damian": ["emz","surge","lou","cord","otis","jessie","charlie","griff","lumi","bull","rt","doug","colette","piper","gale","belle","chester","stu"],
     "darryl": ["otis","clancy","mina","cord","shelly","griff","rt"],
@@ -111,5 +112,6 @@ const brawlerMain = {
     "trunk": ["lou","spike","amber","maisie","clancy","crow","najia"],
     "wendy": ["sirius","ruffs","ash","pam"],
     "willow": ["tick","barley","larry","juju","stu","buzz","poco","mortis","alli","leon","kenji","shade","berry","grom","sprout","frank","bibi","colt","brock","otis","charlie"],
+	"vince": [""],
     "ziggy": ["stu","mortis","gray","bibi","tick","hank"]
 };
