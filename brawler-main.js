@@ -42,7 +42,7 @@ const brawlerMain = {
     "eve": ["alli","carl","janet","poco","penny","shade","amber","mrp"],
     "fang": ["otis","gale","chester","maisie","shelly","colette","primo","griff","clancy"],
     "finx": ["meeple","emz","gus","larry","kenji","mortis","crow","amber","bibi","darryl"],
-    "frank": ["colette","surge","primo","charlie","chester","lou","sandy","squeak","otis","bibi","tara","bull","doug","shelly","rt","pearl","janet","amber","griff","lumi","rico"],
+    "frank": ["colette","surge","primo","charlie","chester","lou","sandy","squeak","otis","bibi","tara","bull","doug","shelly","rt","pearl","janet","amber","griff"],
     "gale": ["tara","penny","charlie","spike","piper","belle","amber","janet","larry","juju","cord","colt","max","crow","ruffs","lou"],
     "gene": ["mrp","eve","penny","charlie","tara","belle","nita","larry","juju","tick","leon","lola","mortis","kit","edgar","poco","pam","berry","nani","piper"],
     "gigi": ["finx","shelly","fang","otis","cord","bull","bibi","buster","alli","trunk"],
@@ -50,14 +50,14 @@ const brawlerMain = {
     "gray": ["lola","bea","stu","mrp","charlie","gus","mortis","leon","max","darryl","kit","piper","brock"],
     "griff": ["ruffs","meeple","crow","spike","bea","janet","stu","mina","amber","finx","chester","max"],
     "grom": ["piper","mrp","lily","mico","mortis","fang","darryl","kenji","kit","kaze","shade","bibi","sam"],
-	
-	
-    "gus": ["brock","ash","pam","edgar","charlie","bo","byron","mandy","piper","eve","darryl","janet","8bit","mortis","chuck","crow","mrp","frank","leon","lily","cord"],
-    "hank": ["willow","larry","frank","dyna","mina","bull","draco","bibi","lou","cord","colette","nita","maisie","surge","spike","crow"],
-    "jacky": ["griff","emz","crow","otis","shelly","surge","gale","frank","bull","primo","draco","edgar","chester","bonnie","kenji","bibi"],
+    "gus": ["dyna","frank","gale","piper","mrp","darryl","ash","pam","edgar","charlie","bo","byron","mandy","eve","janet","8bit","mortis","chuck","crow","mrp","frank","leon","lily","cord"],
+    "hank": ["rosa","frank","gale","willow","larry","dyna","mina","bull","draco","bibi","lou","cord","colette","nita","maisie","surge"],
+    "jacky": ["carl","belle","rosa","griff","emz","crow","otis","shelly","surge","gale","frank","bull","primo","draco","chester","bonnie","kenji","bibi"],
     "jaeyong": ["griff","bo","crow","kenji"],
     "janet": ["kenji","griff","bonnie","amber","carl","frank","darryl","gus","kit","ash","sam"],
     "jessie": ["piper","barley","larry","squeak","edgar","mico","mortis","carl","penny","colt","brock"],
+
+	
     "juju": ["barley","kaze","shade","frank","brock","cord","kit","tick","mortis","edgar","kenji","lily","mico","leon"],
     "kenji": ["pam","bull","frank","draco","cord","mina","lou","meeple","jaeyong","hank","bibi","griff","shelly"],
     "kaze": ["crow","bull","rt","otis","griff","stu"],
