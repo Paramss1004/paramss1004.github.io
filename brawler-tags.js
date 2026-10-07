@@ -21,11 +21,10 @@ bounce: "🔄"
 chain: "⛓️"
 	
 # ── DEFENSE ────────────────────
-shield: "🛡️"
+shield: "🔰"
 invulnerability: "✨"
 
 # ── CROWD CONTROL ──────────────
-slow: "🐌"
 root: "💫"
 silence: "🤐"
 stun: "🥴"
@@ -40,7 +39,7 @@ wallbreak: "💥"
 water: "🌊"
 
 # ── UTILITY ────────────────────
-spawnable: "🤖"
+spawnable: "📦"
 invisibility: "👻"
 reveal: "👁️"
 
@@ -61,7 +60,6 @@ const tagLabel = {
     invulnerability: "Invulnerability",
 
 	// Crowd Control
-	slow: "Slow",
     root: "Root",
     silence: "Silence",
 	stun: "Stun",
@@ -87,21 +85,21 @@ const brawlerTags = {
     "amber": ["decay", "pierce"],
     "angelo": ["heal", "decay", "pierce", "mobility", "water"],
     "ash": ["heal", "spawnable"],
-    "barley": ["heal", "decay", "slow"],
+    "barley": ["heal", "decay"],
     "bea": ["slow", "spawnable"],
-    "belle": ["bounce"],
+    "belle": ["bounce", "chain", "shield"],
     "berry": ["heal", "decay", "knockback", "mobility"],
-    "bibi": ["bounce", "knockback"],
+    "bibi": ["bounce", "shield", "knockback"],
     "bo": ["knockback", "wallbreak", "spawnable"],
-    "bolt": ["mobility"],
+    "bolt": ["mobility", "shield", "wallbreak"],
     "bonnie": ["knockback", "mobility"],
     "brock": ["decay", "mobility", "wallbreak"],
-    "bull": ["heal", "pierce", "slow", "stun", "knockback", "mobility", "wallbreak"],
+    "bull": ["heal", "pierce", "stun", "knockback", "mobility", "wallbreak"],
     "buster": ["heal", "shield", "pull"],
     "buzz": ["stun", "mobility"],
     "byron": ["heal", "decay", "pierce"],
     "carl": ["pierce", "mobility"],
-    "charlie": ["slow", "root", "spawnable"],
+    "charlie": ["root", "spawnable"],
     "chester": ["knockback", "wallbreak"],
     "chuck": ["mobility"],
     "clancy": [],

@@ -55,26 +55,40 @@ function tagBadges(name) {
 
 /* =========================
    CLASS MATCHUP CHART
-   classWeakness[cls] = classes that counter it. classStrength is
-   auto-derived as the reverse of that.
+   Explicit both directions per class — no more deriving one side from
+   the other, so strongAgainst/weakAgainst don't have to mirror exactly.
 ========================= */
-const classWeakness = {
-    thrower: ["assassin"],
-    tank: ["antitank", "thrower"],
-    assassin: ["tank", "antitank"],
-    antitank: ["thrower", "sniper", "control"],
-    sniper: ["thrower", "assassin"],
-    control: ["thrower", "sniper"]
-};
+const classMatchups = {
+    thrower: {
+        strongAgainst: ["control", "antitank", "sniper"],
+        weakAgainst: ["assassin"]
+    },
 
-const classStrength = {};
-Object.keys(classWeakness).forEach(cls => { classStrength[cls] = []; });
-Object.entries(classWeakness).forEach(([cls, weakTo]) => {
-    weakTo.forEach(counterCls => {
-        if (!classStrength[counterCls]) classStrength[counterCls] = [];
-        classStrength[counterCls].push(cls);
-    });
-});
+    tank: {
+        strongAgainst: ["assassin"],
+        weakAgainst: ["antitank", "control"]
+    },
+
+    assassin: {
+        strongAgainst: ["thrower", "sniper", "control"],
+        weakAgainst: ["tank", "antitank"]
+    },
+
+    antitank: {
+        strongAgainst: ["tank", "assassin"],
+        weakAgainst: ["sniper", "thrower", "control"]
+    },
+
+    sniper: {
+        strongAgainst: ["antitank"],
+        weakAgainst: ["assassin", "thrower"]
+    },
+
+    control: {
+        strongAgainst: ["tank", "antitank"],
+        weakAgainst: ["thrower", "assassin"]
+    }
+};
 
 function classPill(cls) {
     return `<span class="class-pill">${classEmoji[cls] || ""} ${capitalize(cls)}</span>`;
@@ -94,20 +108,22 @@ function classPillWithNetScore(cls, score) {
    searched means "control" appears twice in the array.
 
    For each candidate class X and each enemy-class instance E:
-     +1 if X counters E   (X ∈ classWeakness[E])
-     -1 if E counters X   (E ∈ classWeakness[X])
+     +1 if X is strong against E   (E ∈ classMatchups[X].strongAgainst)
+     -1 if X is weak against E     (E ∈ classMatchups[X].weakAgainst)
    summed into a single net total per class. */
 function getClassCounterScores(classesPresent) {
     const scores = {};
-    Object.keys(classWeakness).forEach(cls => { scores[cls] = 0; });
+    Object.keys(classMatchups).forEach(cls => { scores[cls] = 0; });
 
     classesPresent.forEach(enemyCls => {
-        Object.keys(classWeakness).forEach(candidate => {
-            if ((classWeakness[enemyCls] || []).includes(candidate)) {
-                scores[candidate] += 1; // candidate counters this enemy instance
+        Object.keys(classMatchups).forEach(candidate => {
+            const info = classMatchups[candidate];
+            if (!info) return;
+            if ((info.strongAgainst || []).includes(enemyCls)) {
+                scores[candidate] += 1; // candidate is strong against this enemy instance
             }
-            if ((classWeakness[candidate] || []).includes(enemyCls)) {
-                scores[candidate] -= 1; // candidate is countered by this enemy instance
+            if ((info.weakAgainst || []).includes(enemyCls)) {
+                scores[candidate] -= 1; // candidate is weak against this enemy instance
             }
         });
     });
@@ -181,8 +197,9 @@ function getCombinedCounters(b) {
     return unique;
 }
 
-/* Item 6: default sort mode is "class" instead of "tier" */
-let sortMode = "class"; // "tier" or "class"
+/* Default sort mode is "class". Cycles class -> tier -> score -> class. */
+let sortMode = "class"; // "tier", "class", or "score"
+const sortModeCycle = ["class", "tier", "score"];
 
 function classRank(name) {
     const cls = getClass(name);
@@ -190,21 +207,42 @@ function classRank(name) {
     return idx === -1 ? classOrder.length : idx;
 }
 
+/* "score" sort mode: rank by the same net score shown in the Class
+   Matchups calculator for the currently searched composition (higher
+   net score = ranks first). lastClassScores is refreshed every time
+   renderClassCounters runs. */
+let lastClassScores = {};
+
+function scoreRank(name) {
+    const cls = getClass(name);
+    if (!cls) return 999;
+    const score = lastClassScores[cls] || 0;
+    return -score; // higher score -> lower (better) rank number
+}
+
 function currentRank(name) {
-    return sortMode === "tier" ? tierRank(name) : classRank(name);
+    if (sortMode === "tier") return tierRank(name);
+    if (sortMode === "score") return scoreRank(name);
+    return classRank(name);
 }
 
 function secondaryRank(name) {
-    return sortMode === "tier" ? classRank(name) : tierRank(name);
+    if (sortMode === "tier") return classRank(name);
+    return tierRank(name);
+}
+
+function sortModeLabel(mode) {
+    if (mode === "tier") return "Sort by Tier 📉";
+    if (mode === "score") return "Sort by Matchup Score 📊";
+    return "Sort by Class 🔰";
 }
 
 function toggleSortMode() {
-    sortMode = sortMode === "tier" ? "class" : "tier";
-    document.getElementById("sortToggleBtn").textContent =
-        `Sort ${sortMode === "tier" ? "by Tier 📉" : "by Class 🔰"}`;
+    const idx = sortModeCycle.indexOf(sortMode);
+    sortMode = sortModeCycle[(idx + 1) % sortModeCycle.length];
 
     if (selectedBrawlers.length > 0) {
-        findCounters(); // re-render with the new sort applied
+        findCounters(); // re-render with the new sort applied (also refreshes the button label)
     }
 }
 
@@ -217,7 +255,6 @@ function renderResultsGrid(title, keys, sortFn) {
     document.getElementById("backBtn").style.display = "inline-block";
 
     document.getElementById("shared").style.display = "none";
-    document.getElementById("sortControls").style.display = "none";
     document.getElementById("classCounters").style.display = "none";
 
     const resultDiv = document.getElementById("result");
@@ -305,7 +342,6 @@ function renderBrawlerProfile(key) {
     document.getElementById("backBtn").style.display = "inline-block";
 
     document.getElementById("shared").style.display = "none";
-    document.getElementById("sortControls").style.display = "none";
     document.getElementById("classCounters").style.display = "none";
 
     const cls = getClass(key);
@@ -832,16 +868,21 @@ function renderClassCounters(brawlers) {
     const classesPresent = brawlers.map(getClass).filter(Boolean); // multiplicity kept on purpose
 
     if (classesPresent.length === 0) {
+        lastClassScores = {};
         box.style.display = "none";
         return;
     }
 
     const scores = getClassCounterScores(classesPresent);
+    lastClassScores = scores; // feeds "score" sort mode elsewhere on the page
     const ranked = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
 
     box.style.display = "block";
     box.innerHTML = `
-        <div class="shared-title">Class Matchups — Net Score</div>
+        <div class="matchup-header">
+            <div class="shared-title">Class Matchups — Net Score</div>
+            <button class="matchup-sort-btn" onclick="toggleSortMode()">${sortModeLabel(sortMode)}</button>
+        </div>
         <div class="class-matchup-grid">
             <div class="class-matchup-detail">
                 ${ranked.map(cls => classPillWithNetScore(cls, scores[cls])).join("")}
@@ -870,12 +911,10 @@ function findCounters() {
 
     const resultDiv = document.getElementById("result");
     const counterBox = document.getElementById("shared");
-    const sortControls = document.getElementById("sortControls");
 
     resultDiv.innerHTML = "";
     counterBox.innerHTML = "";
 
-    sortControls.style.display = "flex";
     const selectedSet = new Set(brawlers);
 
     renderClassCounters(brawlers);
@@ -989,7 +1028,6 @@ function resetSearch() {
     document.getElementById("shared").style.display = "none";
     document.getElementById("classCounters").innerHTML = "";
     document.getElementById("classCounters").style.display = "none";
-    document.getElementById("sortControls").style.display = "none";
     document.getElementById("backBtn").style.display = "none";
     clearInputError();
     clearInputError("strengthInputError");
@@ -1005,10 +1043,11 @@ document.addEventListener("keydown", (e) => {
     const tag = document.activeElement.tagName;
     const typing = tag === "INPUT" || tag === "TEXTAREA";
 
-    // Tab switches sort mode (Tier <-> Class) whenever results are showing
+    // Tab cycles sort mode (Class -> Tier -> Score) whenever the searched
+    // results are showing (the Class Matchups box only appears there)
     if (e.key === "Tab") {
-        const sortControls = document.getElementById("sortControls");
-        if (sortControls && sortControls.style.display !== "none") {
+        const classCounters = document.getElementById("classCounters");
+        if (classCounters && classCounters.style.display !== "none") {
             e.preventDefault();
             toggleSortMode();
         }
