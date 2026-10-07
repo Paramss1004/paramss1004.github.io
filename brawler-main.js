@@ -53,9 +53,9 @@ const brawlerMain = {
     "gus": ["dyna","frank","gale","piper","mrp","darryl","ash","pam","edgar","charlie","bo","byron","mandy","eve","janet","8bit","mortis","chuck","crow","mrp","frank","leon","lily","cord"],
     "hank": ["rosa","frank","gale","willow","larry","dyna","mina","bull","draco","bibi","lou","cord","colette","nita","maisie","surge"],
     "jacky": ["carl","belle","rosa","griff","emz","crow","otis","shelly","surge","gale","frank","bull","primo","draco","chester","bonnie","kenji","bibi"],
-    "jaeyong": ["griff","bo","crow","kenji"],
-    "janet": ["kenji","griff","bonnie","amber","carl","frank","darryl","gus","kit","ash","sam"],
-    "jessie": ["piper","barley","larry","squeak","edgar","mico","mortis","carl","penny","colt","brock"],
+    "jaeyong": ["bea","buster","gene","poco","belle","griff","bo","crow","kenji"],
+    "janet": ["belle","squeak","frank","kenji","griff","bonnie","amber","carl","frank","darryl","gus","kit","ash","sam"],
+    "jessie": ["frank","belle","piper","barley","larry","squeak","edgar","mico","mortis","carl","penny","colt","brock"],
 
 	
     "juju": ["barley","kaze","shade","frank","brock","cord","kit","tick","mortis","edgar","kenji","lily","mico","leon"],
