@@ -19,7 +19,7 @@ const brawlerMain = {
     "bonnie": ["charlie","colette","bea","clancy","piper","rt","gus","tara","pearl","darryl","brock","nani"],
     "brock": ["piper","max","jaeyong","mina","darryl","mortis","mandy","nani","kaze","stu","leon","edgar"],
     "bull": ["charlie","griff","emz","gale","cord","mina","otis","nita","lou","sandy","meeple"],
-    "buster": ["darryl","bull","ash","frank","rt","belle"],
+    "buster": ["darryl","bull","ash","frank","rosa","rt","belle","surge"],
     "buzz": ["charlie","griff","stu","max","sandy","mina","cord","bull","surge","otis","jacky","primo","gale","shelly","fang","clancy"],
     "byron": ["piper","mandy","crow","bea","ash","mrp","edgar","fang","sprout"],
     "carl": ["buzz","jacky","surge","colette","stu","mina","bull","cord","bibi","darryl","gene"],
@@ -58,7 +58,7 @@ const brawlerMain = {
     "jessie": ["frank","belle","piper","barley","larry","squeak","edgar","mico","mortis","carl","penny","colt","brock"],
 
 	
-    "juju": ["barley","kaze","shade","frank","brock","cord","kit","tick","mortis","edgar","kenji","lily","mico","leon"],
+    "juju": ["frank","draco","primo","tick","larry","barley","kaze","shade","brock","cord","kit","mortis","edgar","kenji","lily","mico","leon"],
     "kenji": ["pam","bull","frank","draco","cord","mina","lou","meeple","jaeyong","hank","bibi","griff","shelly"],
     "kaze": ["crow","bull","rt","otis","griff","stu"],
     "kit": ["cord","rt","frank","hank","ollie","lily","draco","otis","charlie","shelly","bull","bibi","gene"],
