@@ -11,7 +11,7 @@ const classGroups = {
 
     "antitank": ["8bit","charlie","chester","clancy","colt","colette","cord","crow","emz","finx","gale","griff","lola","lou","lumi","maisie","meg","moe","nita","otis","pearl","rico","ruffs","shelly","spike","surge","tara"],
 
-    "sniper": ["angelo","bea","belle","bonnie","brock","byron","gray","gus","mandy","najia","nani","pierce","piper","rt"],
+    "sniper": ["angelo","bea","belle","bonnie","brock","byron","gray","gus","mandy","najia","nani","pierce","piper","rt","vince"],
 
-    "control": ["amber","bo","eve","gene","glowbert","janet","jessie","meeple","mrp","pam","penny","poco","sandy","squeak","wendy"]
+    "control": ["amber","bo","cosmo","eve","gene","glowbert","janet","jessie","meeple","mrp","pam","penny","poco","sandy","squeak","wendy"]
 };
