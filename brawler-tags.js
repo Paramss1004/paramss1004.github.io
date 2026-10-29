@@ -184,6 +184,7 @@ const brawlerTags = {
     "tara": ["pierce", "pull", "spawnable", "reveal"],
     "tick": ["knockback", "wallbreak", "spawnable"],
     "trunk": ["bounce", "mobility", "spawnable"],
+	"vince": [],
     "wendy": ["antiheal", "shield", "slow", "mobility"],
     "willow": ["heal", "decay"],
     "ziggy": []
