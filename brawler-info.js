@@ -3,7 +3,7 @@
 ========================= */
 const brawlerInfo = {
     "8bit": ["Maintain long range and destroy the turret when possible."],
-    "alli": ["Use slows to reduce her attack range and make approaching more difficult. Open areas also limit her ability to approach safely."],
+    "alli": ["Use brawlers with high hp. Open areas also limit her ability to approach safely."],
     "amber": ["Use long-range pressure, wall-peeking and aggressive approaches to prevent safe use of her attack."],
     "angelo": ["Pressure from range and use cover or spawned objects to disrupt charged attacks. Do not give a safe lane for repeated shots."],
     "ash": ["Use long-range pressure and crowd control before Rage becomes high. Prevent him from reaching close range with high Rage."],
