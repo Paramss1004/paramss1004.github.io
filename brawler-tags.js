@@ -9,39 +9,42 @@
    brawlers here, so treat blank entries as "not yet reviewed" rather
    than "confirmed no tag."
 ========================= */
-# ── HEALTH ─────────────────────
-heal: "💖"
-antiheal: "🖤"
-lifesteal: "🧛"
-decay: "💀"
+const tagEmoji = {
+    // Health
+    heal: "💖",
+    antiheal: "🖤",
+    lifesteal: "🧛",
+    decay: "💀",
 
-# ── ATTACK ─────────────────────
-pierce: "🏹"
-bounce: "🔄"
-chain: "⛓️"
-	
-# ── DEFENSE ────────────────────
-shield: "🔰"
-invulnerability: "✨"
+    // Attack
+    pierce: "🏹",
+    bounce: "🔄",
+    chain: "⛓️",
 
-# ── CROWD CONTROL ──────────────
-root: "💫"
-silence: "🤐"
-stun: "🥴"
-knockback: "💨"
-pull: "🧲"
+    // Defense
+    shield: "🔰",
+    invulnerability: "✨",
 
-# ── MOVEMENT ───────────────────
-mobility: "🏃"
+    // Crowd control
+    slow: "🐌",
+    root: "💫",
+    silence: "🤐",
+    stun: "🥴",
+    knockback: "💨",
+    pull: "🧲",
 
-# ── MAP / ENVIRONMENT ──────────
-wallbreak: "💥"
-water: "🌊"
+    // Movement
+    mobility: "🏃",
 
-# ── UTILITY ────────────────────
-spawnable: "📦"
-invisibility: "👻"
-reveal: "👁️"
+    // Map / environment
+    wallbreak: "💥",
+    water: "🌊",
+
+    // Utility
+    spawnable: "📦",
+    invisibility: "👻",
+    reveal: "👁️"
+};
 
 const tagLabel = {
 	// Health
@@ -60,6 +63,7 @@ const tagLabel = {
     invulnerability: "Invulnerability",
 
 	// Crowd Control
+	slow: "Slow",
     root: "Root",
     silence: "Silence",
 	stun: "Stun",
@@ -112,7 +116,7 @@ const brawlerTags = {
     "darryl": ["knockback", "mobility"],
     "doug": ["heal"],
     "draco": ["pierce", "mobility"],
-    "dynamike": ["stun", "knockback", "mobility", "wallbreak"],
+    "dyna": ["stun", "knockback", "mobility", "wallbreak"],
     "edgar": ["heal", "lifesteal", "mobility"],
     "emz": ["decay", "slow", "stun", "knockback"],
     "eve": ["water", "spawnable"],

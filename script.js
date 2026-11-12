@@ -1,5 +1,6 @@
 let selectedIndex = -1;
 let selectedBrawlers = [];
+const SHOW_TAGS = false; // flip to true when brawler tags are ready
 
 /* =========================
    HELPERS
@@ -34,12 +35,13 @@ const classEmoji = {
 
 /* =========================
    KIT TAG BADGES
-   Small row of icons on a brawler's portrait (top-right corner — the
-   spot the class indicator used to occupy, now freed up since class is
-   read off the border color instead). A brawler can have zero or several.
-   Data lives in brawler-tags.js.
+   Small row of icons on a brawler's portrait (top-right corner).
+   A brawler can have zero or several. Data lives in brawler-tags.js.
+   Returns nothing while SHOW_TAGS is false.
 ========================= */
 function tagBadges(name) {
+    if (!SHOW_TAGS) return "";
+
     const n = normalize(name);
     const tags = brawlerTags[n] || [];
     if (tags.length === 0) return "";
@@ -94,7 +96,7 @@ function classPill(cls) {
     return `<span class="class-pill">${classEmoji[cls] || ""} ${capitalize(cls)}</span>`;
 }
 
-/* Item 4: pill variant showing a signed net score (+/-), color-coded
+/* Pill variant showing a signed net score (+/-), color-coded
    green/red/neutral, used by the Class Matchups calculator. */
 function classPillWithNetScore(cls, score) {
     const sign = score > 0 ? "net-positive" : score < 0 ? "net-negative" : "net-neutral";
@@ -102,7 +104,7 @@ function classPillWithNetScore(cls, score) {
     return `<span class="class-pill ${sign}">${classEmoji[cls] || ""} ${capitalize(cls)} <span class="class-score ${sign}">${display}</span></span>`;
 }
 
-/* Item 4: net "+1 / -1" calculator.
+/* Net "+1 / -1" calculator.
    classesPresent is expected WITH multiplicity (one entry per searched
    brawler, not deduplicated) — e.g. two Controllers + one Assassin
    searched means "control" appears twice in the array.
@@ -120,10 +122,10 @@ function getClassCounterScores(classesPresent) {
             const info = classMatchups[candidate];
             if (!info) return;
             if ((info.strongAgainst || []).includes(enemyCls)) {
-                scores[candidate] += 1; // candidate is strong against this enemy instance
+                scores[candidate] += 1;
             }
             if ((info.weakAgainst || []).includes(enemyCls)) {
-                scores[candidate] -= 1; // candidate is weak against this enemy instance
+                scores[candidate] -= 1;
             }
         });
     });
@@ -176,7 +178,7 @@ function isRiskyGlobal(counterName, selectedSet) {
     return [...selectedSet].some(enemy => theirCounters.includes(enemy));
 }
 
-/* Combine main+alt into one deduped list, sorted strongest (S+) to weakest (F) */
+/* Combine main+alt into one deduped list, sorted by the current sort mode */
 function getCombinedCounters(b) {
     const combined = [...(data[b].main || []), ...(data[b].alt || [])]
         .map(normalize)
@@ -286,9 +288,11 @@ function browseClass(cls) {
     });
 }
 
-/* Item 2: browse the roster by kit tag (knockback, wallbreak, etc.) —
+/* Browse the roster by kit tag (knockback, wallbreak, etc.) —
    same list/grid machinery as browseClass, just filtered on brawlerTags. */
 function browseTag(tag) {
+    if (!SHOW_TAGS) return;
+
     const keys = Object.keys(data).filter(k => (brawlerTags[k] || []).includes(tag));
     const label = `${tagEmoji[tag] || ""} ${tagLabel[tag] || tag}`;
     renderResultsGrid(label, keys, (a, b) => {
@@ -300,6 +304,7 @@ function browseTag(tag) {
 /* Builds the tag-browse chip row once the page loads and inserts it right
    after the existing class-browse bar — no index.html edits needed. */
 function renderTagBrowseBar() {
+    if (!SHOW_TAGS) return;
     if (document.getElementById("tagBrowseBar")) return;
     const browseBar = document.querySelector(".browse-bar");
     if (!browseBar) return;
@@ -314,13 +319,15 @@ function renderTagBrowseBar() {
     browseBar.parentNode.insertBefore(bar, browseBar.nextSibling);
 }
 
-/* Item 2: relabel the Database section + input placeholder now that it
+/* Relabel the Database section + input placeholder now that it
    shows a full profile, not just a strengths list. Done via JS so no
    index.html edit is needed. */
 function updateDatabaseLabel() {
     document.querySelectorAll(".section-label").forEach(el => {
         if (el.textContent.includes("Database")) {
-            el.textContent = "📚 Database — Brawler Profiles & Kit Browser";
+            el.textContent = SHOW_TAGS
+                ? "📚 Database — Brawler Profiles & Kit Browser"
+                : "📚 Database — Brawler Profiles";
         }
     });
 
@@ -331,10 +338,10 @@ function updateDatabaseLabel() {
 }
 
 /* =========================
-   BRAWLER PROFILE (item 2)
+   BRAWLER PROFILE
    Full profile view for the Database search: portrait, tier, class,
    kit tags, and both directional matchup lists in clearly separated
-   red/green panels (mirrors the popup styling from item 1).
+   red/green panels (mirrors the popup styling).
 ========================= */
 function renderBrawlerProfile(key) {
     document.getElementById("topUI").classList.add("hidden");
@@ -346,7 +353,7 @@ function renderBrawlerProfile(key) {
 
     const cls = getClass(key);
     const tier = getTier(key);
-    const tags = brawlerTags[key] || [];
+    const tags = SHOW_TAGS ? (brawlerTags[key] || []) : [];
     const counters = getCombinedCounters(key);
     const strengths = getStrengths(key);
 
@@ -408,8 +415,7 @@ function getStrengths(name) {
     return beats;
 }
 
-/* Item 2: this now opens the full profile view instead of just a
-   strengths list. */
+/* Opens the full profile view instead of just a strengths list. */
 function searchStrengths(rawName) {
     const key = normalize(rawName);
 
@@ -621,18 +627,17 @@ function openInfoModal(text) {
     modal.style.display = "flex";
 }
 
-/* Item 1: popup showing a brawler's counters and strengths, now with
-   clearly separated red ("Countered by") / green ("Strong against")
-   panels so the two lists are easy to tell apart at a glance.
+/* Popup showing a brawler's counters and strengths, with clearly
+   separated red ("Countered by") / green ("Strong against") panels.
    Triggered by clicking ANY brawler icon — tier list, counters lists,
-   AND now the searched-brawler's own row header too. */
+   and the searched brawler's own row header. */
 function showBrawlerPopup(name) {
     const n = normalize(name);
     if (!data[n]) return;
 
     const counters = getCombinedCounters(n);   // brawlers that counter n
     const strengths = getStrengths(n);          // brawlers that n counters
-    const tags = brawlerTags[n] || [];
+    const tags = SHOW_TAGS ? (brawlerTags[n] || []) : [];
 
     const countersText = counters.length ? counters.map(capitalize).join(", ") : "None";
     const strengthsText = strengths.length ? strengths.map(capitalize).join(", ") : "None";
@@ -812,7 +817,7 @@ function handleKeyDown(e) {
 
         if (e.key === "Enter") {
             e.preventDefault();
-			e.stopPropagation();
+            e.stopPropagation();
 
             const chosen =
                 selectedIndex >= 0
@@ -827,7 +832,7 @@ function handleKeyDown(e) {
 
     if (e.key === "Enter") {
         e.preventDefault();
-		e.stopPropagation();
+        e.stopPropagation();
         const input = document.getElementById("input");
         const raw = input.value.trim();
 
@@ -854,7 +859,7 @@ function updateActive(items) {
 }
 
 /* =========================
-   CLASS COUNTER SECTION (item 4)
+   CLASS COUNTER SECTION
    Net +1/-1 calculator: for the classes present among the searched
    brawlers (WITH multiplicity — e.g. two Controllers count twice),
    scores every class by (# enemy instances it counters) minus
@@ -898,7 +903,7 @@ let currentBrawlers = [];
 
 function findCounters() {
     const brawlers = [...new Set(selectedBrawlers)];
-	currentBrawlers = brawlers;
+    currentBrawlers = brawlers;
 
     if (brawlers.length === 0) {
         showInputError("Add at least one brawler first");
@@ -906,7 +911,7 @@ function findCounters() {
     }
 
     document.getElementById("topUI").classList.add("hidden");
-	document.getElementById("input").blur();
+    document.getElementById("input").blur();
     document.getElementById("backBtn").style.display = "inline-block";
 
     const resultDiv = document.getElementById("result");
@@ -940,83 +945,83 @@ function findCounters() {
     /* Risky picks (they also get countered by another searched enemy)
        are sorted to the end of the list, instead of being mixed in by tier/freq. */
     const filteredCounters = Object.keys(scoreMap)
-		.filter(c => scoreMap[c].freq >= 2)
-		.sort((a, b) => {
-			const riskyA = isRiskyGlobal(a, selectedSet) ? 1 : 0;
-			const riskyB = isRiskyGlobal(b, selectedSet) ? 1 : 0;
-			if (riskyA !== riskyB) return riskyA - riskyB;
+        .filter(c => scoreMap[c].freq >= 2)
+        .sort((a, b) => {
+            const riskyA = isRiskyGlobal(a, selectedSet) ? 1 : 0;
+            const riskyB = isRiskyGlobal(b, selectedSet) ? 1 : 0;
+            if (riskyA !== riskyB) return riskyA - riskyB;
 
-			if (scoreMap[b].freq !== scoreMap[a].freq) {
-				return scoreMap[b].freq - scoreMap[a].freq;
-			}
+            if (scoreMap[b].freq !== scoreMap[a].freq) {
+                return scoreMap[b].freq - scoreMap[a].freq;
+            }
 
-			const diff = currentRank(a) - currentRank(b);
-			if (diff !== 0) return diff;
+            const diff = currentRank(a) - currentRank(b);
+            if (diff !== 0) return diff;
 
-			return secondaryRank(a) - secondaryRank(b);
-		});
+            return secondaryRank(a) - secondaryRank(b);
+        });
 
     /* Only show the shared box if there's actually something to show */
     if (filteredCounters.length > 0) {
-		counterBox.style.display = "block";
-		counterBox.innerHTML = `
-			<div class="shared-columns">
-				${withClassDividers(filteredCounters, c => {
-					const isRisky = isRiskyGlobal(c, selectedSet);
-					const sources = scoreMap[c].sources;
-					const sourceNames = sources.map(capitalize).join(", ");
+        counterBox.style.display = "block";
+        counterBox.innerHTML = `
+            <div class="shared-columns">
+                ${withClassDividers(filteredCounters, c => {
+                    const isRisky = isRiskyGlobal(c, selectedSet);
+                    const sources = scoreMap[c].sources;
+                    const sourceNames = sources.map(capitalize).join(", ");
 
-					return `
-						<div class="shared-col">
-							<div class="mini-sources" title="Strong against: ${sourceNames}">
-								${sources.map(s => `<img src="${data[s].img}" class="mini-source-img ${getClass(s)}" title="${capitalize(s)}">`).join("")}
-							</div>
-							${iconLabel(c, false, isRisky)}
-						</div>
-					`;
-				})}
-			</div>
-		`;
-	} else {
-		counterBox.style.display = "none";
-	}
+                    return `
+                        <div class="shared-col">
+                            <div class="mini-sources" title="Strong against: ${sourceNames}">
+                                ${sources.map(s => `<img src="${data[s].img}" class="mini-source-img ${getClass(s)}" title="${capitalize(s)}">`).join("")}
+                            </div>
+                            ${iconLabel(c, false, isRisky)}
+                        </div>
+                    `;
+                })}
+            </div>
+        `;
+    } else {
+        counterBox.style.display = "none";
+    }
 
     /* BOTTOM LIST (ROWS) */
     brawlers.forEach((b, idx) => {
-		if (!data[b]) return;
+        if (!data[b]) return;
 
-		const counters = getCombinedCounters(b).filter(c => !selectedSet.has(c) && isOwned(c));
+        const counters = getCombinedCounters(b).filter(c => !selectedSet.has(c) && isOwned(c));
 
-		// push risky picks to the end of this row's list too
-		const nonRisky = counters.filter(n => !isRiskyForRow(n, b, selectedSet));
-		const risky = counters.filter(n => isRiskyForRow(n, b, selectedSet));
-		const ordered = [...nonRisky, ...risky];
+        // push risky picks to the end of this row's list too
+        const nonRisky = counters.filter(n => !isRiskyForRow(n, b, selectedSet));
+        const risky = counters.filter(n => isRiskyForRow(n, b, selectedSet));
+        const ordered = [...nonRisky, ...risky];
 
-		const icons = withClassDividers(ordered, n => {
-			const isBest = scoreMap[normalize(n)]?.freq >= 2;
-			const isRisky = isRiskyForRow(n, b, selectedSet);
-			return iconLabel(n, isBest, isRisky);
-		});
+        const icons = withClassDividers(ordered, n => {
+            const isBest = scoreMap[normalize(n)]?.freq >= 2;
+            const isRisky = isRiskyForRow(n, b, selectedSet);
+            return iconLabel(n, isBest, isRisky);
+        });
 
-		resultDiv.innerHTML += `
-			<div class="row">
-				<div class="name info-container">
-					<div class="img-wrap" onclick="showBrawlerPopup('${b}')">
-						<img src="${data[b].img}" class="brawler-img ${getClass(b)}">
-						${data[b].info ? `<span class="info-btn" onclick="toggleInfo(event, this)">i</span>` : ""}
-						${tagBadges(b)}
-					</div>
-					<div class="tiny-name">
-						${capitalize(b)}
-					</div>
-					${data[b].info ? `<div class="info-box">${data[b].info}</div>` : ""}
-				</div>
-				<div class="list">
-					${icons || "<div class='tiny-name'>None</div>"}
-				</div>
-			</div>
-		`;
-	});
+        resultDiv.innerHTML += `
+            <div class="row">
+                <div class="name info-container">
+                    <div class="img-wrap" onclick="showBrawlerPopup('${b}')">
+                        <img src="${data[b].img}" class="brawler-img ${getClass(b)}">
+                        ${data[b].info ? `<span class="info-btn" onclick="toggleInfo(event, this)">i</span>` : ""}
+                        ${tagBadges(b)}
+                    </div>
+                    <div class="tiny-name">
+                        ${capitalize(b)}
+                    </div>
+                    ${data[b].info ? `<div class="info-box">${data[b].info}</div>` : ""}
+                </div>
+                <div class="list">
+                    ${icons || "<div class='tiny-name'>None</div>"}
+                </div>
+            </div>
+        `;
+    });
 }
 
 function resetSearch() {

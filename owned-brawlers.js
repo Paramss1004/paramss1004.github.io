@@ -1,3 +1,8 @@
+/* =========================
+   BRAWLER OWNED
+   Just the list of brawler that I currently owned maxed out, that I keep changing every now and then.
+========================= */
+
 const ownedBrawlers = new Set([ "rosa", 
 	"bibi", 
 	"frank", 
@@ -56,5 +61,7 @@ const ownedBrawlers = new Set([ "rosa",
 	"jacky",
 	"mrp",
 	"pam",
-	"tick"
+	"tick",
+	"ash",
+	"kaze",
 ].map(normalize));

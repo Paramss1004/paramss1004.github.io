@@ -85,7 +85,7 @@ const brawlerMain = {
     "pam": ["sirius", "colette", "jessie", "lumi", "crow", "squeak", "spike", "lou", "8bit", "charlie", "draco", "bea", "belle", "brock"],
     "pearl": ["jessie", "kenji", "bo", "lou", "8bit", "buster", "amber", "crow", "spike", "lola", "meg", "byron", "piper", "belle", "mandy", "gene"],
     "penny": ["nani", "kit", "bo", "belle", "grom", "squeak", "juju", "larry", "kenji", "edgar", "mortis", "darryl", "sam"],
-    "pierce": ["glowy", "najia", "ziggy", "jaeyong", "ruffs", "mortis", "charlie", "tara", "spike", "sirius", "mrp", "penny"],
+    "pierce": ["glowbert", "najia", "ziggy", "jaeyong", "ruffs", "mortis", "charlie", "tara", "spike", "sirius", "mrp", "penny"],
     "piper": ["jessie", "ruffs", "charlie", "nita", "nani", "max", "leon", "tick", "gene", "kit", "kaze", "mortis", "mandy", "lily"],
 	"poco": ["amber", "bo", "jessie", "sam", "crow", "griff", "mortis", "emz", "kit", "kaze", "kenji", "edgar"],
     "primo": ["colette", "cord", "sirius", "stu", "surge", "gale", "mina", "griff", "shelly", "charlie", "lumi", "lou", "doug", "nita"],
@@ -112,67 +112,3 @@ const brawlerMain = {
     "willow": ["shade", "mico", "tick", "barley", "larry", "juju", "stu", "buzz", "poco", "mortis", "alli", "kenji", "berry", "grom", "sprout", "colt", "brock"],
     "ziggy": ["edgar", "mico", "kenji", "kaze", "kit", "stu", "mortis", "gray", "bibi", "tick", "hank"]
 };
-
-
-
-1. Installer PythonScript
-Dans Notepad++ :
-
-Plugins → Plugins Admin → Available → PythonScript → Install
-
-Puis redémarre Notepad++ si demandé.
-
-2. Créer le script
-Va dans : Plugins → PythonScript → New Script
-
-Donne-lui par exemple : sort_counters.py
-
-
-Puis colle ce SCRIPT ---- :
-
-
-
-from Npp import editor
-import re
-
-# Trouve les listes entre [ ... ]
-pattern = re.compile(r'\[(.*?)\]', re.DOTALL)
-
-def sort_list(match):
-    content = match.group(1)
-
-    # Trouve les chaînes entre guillemets
-    items = re.findall(r'"([^"]*)"', content)
-
-    # Trie alphabétiquement, sans tenir compte de la casse
-    # Les entrées vides restent à la fin
-    items.sort(key=lambda x: (x == "", x.lower()))
-
-    # Recrée la liste avec le même format général
-    return '[' + ', '.join('"' + item + '"' for item in items) + ']'
-
-# Remplace toutes les listes du fichier
-text = editor.getText()
-new_text = pattern.sub(sort_list, text)
-
-editor.setText(new_text)
-
-
-
-3. Exécuter
-Place simplement ton curseur dans le fichier, puis :
-
-Plugins → PythonScript → Scripts → sort_counters.py
-
-Par exemple, ceci :
-
-"Amber": ["Poco", "Edgar", "Piper", "Jessie", "Bea", "Belle", "Leon"]
-deviendra :
-
-"Amber": ["Bea", "Belle", "Edgar", "Jessie", "Leon", "Piper", "Poco"]
-Et :
-
-"Gus": ["Dyna", "Frank", "Gale", "Piper", "Mrp", "Darryl", "Ash", "Pam", "Edgar", "Charlie", "Bo", "Byron", "Mandy", "Eve", "Janet", "8bit", "Mortis", "Chuck", "Crow", "Mrp", "Frank", "Leon", "Lily", "Cord"]
-sera trié en gardant les deux "Mrp" et les deux "Frank".
-
-Important : ce script agit sur tous les [...] du fichier. Dans le code que tu as montré, c'est exactement ce qu'il faut puisque tes listes de counters sont toutes sous cette forme.
