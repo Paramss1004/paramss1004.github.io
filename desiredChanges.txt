@@ -1,0 +1,3 @@
+1. The menu that appears when you click on one of the brawlers in the counters list (the one that says Countered by: ... and Strong against: ...), make it so that it just says Weakness/Strength, and the menu is actually visually the same as the counters list.
+2. Sort by matchup score by default
+3. Add a button to display unowned brawlers that don't usually appear in the counters list of the brawlers (shift+(correspondingNumber)) toggles on and off, like for example alli is the first entered brawler, usually pressing 1 shows its brawler info menu, make it so shift+1 toggles that new button feature of unowned brawlers
