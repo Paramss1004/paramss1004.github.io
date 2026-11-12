@@ -368,8 +368,6 @@ function renderBrawlerProfile(key) {
                 <div class="profile-title">
                     <div class="profile-name">${capitalize(key)}</div>
                     <div class="profile-meta">
-                        ${cls ? classPill(cls) : ""}
-                        ${tier ? `<span class="tier-tag tier-${tier.replace('+', 'plus')}">${tier}</span>` : ""}
                     </div>
                     ${tags.length ? `<div class="profile-meta">${tags.map(t => `<span class="class-pill">${tagEmoji[t] || ""} ${tagLabel[t] || t}</span>`).join("")}</div>` : ""}
                 </div>
@@ -563,7 +561,6 @@ function renderTierListDisplay() {
 
         return `
             <div class="tier-row">
-                <div class="tier-row-label tier-${tier.replace('+', 'plus')}">${tier}</div>
                 <div class="tier-row-icons">
                     ${withClassDividers(keys, tierIconLabel)}
                 </div>
@@ -605,7 +602,6 @@ function iconLabel(name, isBest = false, isRisky = false) {
                 ${tagBadges(n)}
             </div>
             <div class="tiny-name">${capitalize(n)}</div>
-            ${tier ? `<div class="tier-tag tier-${tier.replace('+', 'plus')}">${tier}</div>` : ""}
         </div>
     `;
 }
