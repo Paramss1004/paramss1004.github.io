@@ -8,8 +8,8 @@ const tierList = {
     "A": ["edgar","nita","lou","shade","gray","angelo","ash","stu","spike","mina","8bit","brock","colette","max","squeak","mandy","rico","emz","berry"],
     "B": ["willow","wendy","kit","pearl","barley","damian","pierce","gloo","things","kenji","twins","cordelius","otis","buzz","bruce","carl","mortis","colette","cole","gene","surge","piper","byron","belle","griff","gus","rt","moe","draco"],
     "C": ["crow","maisie","primo","nita","shelly","penny","ollie","ziggy","hank","leon","sprout","bibi","darryl","lola","charlie","chuck","bea","jaeyong","alli","star power","gg","poco"],
-    "D": ["bonnie","rico","colt","chuck","bo","tick","bull","rosa","frank","doug","pam","nani","tara","meg","janet","sandy","buster","jessie","juju","eve"],
-    "F": ["sam","dynamike","jacky","grom","clancy","bea"]
+    "D": ["bonnie","mico","trunk","bolt","bo","tick","bull","rosa","frank","doug","fang","pam","nani","tara","meg","janet","sandy","buster","jessie","juju","eve"],
+    "F": ["sam","dynamike","jacky","grom","clancy","bea","dyna"]
 };
 
 const tierOrder = Object.keys(tierList); // ["S","A","B","C","D","F"] — restores the missing order array
