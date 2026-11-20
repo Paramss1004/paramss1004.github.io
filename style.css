@@ -873,6 +873,280 @@ input:focus {
 .class-score.net-negative { background: #a83232; }
 .class-score.net-neutral  { background: var(--soft-border); }
 
+/* =========================
+   ADD THIS TO THE BOTTOM OF style.css
+   (place it ABOVE the @media (max-width: 480px) block if you want the
+   mobile rules to win, otherwise the very end is fine)
+========================= */
+
+/* Wide popup (brawler Weakness / Strength view) */
+.info-modal-box.wide {
+    width: min(900px, 100%);
+    max-width: 900px;
+}
+
+.info-modal-box .profile-header {
+    margin-bottom: 12px;
+}
+
+/* Anything clickable (class pills, tier tags, mini source avatars) */
+.clickable {
+    cursor: pointer;
+    transition: 0.15s ease;
+}
+
+.class-pill.clickable:hover,
+.tier-tag.clickable:hover {
+    filter: brightness(1.25);
+    transform: scale(1.05);
+}
+
+.mini-source-img.clickable:hover {
+    transform: scale(1.25);
+}
+
+/* Class Matchups header row + sort button */
+.matchup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+}
+
+.matchup-sort-btn {
+    background: var(--panel);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.15s ease;
+}
+
+.matchup-sort-btn:hover {
+    background: var(--panel-hover);
+    border-color: var(--accent);
+}
+
+/* Unowned counters (shown via the row button / Shift+number) */
+.icon-label.unowned-pick .brawler-img {
+    border-style: dashed;
+    opacity: 0.75;
+}
+
+.unowned-badge {
+    position: absolute;
+    bottom: -4px;
+    left: -6px;
+    font-size: 14px;
+    line-height: 1;
+    background: var(--panel);
+    border-radius: 50%;
+    padding: 1px;
+}
+
+.unowned-btn {
+    display: block;
+    width: 100%;
+    margin-top: 6px;
+    background: var(--panel);
+    color: var(--text-dim);
+    border: 1px solid var(--soft-border);
+    border-radius: 6px;
+    padding: 3px 4px;
+    font-size: 11px;
+    font-weight: normal;
+    cursor: pointer;
+    transition: 0.15s ease;
+}
+
+.unowned-btn:hover {
+    border-color: var(--accent);
+    color: var(--text);
+}
+
+.unowned-btn.active {
+    background: rgba(77, 166, 255, 0.18);
+    border-color: var(--accent);
+    color: var(--text);
+}
+
+/* =========================
+   ADD THIS TO THE BOTTOM OF style.css
+   (after the earlier additions)
+========================= */
+
+/* "Enemies 2/3 · Allies 1/2" note */
+.team-size-note {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-top: 6px;
+}
+
+/* =========================
+   ALLIES
+========================= */
+.ally-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.ally-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--panel);
+    border: 1px solid var(--soft-border);
+    border-radius: 8px;
+    padding: 8px 12px;
+}
+
+.ally-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    font-size: 14px;
+}
+
+.ally-line {
+    color: var(--text-dim);
+}
+
+.ally-line.good { color: #6fcf97; }
+.ally-line.bad  { color: #ff8080; }
+
+.ally-fill {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--text-dim);
+}
+
+/* =========================
+   OWNED-BRAWLER EDITOR
+========================= */
+.info-modal-box.owned-box {
+    max-height: 85vh;
+}
+
+.owned-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding-right: 24px; /* room for the close button */
+}
+
+.owned-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.owned-action-btn {
+    background: var(--panel-hover);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.15s ease;
+}
+
+.owned-action-btn:hover {
+    border-color: var(--accent);
+}
+
+.owned-action-btn.done {
+    background: var(--accent);
+    color: #0f0f0f;
+    border-color: var(--accent);
+    font-weight: bold;
+}
+
+input.owned-filter {
+    font-size: 16px;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+}
+
+.owned-group {
+    margin-bottom: 14px;
+}
+
+.owned-group-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--accent);
+    margin-bottom: 6px;
+}
+
+.owned-group-actions {
+    display: inline-flex;
+    gap: 4px;
+}
+
+.owned-group-actions .owned-action-btn {
+    padding: 1px 8px;
+    font-size: 12px;
+}
+
+.owned-tile {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    width: 84px;
+    margin: 2px;
+    cursor: pointer;
+    opacity: 0.35;
+    filter: grayscale(80%);
+    transition: 0.15s ease;
+}
+
+.owned-tile.on {
+    opacity: 1;
+    filter: none;
+}
+
+.owned-tile:hover {
+    opacity: 0.8;
+}
+
+/* =========================
+   DATA CHECK BADGE
+========================= */
+.data-check-badge {
+    position: fixed;
+    left: 12px;
+    bottom: 12px;
+    z-index: 90;
+    background: #5a2a00;
+    color: #ffd9a8;
+    border: 1px solid #d35400;
+    border-radius: 16px;
+    padding: 6px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.data-check-badge:hover {
+    background: #7a3a00;
+}
+
 @media (max-width: 480px) {
     #result {
         column-count: 2;

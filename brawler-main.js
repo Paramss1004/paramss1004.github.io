@@ -68,6 +68,7 @@ const brawlerMain = {
     "lumi": ["amber", "barley", "bea", "belle", "dyna", "gene", "grom", "mandy", "mico", "mortis", "nori", "piper"],
     "maisie": ["amber", "barley", "belle", "charlie", "eve", "juju", "larry", "mina", "nani", "penny", "rico", "ruffs", "sirius", "sprout", "stu"],
     "mandy": ["angelo", "darryl", "edgar", "fang", "grom", "gus", "max", "mortis", "nani", "pam", "stu", "tick"],
+	"max": ["pam", "poco", "stu", "gus", "jaeyong", "ash", "crow"],
     "meeple": ["bea", "charlie", "frank", "kenji", "lily", "lola", "mico", "mortis", "mrp", "penny", "ruffs", "spike", "squeak"],
     "meg": ["ash", "bea", "buster", "buzz", "clancy", "colette", "cord", "draco", "gigi", "griff", "juju", "lola", "lumi", "shade", "sirius", "spike"],
     "melodie": ["amber", "bull", "buzz", "clancy", "cord", "crow", "doug", "draco", "rt", "stu"],
