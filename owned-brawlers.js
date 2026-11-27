@@ -64,4 +64,6 @@ const ownedBrawlers = new Set([ "rosa",
 	"tick",
 	"ash",
 	"kaze",
+	"kit",
+	"cord"
 ].map(normalize));
